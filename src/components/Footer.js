@@ -5,7 +5,7 @@ import {
   AiOutlineTwitter,
   AiFillInstagram,
 } from "react-icons/ai";
-import { FaLinkedinIn } from "react-icons/fa";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Footer() {
   let date = new Date();
@@ -48,7 +48,7 @@ function Footer() {
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                <FaLinkedinIn />
+                <FontAwesomeIcon icon="fa-brands fa-stack-overflow" />
               </a>
             </li>
             <li className="social-icons">
