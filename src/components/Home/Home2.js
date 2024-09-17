@@ -31,7 +31,7 @@ function Home2() {
                             <i className="purple"><b>{t('Introduce3.1')}</b></i>
                             <br/>
                             <br/>
-                            {t('Introduce4')}
+                            {/*{t('Introduce4')}*/}
                         </p>
                     </Col>
                     <Col md={4} className="myAvtar">

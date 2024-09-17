@@ -27,7 +27,10 @@ const resources = {
             'Introduce2': 'My most work experience is on',
             'Introduce3': 'I am interested in ',
             'Introduce3.1': 'feature development and implementing different algorithm for optimizing system',
-            'Introduce4': 'I always apply my passion for solution with Java and its Spring Framework'
+
+
+            'What I have experience':'What I have experience',
+
         }
     },
     vi: {
@@ -49,6 +52,14 @@ const resources = {
             'And ...... pursuing a career as a Data Engineer': 'Và . . . . hướng tới kĩ sư dữ liệu',
 
             'LET ME INTRODUCE MYSELF': 'HÃY ĐỂ MÌNH CÓ VÀI LỜI GIỚI THIỆU',
+
+            'Introduce1': 'Mình yêu thích lập trình, đặc biệt là với ',
+            'Introduce1.1': 'backend, data và prompt',
+            'Introduce2': 'Kinh nghiệm của mình nhiều nhất ở ',
+            'Introduce3': 'Mình hay tìm tòi, mày mò, nghiên cứu về ',
+            'Introduce3.1': 'các tính năng mới, các thuật toán để tối ưu hiệu suất của hệ thống',
+
+            'What I have experience':'Mình có kinh nghiệm với'
         }
     }
 };
