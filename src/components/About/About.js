@@ -1,11 +1,11 @@
 import React from "react";
-import {Container, Row, Col} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import Particle from "../Particle";
 import Github from "./Github";
-import Techstack from "./Techstack";
+import TechStack1 from "./TechStack1";
 import Aboutcard from "./AboutCard";
 import laptopImg from "../../Assets/about.png";
-import Toolstack from "./Toolstack";
+import TechStack2 from "./TechStack2";
 import {useTranslation} from "react-i18next";
 
 function About() {
@@ -40,12 +40,12 @@ function About() {
                     <strong className="purple">{t("What I have experience")} </strong>
                 </h1>
 
-                <Techstack/>
+                <TechStack1/>
 
                 <h1 className="project-heading">
                     <strong className="purple">Tools</strong> I use
                 </h1>
-                <Toolstack/>
+                <TechStack2/>
 
                 <Github/>
             </Container>
