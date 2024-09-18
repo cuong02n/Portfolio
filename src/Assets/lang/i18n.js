@@ -7,6 +7,7 @@ const resources = {
             'Hi There!': 'Hi There!',
             'I am': 'I\'m',
             'Name': 'Manh Cuong Nguyen',
+            'Address':'Dong Anh, Ha Noi, Viet Nam',
             'Language': 'English',
             'Home': 'Home',
             'About': 'About',
@@ -14,6 +15,8 @@ const resources = {
             'Resume': 'Resume',
             'FIND ME ON': 'FIND ME ON',
             'Connect With Me': 'Feel free to connect with me',
+
+            'From':'from',
 
             'Java developer': 'Java developer',
             'Software Engineering': 'Software Engineering',
@@ -30,7 +33,10 @@ const resources = {
 
 
             'What I have experience':'What I have experience',
-
+            'And others':'And others',
+            'I also know':'I also know',
+            'Day I Code': 'My Github',
+            'Updated on':'Last updated on'
         }
     },
     vi: {
@@ -38,6 +44,7 @@ const resources = {
             'Hi There!': 'Xin chào!!',
             'I am': 'Mình là',
             'Name': 'Nguyễn Mạnh Cường',
+            'Address':'Dục Tú, Đông Anh, Hà Nội',
             'Language': 'Tiếng Việt',
             'Home': 'Trang chủ',
             'About': 'Thông tin',
@@ -45,6 +52,8 @@ const resources = {
             'Resume': 'Hồ sơ tóm tắt',
             'FIND ME ON': 'LIÊN HỆ',
             'Connect With Me': 'Hãy kết nối với mình nhé',
+
+            'From':'đến từ',
 
             'Java developer': 'Lập trình viên Java',
             'Software Engineering': 'Người phát triển phần mềm',
@@ -59,7 +68,11 @@ const resources = {
             'Introduce3': 'Mình hay tìm tòi, mày mò, nghiên cứu về ',
             'Introduce3.1': 'các tính năng mới, các thuật toán để tối ưu hiệu suất của hệ thống',
 
-            'What I have experience':'Mình có kinh nghiệm với'
+            'What I have experience':'Mình có kinh nghiệm với',
+            'And others':'Sau đó một chút là',
+            'I also know':'Mình cũng biết những thứ sau',
+            'Day I Code':'Github của mình',
+            'Updated on': 'Cập nhật lần cuối vào',
         }
     }
 };

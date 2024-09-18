@@ -7,6 +7,7 @@ import Aboutcard from "./AboutCard";
 import laptopImg from "../../Assets/about.png";
 import TechStack2 from "./TechStack2";
 import {useTranslation} from "react-i18next";
+import TechStack3 from "./TechStack3";
 
 function About() {
     const {t} = useTranslation()
@@ -39,13 +40,18 @@ function About() {
                 <h1 className="project-heading">
                     <strong className="purple">{t("What I have experience")} </strong>
                 </h1>
-
                 <TechStack1/>
 
                 <h1 className="project-heading">
-                    <strong className="purple">Tools</strong> I use
+                    <strong className="purple">{t("And others")}</strong>
                 </h1>
                 <TechStack2/>
+
+                <h1 className="project-heading">
+                    <strong className="purple">{t("I also know")}</strong>
+                </h1>
+                <TechStack3/>
+
 
                 <Github/>
             </Container>
