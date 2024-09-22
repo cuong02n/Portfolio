@@ -8,6 +8,7 @@ import laptopImg from "../../Assets/about.png";
 import TechStack2 from "./TechStack2";
 import {useTranslation} from "react-i18next";
 import TechStack3 from "./TechStack3";
+import CodeforcesRatingChart from "./CodeforcesRatingChart";
 
 function About() {
     const {t} = useTranslation()
@@ -54,6 +55,8 @@ function About() {
 
 
                 <Github/>
+
+                <CodeforcesRatingChart username={"cuong2905say"}/>
             </Container>
         </Container>
     );
