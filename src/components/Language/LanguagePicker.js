@@ -2,7 +2,6 @@ import React from 'react';
 import {i18n} from '../../Assets/lang/i18n';
 import {Button} from 'react-bootstrap';
 import {useTranslation} from "react-i18next";
-import ReactCountryFlag from "react-country-flag";
 
 const LanguagePicker = () => {
     const {t,i18n} = useTranslation();
