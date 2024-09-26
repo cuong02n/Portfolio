@@ -5,7 +5,7 @@ import Particle from "../Particle";
 import Home2 from "./Home2";
 import Type from "./Type";
 import {useTranslation} from "react-i18next";
-
+import i18n from "../../Assets/lang/i18n";
 function Home() {
   const {t} = useTranslation();
   return (

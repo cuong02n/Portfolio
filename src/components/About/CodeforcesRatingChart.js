@@ -13,6 +13,7 @@ import {
 import timestamp from "unix-timestamp";
 import { GET_RATING_GRAPH, USER_STATUS} from "../../api/CodeforcesApi";
 import {ratingColor} from "./RatingColor";
+import {useTranslation} from "react-i18next";
 
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -48,6 +49,8 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const CodeforcesRatingChart = ({ username }) => {
+
+    const {t} = useTranslation();
     const [graphData, setGraphData] = useState([]);
     const [data, setData] = useState([]);
     const [problemsSolved, setProblemsSolved] = useState([]);
@@ -58,14 +61,6 @@ const CodeforcesRatingChart = ({ username }) => {
                 const res = await fetch(GET_RATING_GRAPH(username));
 
                 console.log(res);
-
-                if (res.status === 400) {
-                    throw new Error("User not found");
-                } else if (res.status === 403) {
-                    throw new Error("Too many requests");
-                } else if (res.status !== 200) {
-                    throw new Error("Failed to fetch data");
-                }
 
                 if (res.headers.get("Content-Type").includes("text/html")) {
                     throw new Error(
@@ -91,14 +86,6 @@ const CodeforcesRatingChart = ({ username }) => {
         const fetchProblemsSolved = async () => {
             try {
                 const res = await fetch(USER_STATUS(username));
-
-                if (res.status === 400) {
-                    throw new Error("User not found");
-                } else if (res.status === 403) {
-                    throw new Error("Too many requests");
-                } else if (res.status !== 200) {
-                    throw new Error("Failed to fetch data");
-                }
 
                 const data = await res.json();
 
@@ -140,9 +127,7 @@ const CodeforcesRatingChart = ({ username }) => {
         fetchProblemsSolved();
     }, [username]);
 
-    // updatedData[it].counts = { ...counts };
 
-    // console.log(counts);
 
     useEffect(() => {
         if (data.length !== 0) {
@@ -386,8 +371,7 @@ const CodeforcesRatingChart = ({ username }) => {
                                 {`Date: ${timestamp
                                     .toDate(bottomStatDisplay.ratingUpdateTimeSeconds)
                                     .toDateString()
-                                    .slice(4)} 
-                `}
+                                    .slice(4)}`}
                             </p>
                             <p className="text-sm">
                                 {`Contest Name: ${bottomStatDisplay.contestName}`}
@@ -408,15 +392,11 @@ const CodeforcesRatingChart = ({ username }) => {
                         </div>
                     )}
                     <div className="flex-col items-center justify-center">
-                        {bottomStatDisplay.counts ? (
+
                             <div className="mb-2 text-nowrap border border-gray-500 text-center font-spaceMono font-bold">
                                 Total Problems Solved
                             </div>
-                        ) : (
-                            <div className="font-spaceMono text-sm">
-                                Click on the dots to view detailed stats
-                            </div>
-                        )}
+                        )
                         <div className="grid grid-flow-col grid-cols-3 grid-rows-5 gap-x-6 text-nowrap">
                             {bottomStatDisplay.counts &&
                                 Object.keys(bottomStatDisplay.counts).map((key) => {
