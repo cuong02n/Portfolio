@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {
     CartesianGrid,
     Legend,
@@ -11,11 +11,11 @@ import {
     YAxis,
 } from "recharts";
 import timestamp from "unix-timestamp";
-import { GET_RATING_GRAPH, USER_STATUS} from "../../api/CodeforcesApi";
+import {GET_RATING_GRAPH, USER_STATUS} from "../../api/CodeforcesApi";
 import {ratingColor} from "./RatingColor";
 import {useTranslation} from "react-i18next";
 
-const CustomTooltip = ({ active, payload }) => {
+const CustomTooltip = ({active, payload}) => {
     if (active && payload && payload.length) {
         const data = payload[0].payload;
         return (
@@ -40,7 +40,7 @@ const CustomTooltip = ({ active, payload }) => {
                     data.newRating >= data.oldRating ? "+" : ""
                 } ${data.newRating - data.oldRating}`}</p>
                 <p className="desc">{`New Rating: ${data.newRating}`}</p>
-                <p className="totalProbs">{`Total Problems solved: ${data?.counts?.total}`}</p>
+                {/*<p className="totalProbs">{`Total Problems solved: ${data?.counts?.total}`}</p>*/}
             </div>
         );
     }
@@ -48,7 +48,7 @@ const CustomTooltip = ({ active, payload }) => {
     return null;
 };
 
-const CodeforcesRatingChart = ({ username }) => {
+const CodeforcesRatingChart = ({username}) => {
 
     const {t} = useTranslation();
     const [graphData, setGraphData] = useState([]);
@@ -59,28 +59,13 @@ const CodeforcesRatingChart = ({ username }) => {
         const fetchData = async () => {
             try {
                 const res = await fetch(GET_RATING_GRAPH(username));
-
-                console.log(res);
-
-                if (res.headers.get("Content-Type").includes("text/html")) {
-                    throw new Error(
-                        "Network error or CodeForces API is down. Please try again later",
-                    );
-                }
-
                 const data = await res.json();
-
                 setData(data.result);
-            } catch (error) {
-                if (error instanceof TypeError && error.message === "Failed to fetch") {
-                    const str =
-                        "Network error or CodeForces API is down. Please try again later.";
-
-                    console.log(str);
-                } else {
-                    console.log(error.message);
-                }
+            } catch (err) {
+                console.log(err);
+                setData([])
             }
+
         };
 
         const fetchProblemsSolved = async () => {
@@ -113,13 +98,8 @@ const CodeforcesRatingChart = ({ username }) => {
 
                 setProblemsSolved(newQuestionsSolved);
             } catch (error) {
-                if (error instanceof TypeError && error.message === "Failed to fetch") {
-                    const str =
-                        "Network error or CodeForces API is down. Please try again later.";
-                    console.log(str);
-                } else {
-                    console.log(error.message);
-                }
+                console.log(error)
+                setProblemsSolved([])
             }
         };
 
@@ -128,16 +108,11 @@ const CodeforcesRatingChart = ({ username }) => {
     }, [username]);
 
 
-
     useEffect(() => {
         if (data.length !== 0) {
-            // reverse array
             const reversedSubmissions = [...problemsSolved].reverse();
-            const updatedData = data.map((entry) => ({ ...entry })); // Create a shallow copy of each object in data
-            // console.log(reversedSubmissions);
-
-            // const counts = { total: 0, names: []};
-            const counts = { total: 0 };
+            const updatedData = data.map((entry) => ({...entry}));
+            const counts = {total: 0};
             let it = 0;
             for (let i = 0; i <= reversedSubmissions.length; i++) {
                 if (
@@ -145,16 +120,11 @@ const CodeforcesRatingChart = ({ username }) => {
                     updatedData[it].ratingUpdateTimeSeconds
                 ) {
                     counts[reversedSubmissions[i].rating] = counts[
-                        reversedSubmissions[i].rating
-                        ]
-                        ? counts[reversedSubmissions[i].rating] + 1
-                        : 1;
+                        reversedSubmissions[i].rating] ? counts[reversedSubmissions[i].rating] + 1 : 1;
                     counts.total += 1;
 
-                    // store all the names of the problems
-                    // counts.names = [...counts.names, reversedSubmissions[i].problem];
                 } else {
-                    updatedData[it].counts = { ...counts };
+                    updatedData[it].counts = {...counts};
                     it++;
                     if (it >= updatedData.length) break;
                 }
@@ -176,9 +146,7 @@ const CodeforcesRatingChart = ({ username }) => {
 
     const [bottomStatDisplay, setBottomStatDisplay] = useState({});
     const fillOp = 1;
-    const interval =
-        graphData.length > 10 ? Math.floor(graphData.length / 10) : 0;
-    // const interval = 10;
+    const interval = graphData.length > 10 ? Math.floor(graphData.length / 10) : 0;
 
     let currentRating = data[data.length - 1]?.newRating;
     currentRating = Number(Math.max(...data.map((el) => el.newRating)));
@@ -194,7 +162,7 @@ const CodeforcesRatingChart = ({ username }) => {
     return (
         <div className="h-96 w-[100%]">
             <div className="border-b border-[#2e3135] pb-2 font-spaceMono font-medium">
-                # Rating v/s Problems Solved Chart
+                {"Codeforces"}
             </div>
             <ResponsiveContainer
                 width="100%"
@@ -223,8 +191,6 @@ const CodeforcesRatingChart = ({ username }) => {
                         </filter>
                     </defs>
 
-                    {/* <CartesianGrid strokeDasharray="2 3" stroke="#403e41" /> */}
-                    {/* <ReferenceArea y1={0} y2={1200} strokeOpacity={0.3} fill="#bbbbbb" fillOpacity={fillOp}/> */}
                     <ReferenceArea
                         stroke="#54545430"
                         strokeWidth={1.3}
@@ -265,8 +231,6 @@ const CodeforcesRatingChart = ({ username }) => {
                         fill="#e97ee9"
                         fillOpacity={fillOp}
                     />
-
-                    {/* <ScatterChart width={400} height={400} margin={{ top: 20, right: 20, bottom: 0, left: 20 }}> */}
 
                     <ReferenceArea
                         stroke="#54545430"
@@ -329,7 +293,7 @@ const CodeforcesRatingChart = ({ username }) => {
                     {/* <XAxis dataKey="counts.total" tick={{ fontSize: 12 }} interval={interval}  tickCount={10}/> */}
                     <XAxis
                         dataKey="counts.total"
-                        tick={{ fontSize: 12 }}
+                        tick={{fontSize: 12}}
                         interval={interval}
                     />
                     <YAxis
@@ -341,20 +305,20 @@ const CodeforcesRatingChart = ({ username }) => {
                     <Tooltip
                         layout={"vertical"}
                         verticalAlign={"top"}
-                        wrapperStyle={{ color: "#000", fontSize: 12 }}
-                        content={<CustomTooltip />}
+                        wrapperStyle={{color: "#000", fontSize: 12}}
+                        content={<CustomTooltip/>}
                     />
-                    <Legend />
+                    <Legend/>
                     <Line
                         type="linear"
                         dataKey="newRating"
                         // stroke="#ff8b00"
                         stroke="#ecbe3f"
-                        name="Problems Solved"
+                        name={t("Problems Solved")}
                         strokeWidth={2}
-                        activeDot={{ r: 6 }}
+                        activeDot={{r: 6}}
                         // dot={{ stroke: "#b1b1b1", fill: "#666666" }}
-                        dot={{ stroke: "#ecbe3f", fill: "#fff", r: 3.8, filter: "" }}
+                        dot={{stroke: "#ecbe3f", fill: "#fff", r: 3.8, filter: ""}}
                         filter="url(#shadow)"
                     />
                     {/* <Line type="linear" dataKey="uv" stroke="#82ca9d" /> */}
@@ -386,16 +350,9 @@ const CodeforcesRatingChart = ({ username }) => {
                             <p className="text-sm">
                                 {`New Rating: ${bottomStatDisplay.newRating}`}
                             </p>
-                            <p className="text-sm">
-                                {`Total Problems solved: ${bottomStatDisplay.counts.total}`}
-                            </p>
                         </div>
                     )}
                     <div className="flex-col items-center justify-center">
-
-                            <div className="mb-2 text-nowrap border border-gray-500 text-center font-spaceMono font-bold">
-                                Total Problems Solved
-                            </div>
                         )
                         <div className="grid grid-flow-col grid-cols-3 grid-rows-5 gap-x-6 text-nowrap">
                             {bottomStatDisplay.counts &&
