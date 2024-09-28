@@ -36,7 +36,9 @@ const resources = {
             'And others':'And others',
             'I also know':'I also know',
             'Day I Code': 'My Github',
-            'Updated on':'Last updated on'
+            'Updated on':'Last updated on',
+
+            'Problems Solved':'Problems Solved',
         }
     },
     vi: {
@@ -73,13 +75,15 @@ const resources = {
             'I also know':'Mình cũng biết những thứ sau',
             'Day I Code':'Github của mình',
             'Updated on': 'Cập nhật lần cuối vào',
+
+            'Problems Solved':'Số bài đã được giải'
         }
     }
 };
 
 i18n.use(initReactI18next).init({
     resources,
-    lng: localStorage.getItem('language'),
+    lng: localStorage.getItem('language') || 'en',
 
     interpolation: {
         escapeValue: false

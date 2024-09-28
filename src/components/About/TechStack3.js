@@ -1,6 +1,6 @@
 import React from "react";
 import {Col, Row} from "react-bootstrap";
-import {SiGooglecloud, SiLatex} from "react-icons/si";
+import {SiLatex} from "react-icons/si";
 import {PiFileCppBold} from "react-icons/pi";
 import {DiJavascript} from "react-icons/di";
 import {SiPostman} from "react-icons/si";
