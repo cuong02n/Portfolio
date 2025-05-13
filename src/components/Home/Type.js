@@ -11,7 +11,7 @@ function Type() {
                     t("Java developer"),
                     t("Software Engineering"),
                     t("Problem Solving"),
-                    t("And ...... pursuing a career as a Data Engineer"),
+                    t("And ...... pursuing a career as a Solution Architect"),
                 ],
                 autoStart: true,
                 loop: true,

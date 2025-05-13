@@ -21,7 +21,7 @@ const resources = {
             'Java developer': 'Java developer',
             'Software Engineering': 'Software Engineering',
             'Problem Solving': 'Problem Solving',
-            'And ...... pursuing a career as a Data Engineer': 'And ...... pursuing a career as a Data Engineer',
+            'And ...... pursuing a career as a Solution Architect': 'And ...... pursuing a career as a Solution Architect',
 
             'LET ME INTRODUCE MYSELF': 'LET ME INTRODUCE MYSELF',
 
@@ -60,7 +60,7 @@ const resources = {
             'Java developer': 'Lập trình viên Java',
             'Software Engineering': 'Người phát triển phần mềm',
             'Problem Solving': 'Giải quyết vấn đề',
-            'And ...... pursuing a career as a Data Engineer': 'Và . . . . hướng tới kĩ sư dữ liệu',
+            'And ...... pursuing a career as a Solution Architect': 'Và . . . . hướng tới kĩ sư giải pháp',
 
             'LET ME INTRODUCE MYSELF': 'HÃY ĐỂ MÌNH CÓ VÀI LỜI GIỚI THIỆU',
 
