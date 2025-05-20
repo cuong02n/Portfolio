@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
@@ -18,19 +18,21 @@ import {useTranslation} from "react-i18next";
 
 function NavBar() {
     const {t} = useTranslation()
-
     const [expand, updateExpanded] = useState(false)
     const [navColour, updateNavbar] = useState(false)
 
-    function scrollHandler() {
-        if (window.scrollY >= 20) {
-            updateNavbar(true);
-        } else {
-            updateNavbar(false);
+    useEffect(() => {
+        function scrollHandler() {
+            if (window.scrollY >= 20) {
+                updateNavbar(true);
+            } else {
+                updateNavbar(false);
+            }
         }
-    }
 
-    window.addEventListener("scroll", scrollHandler);
+        window.addEventListener("scroll", scrollHandler);
+        return () => window.removeEventListener("scroll", scrollHandler);
+    }, []);
 
     return (
         <Navbar

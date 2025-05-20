@@ -81,13 +81,24 @@ const resources = {
     }
 };
 
-i18n.use(initReactI18next).init({
-    resources,
-    lng: localStorage.getItem('language') || 'en',
-
-    interpolation: {
-        escapeValue: false
-    }
-});
+i18n
+    .use(initReactI18next)
+    .init({
+        resources,
+        lng: localStorage.getItem('language') || 'en',
+        fallbackLng: 'en',
+        interpolation: {
+            escapeValue: false
+        },
+        react: {
+            useSuspense: false,
+            bindI18n: 'languageChanged loaded',
+            bindI18nStore: 'added removed',
+            transEmptyNodeValue: '',
+            transSupportBasicHtmlNodes: true,
+            transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p'],
+            nsMode: 'default'
+        }
+    });
 
 export default i18n;
