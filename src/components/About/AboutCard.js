@@ -13,23 +13,22 @@ function AboutCard() {
                         Hi, {(t('I am'))} <span className="purple">{t("Name")} </span>
                         {t("From")} <span className="purple"> {t("Address")}.</span>
                         <br/>
-                        I am currently employed as a software developer at Juspay.
+                        {t('About Developer')}
                         <br/>
-                        I have completed Integrated MSc (IMSc) in Maths and Computing at BIT
-                        Mesra.
+                        {t('About Work')}
                         <br/>
                         <br/>
-                        Apart from coding, some other activities that I love to do!
+                        {t('About Activities')}
                     </p>
                     <ul>
                         <li className="about-activity">
-                            <ImPointRight/> Playing Games
+                            <ImPointRight/> {t('Activity 1')}
                         </li>
                         <li className="about-activity">
-                            <ImPointRight/> Writing Tech Blogs
+                            <ImPointRight/> {t('Activity 2')}
                         </li>
                         <li className="about-activity">
-                            <ImPointRight/> Travelling
+                            <ImPointRight/> {t('Activity 3')}
                         </li>
                     </ul>
 

@@ -345,19 +345,29 @@ button:focus {
 .home-about-social-links {
   justify-content: center !important;
   padding-top: 15px !important;
-  display: inline-block !important;
+  display: flex !important;
   position: relative !important;
   padding-inline-start: 0 !important;
+  list-style: none !important;
+  margin: 0 auto !important;
+  width: fit-content !important;
+}
+
+.social-icons {
+  display: inline-block !important;
+  padding-right: 6px;
+  padding-left: 6px;
 }
 
 .home-social-icons {
   position: relative !important;
-  display: inline-block !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: 40px !important;
   height: 40px !important;
   text-align: center !important;
   font-size: 1.2em !important;
-  line-height: 2em !important;
   background: rgba(255, 255, 255, 0.972) !important;
   border-radius: 50% !important;
   transition: 0.5s !important;
@@ -386,12 +396,6 @@ button:focus {
   color: #87209e;
   box-shadow: 0 0 5px #87209e;
   text-shadow: 0 0 2px #87209e;
-}
-
-.social-icons {
-  display: inline-block !important;
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
 .icon-colour {
@@ -591,6 +595,13 @@ button:focus {
   list-style: none !important;
   text-align: left !important;
   padding-left: 1px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.about-activity svg {
+  flex-shrink: 0 !important;
 }
 
 @media (max-width: 767px) {

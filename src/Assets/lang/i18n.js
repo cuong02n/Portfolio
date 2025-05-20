@@ -39,6 +39,12 @@ const resources = {
             'Updated on':'Last updated on',
 
             'Problems Solved':'Problems Solved',
+            'About Developer': 'I am a passionate Java developer with expertise in backend development, data processing, and system optimization.',
+            'About Work': 'I love working with backend technologies, data processing, and implementing algorithms to optimize system performance.',
+            'About Activities': 'Apart from coding, some other activities that I love to do!',
+            'Activity 1': 'Problem Solving & Competitive Programming',
+            'Activity 2': 'Learning New Technologies',
+            'Activity 3': 'Contributing to Open Source',
         }
     },
     vi: {
@@ -76,7 +82,13 @@ const resources = {
             'Day I Code':'Github của mình',
             'Updated on': 'Cập nhật lần cuối vào',
 
-            'Problems Solved':'Số bài đã được giải'
+            'Problems Solved':'Số bài đã được giải',
+            'About Developer': 'Mình là một lập trình viên Java đam mê với chuyên môn về phát triển backend, xử lý dữ liệu và tối ưu hóa hệ thống.',
+            'About Work': 'Mình thích làm việc với các công nghệ backend, xử lý dữ liệu và triển khai các thuật toán để tối ưu hiệu suất hệ thống.',
+            'About Activities': 'Ngoài lập trình, đây là một số hoạt động khác mà mình yêu thích!',
+            'Activity 1': 'Giải quyết vấn đề & Lập trình thi đấu',
+            'Activity 2': 'Học hỏi công nghệ mới',
+            'Activity 3': 'Đóng góp cho mã nguồn mở',
         }
     }
 };
