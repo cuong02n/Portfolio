@@ -314,7 +314,7 @@ const CodeforcesRatingChart = ({username}) => {
                         dataKey="newRating"
                         // stroke="#ff8b00"
                         stroke="#ecbe3f"
-                        name={t("Problems Solved")}
+                        name={"Rating"}
                         strokeWidth={2}
                         activeDot={{r: 6}}
                         // dot={{ stroke: "#b1b1b1", fill: "#666666" }}
