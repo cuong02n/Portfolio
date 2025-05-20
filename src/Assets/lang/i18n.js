@@ -45,6 +45,13 @@ const resources = {
             'Activity 1': 'Problem Solving & Competitive Programming',
             'Activity 2': 'Learning New Technologies',
             'Activity 3': 'Contributing to Open Source',
+
+            'Blog': 'Blog',
+            'GitHub': 'GitHub',
+            'Demo': 'Demo',
+            'My Recent': 'My Recent',
+            'Works': 'Works',
+            "Here are a few projects I've worked on recently.": "Here are a few projects I've worked on recently.",
         }
     },
     vi: {
@@ -89,6 +96,13 @@ const resources = {
             'Activity 1': 'Giải quyết vấn đề & Lập trình thi đấu',
             'Activity 2': 'Học hỏi công nghệ mới',
             'Activity 3': 'Đóng góp cho mã nguồn mở',
+
+            'Blog': 'Blog',
+            'GitHub': 'GitHub',
+            'Demo': 'Demo',
+            'My Recent': 'Gần đây',
+            'Works': 'Dự án',
+            "Here are a few projects I've worked on recently.": "Một vài dự án mình đã thực hiện gần đây.",
         }
     }
 };
