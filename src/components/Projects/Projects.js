@@ -26,8 +26,6 @@ function Projects() {
               isBlog={false}
               title="Food Ordering Web Tool"
               description="Developed a food ordering web tool for company staff using Java and Spring Boot framework. Implemented data crawling directly from Shopee Food without using the official API."
-              ghLink="https://github.com/cuong02n"
-              demoLink="https://portfolio.cuong02.com"
             />
           </Col>
 
@@ -37,8 +35,6 @@ function Projects() {
               isBlog={false}
               title="Game Backend Development"
               description="Developed multi-thread backend for PVP Game using Java and Vertx framework. Implemented data structures, loop patterns, WebSocket, and REST API for optimal performance."
-              ghLink="https://github.com/cuong02n"
-              demoLink="https://portfolio.cuong02.com"
             />
           </Col>
 
