@@ -52,6 +52,20 @@ const resources = {
             'My Recent': 'My Recent',
             'Works': 'Works',
             "Here are a few projects I've worked on recently.": "Here are a few projects I've worked on recently.",
+            'Food Ordering Web Tool': 'Food Ordering Web Tool',
+            'Food Ordering Description': 'A web tool for company staff to order food, developed using Java and the Spring Boot framework. Data is crawled directly from Shopee Food without using the official API.<br/><br/>Source code and demo are private.',
+            'Game Backend Development': 'Game Backend Development',
+            'Game Backend Description': 'Developed a multi-threaded backend for a PVP game using Java and the Vertx framework. Implemented data structures, loop patterns, WebSocket, and REST API for optimal performance.<br/><br/>Source code and demo are private.',
+            'Android Sudoku Game': 'Android Sudoku Game',
+            'Android Sudoku Description': 'Developed and deployed a Sudoku game on Google Play Store. Implemented a game solver algorithm in Java with a focus on performance and user interface.',
+            'CodeArena': 'CodeArena',
+            'CodeArena Description': 'A collection of competitive programming solutions and algorithms.<br/>Features solutions for Codeforces, LeetCode, and other algorithmic challenges.<br/>Focuses on C++ implementation of various data structures and algorithms.',
+            'Class Registration System': 'Class Registration System',
+            'Class Registration Description': 'A backend system for class registration at Hanoi University of Science and Technology. This was my Bachelor Graduate Thesis, built with Java. Implements RESTful APIs, supports Docker deployment, and follows best practices for backend development.<br/><b>Status:</b> Currently shutdown.',
+            'Tracking Private Data': 'Tracking Private Data',
+            'Tracking Data Description': 'My microservices has multiple function. One of these function is crawling sensitive data from School website.<br/><br/><b>Source code and demo current private.</b>',
+            'Personal Portfolio Website': 'Personal Portfolio Website',
+            'Portfolio Description': 'This is my personal portfolio website, built with React.js and styled using Bootstrap and custom CSS. It showcases my projects, skills, and experience, and supports multiple languages.<br/><br/>Source code is public on GitHub.'
         }
     },
     vi: {
@@ -103,6 +117,20 @@ const resources = {
             'My Recent': 'Gần đây',
             'Works': 'Dự án',
             "Here are a few projects I've worked on recently.": "Một vài dự án mình đã thực hiện gần đây.",
+            'Food Ordering Web Tool': 'Công cụ Đặt Đồ Ăn',
+            'Food Ordering Description': 'Công cụ web cho nhân viên công ty đặt đồ ăn, được phát triển bằng Java và framework Spring Boot. Dữ liệu được crawl trực tiếp từ Shopee Food mà không sử dụng API chính thức.<br/><br/>Mã nguồn và demo hiện đang private.',
+            'Game Backend Development': 'Phát Triển Backend Game',
+            'Game Backend Description': 'Phát triển backend đa luồng cho game PVP sử dụng Java và framework Vertx. Đã triển khai các cấu trúc dữ liệu, mẫu vòng lặp, WebSocket và REST API để tối ưu hiệu suất.<br/><br/>Mã nguồn và demo hiện đang private.',
+            'Android Sudoku Game': 'Game Sudoku Android',
+            'Android Sudoku Description': 'Phát triển và triển khai game Sudoku trên Google Play Store. Đã triển khai thuật toán giải game bằng Java với tập trung vào hiệu suất và giao diện người dùng.',
+            'CodeArena': 'CodeArena',
+            'CodeArena Description': 'Bộ sưu tập các giải pháp lập trình thi đấu và thuật toán.<br/>Bao gồm các giải pháp cho Codeforces, LeetCode và các thử thách thuật toán khác.<br/>Tập trung vào triển khai C++ cho các cấu trúc dữ liệu và thuật toán khác nhau.',
+            'Class Registration System': 'Hệ Thống Đăng Ký Môn Học',
+            'Class Registration Description': 'Hệ thống backend cho đăng ký môn học tại Đại học Bách Khoa Hà Nội. Đây là luận văn tốt nghiệp của tôi, được xây dựng bằng Java. Triển khai RESTful APIs, hỗ trợ Docker và tuân thủ các phương pháp hay nhất trong phát triển backend.<br/><b>Trạng thái:</b> Hiện đang tạm dừng.',
+            'Tracking Private Data': 'Theo Dõi Dữ Liệu Riêng Tư',
+            'Tracking Data Description': 'Microservices của tôi có nhiều chức năng. Một trong số đó là crawl dữ liệu nhạy cảm từ trang web của trường.<br/><br/><b>Mã nguồn và demo hiện đang private.</b>',
+            'Personal Portfolio Website': 'Website Portfolio Cá Nhân',
+            'Portfolio Description': 'Đây là website portfolio cá nhân của tôi, được xây dựng bằng React.js và styled sử dụng Bootstrap và CSS tùy chỉnh. Nó giới thiệu các dự án, kỹ năng và kinh nghiệm của tôi, và hỗ trợ nhiều ngôn ngữ.<br/><br/>Mã nguồn được công khai trên GitHub.'
         }
     }
 };
