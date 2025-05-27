@@ -2,7 +2,8 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
-import leaf from "../../Assets/Projects/leaf.png";
+import registration from "../../Assets/Projects/autocomplete-1.png";
+import sudoku from "../../Assets/Projects/sudoku.webp"
 import editor from "../../Assets/Projects/codeEditor.png";
 import suicide from "../../Assets/Projects/suicide.png";
 import { useTranslation } from "react-i18next";
@@ -40,7 +41,7 @@ function Projects() {
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={leaf}
+              imgPath={sudoku}
               isBlog={false}
               title={t('Android Sudoku Game')}
               description={t('Android Sudoku Description')}
@@ -61,7 +62,7 @@ function Projects() {
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={editor}
+              imgPath={registration}
               isBlog={false}
               title={t('Class Registration System')}
               description={t('Class Registration Description')}
