@@ -6,6 +6,9 @@ import registration from "../../Assets/Projects/autocomplete-1.png";
 import sudoku from "../../Assets/Projects/sudoku.webp"
 import editor from "../../Assets/Projects/codeEditor.png";
 import suicide from "../../Assets/Projects/suicide.png";
+import rating from "../../Assets/Projects/rating.png";
+import anonymous from "../../Assets/Projects/anonymous.jpg";
+
 import { useTranslation } from "react-i18next";
 
 function Projects() {
@@ -52,7 +55,7 @@ function Projects() {
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={editor}
+              imgPath={rating}
               isBlog={false}
               title={t('CodeArena')}
               description={t('CodeArena Description')}
@@ -72,7 +75,7 @@ function Projects() {
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={editor}
+              imgPath={anonymous}
               isBlog={false}
               title={t('Tracking Private Data')}
               description={t('Tracking Data Description')}
