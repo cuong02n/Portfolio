@@ -42,14 +42,14 @@ function Projects() {
             />
           </Col>
 
+
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={sudoku}
-              isBlog={false}
-              title={t('Android Sudoku Game')}
-              description={t('Android Sudoku Description')}
-              ghLink="https://github.com/cuong02n"
-              demoLink="https://play.google.com/store/apps/details?id=com.cuong02n.sudoku2905"
+                imgPath={editor}
+                isBlog={false}
+                title={t('Personal Portfolio Website')}
+                description={t('Portfolio Description')}
+                ghLink="https://github.com/cuong02n/portfolio"
             />
           </Col>
 
@@ -84,11 +84,12 @@ function Projects() {
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={editor}
-              isBlog={false}
-              title={t('Personal Portfolio Website')}
-              description={t('Portfolio Description')}
-              ghLink="https://github.com/cuong02n/portfolio"
+                imgPath={sudoku}
+                isBlog={false}
+                title={t('Android Sudoku Game')}
+                description={t('Android Sudoku Description')}
+                ghLink="https://github.com/cuong02n"
+                demoLink="https://play.google.com/store/apps/details?id=com.cuong02n.sudoku2905"
             />
           </Col>
         </Row>
