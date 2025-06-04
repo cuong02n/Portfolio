@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Row, Col} from "react-bootstrap";
+import {Container, Row, Col, OverlayTrigger, Tooltip} from "react-bootstrap";
 import myImg from "../../Assets/avatar.png";
 import Tilt from "react-parallax-tilt";
 import StackOverFlowIcon from "./Icon/StackOverFlowIcon";
@@ -47,48 +47,71 @@ function Home2() {
                             {t('Connect With Me')}
                         </p>
                         <ul className="home-about-social-links">
-                            <li className="social-icons">
-                                <a
-                                    href="https://github.com/cuong02n"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="icon-colour  home-social-icons"
+                            <li className="social-icons" style={{ margin: "0 15px" }}>
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={<Tooltip>GitHub Profile</Tooltip>}
                                 >
-                                    {/*<AiFillGithub />*/}
-                                    <GithubIcon/>
-                                </a>
+                                    <a
+                                        href="https://github.com/cuong02n"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="icon-colour home-social-icons"
+                                        style={{ fontSize: "2.5em" }}
+                                    >
+                                        <GithubIcon/>
+                                    </a>
+                                </OverlayTrigger>
                             </li>
 
-                            <li className="social-icons">
-                                <a
-                                    href="https://www.linkedin.com/in/cuong02n/"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="icon-colour  home-social-icons"
+                            <li className="social-icons" style={{ margin: "0 15px" }}>
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={<Tooltip>Stack OverFlow</Tooltip>}
                                 >
-                                    <StackOverFlowIcon/>
-                                </a>
+                                    <a
+                                        href="https://stackoverflow.com/users/23725389/nguyen-manh-cuong"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="icon-colour home-social-icons"
+                                        style={{ fontSize: "2.5em" }}
+                                    >
+                                        <StackOverFlowIcon/>
+                                    </a>
+                                </OverlayTrigger>
                             </li>
-                            <li className="social-icons">
-                                <a
-                                    href="mailto: cuong02n@gmail.com"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="icon-colour  home-social-icons"
+                            <li className="social-icons" style={{ margin: "0 15px" }}>
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={<Tooltip>cuong02n@gmail.com</Tooltip>}
                                 >
-                                    <EmailIcon/>
-                                </a>
+                                    <a
+                                        href="mailto:cuong02n@gmail.com"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="icon-colour home-social-icons"
+                                        style={{ fontSize: "2.5em" }}
+                                    >
+                                        <EmailIcon/>
+                                    </a>
+                                </OverlayTrigger>
                             </li>
 
-                            <li className="social-icons">
-                                <a
-                                    href="tel: +84335652578"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="icon-colour  home-social-icons"
+                            <li className="social-icons" style={{ margin: "0 15px" }}>
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={<Tooltip>+84335652578</Tooltip>}
                                 >
-                                    <PhoneIcon/>
-                                </a>
+                                    <a
+                                        href="tel: +84335652578"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="icon-colour home-social-icons"
+                                        style={{ fontSize: "2.5em" }}
+                                    >
+                                        <PhoneIcon/>
+                                    </a>
+                                </OverlayTrigger>
                             </li>
                         </ul>
                     </Col>

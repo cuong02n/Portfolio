@@ -65,7 +65,9 @@ const resources = {
             'Tracking Private Data': 'Tracking Private Data',
             'Tracking Data Description': 'My microservices has multiple function. One of these function is crawling sensitive data from School website.<br/><br/><b>Source code and demo current private.</b>',
             'Personal Portfolio Website': 'Personal Portfolio Website',
-            'Portfolio Description': 'This is my personal portfolio website, built with React.js and styled using Bootstrap and custom CSS. It showcases my projects, skills, and experience, and supports multiple languages.<br/><br/>Source code is public on GitHub.'
+            'Portfolio Description': 'This is my personal portfolio website, built with React.js and styled using Bootstrap and custom CSS. It showcases my projects, skills, and experience, and supports multiple languages.<br/><br/>Source code is public on GitHub.',
+            'Domain Owner':'Domain Owner',
+            'Domain Owner Description':'I have deployed several services and servers with personal URLs, such as<br/><br>Email: hi@cuong02.com <br/><br>Portfolio website: https://portfolio.cuong02.com'
         }
     },
     vi: {
@@ -130,7 +132,9 @@ const resources = {
             'Tracking Private Data': 'Tracking Dữ Liệu Riêng Tư',
             'Tracking Data Description': 'Một số trang web ưa thích của tôi, có chứa nhiều dữ liệu, tuy nhiên họ không bảo mật API của họ quá tốt, dẫn tới việc nó có thể được lấy thông qua một số thủ thuật nhỏ như: sử dụng proxy, dịch ngược. Hiện tại tôi đang sở hữu dữ liệu của họ.<br/><br/><b>Mã nguồn và demo hiện đang private.</b>',
             'Personal Portfolio Website': 'Website Portfolio Cá Nhân',
-            'Portfolio Description': 'Đây là website portfolio cá nhân của tôi, được xây dựng bằng React.js và styled sử dụng Bootstrap và CSS tùy chỉnh. Nó giới thiệu các dự án, kỹ năng và kinh nghiệm của tôi, và hỗ trợ nhiều ngôn ngữ.<br/><br/>Mã nguồn được công khai trên GitHub.'
+            'Portfolio Description': 'Đây là website portfolio cá nhân của tôi, được xây dựng bằng React.js và styled sử dụng Bootstrap và CSS tùy chỉnh. Nó giới thiệu các dự án, kỹ năng và kinh nghiệm của tôi, và hỗ trợ nhiều ngôn ngữ.<br/><br/>Mã nguồn được công khai trên GitHub.',
+            'Domain Owner':'Sở hữu tên miền cá nhân',
+            'Domain Owner Description':'Mình đã triển khai được một số dịch vụ, máy chủ có URL cá nhân, như<br/><br>Email: hi@cuong02.com <br/><br>Website portfolio: https://portfolio.cuong02.com'
         }
     }
 };

@@ -3,7 +3,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
 import registration from "../../Assets/Projects/autocomplete-1.png";
-import sudoku from "../../Assets/Projects/sudoku.webp"
+import sudoku from "../../Assets/Projects/sudoku.png"
+import domain from "../../Assets/Projects/domain.webp"
 import editor from "../../Assets/Projects/codeEditor.png";
 import suicide from "../../Assets/Projects/suicide.png";
 import rating from "../../Assets/Projects/rating.png";
@@ -90,6 +91,14 @@ function Projects() {
                 description={t('Android Sudoku Description')}
                 ghLink="https://github.com/cuong02n"
                 demoLink="https://play.google.com/store/apps/details?id=com.cuong02n.sudoku2905"
+            />
+          </Col>
+          <Col md={4} className="project-card">
+            <ProjectCard
+                imgPath = {domain}
+                isBlog = {false}
+                title = {t('Domain Owner')}
+                description={t('Domain Owner Description')}
             />
           </Col>
         </Row>
