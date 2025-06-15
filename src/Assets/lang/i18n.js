@@ -75,7 +75,7 @@ const resources = {
             'Hi There!': 'Xin chào!!',
             'I am': 'Mình là',
             'Name': 'Nguyễn Mạnh Cường',
-            'Address':'Dục Tú, Đông Anh, Hà Nội',
+            'Address':'Đông Anh, Hà Nội',
             'Language': 'Tiếng Việt',
             'Home': 'Trang chủ',
             'About': 'Thông tin',

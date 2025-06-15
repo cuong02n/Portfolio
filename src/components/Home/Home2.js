@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Container, Row, Col, OverlayTrigger, Tooltip} from "react-bootstrap";
 import myImg from "../../Assets/avatar.png";
 import Tilt from "react-parallax-tilt";
@@ -10,28 +10,35 @@ import {useTranslation} from "react-i18next";
 
 function Home2() {
     const {t} = useTranslation();
+    const [showEmailText, setShowEmailText] = useState(true);
+    const [showPhoneText, setShowPhoneText] = useState(true);
+
+    const toggleEmailText = () => {
+        setShowEmailText(!showEmailText);
+    };
+
+    const togglePhoneText = () => {
+        setShowPhoneText(!showPhoneText);
+    };
+
     return (
         <Container fluid className="home-about-section" id="about">
             <Container>
                 <Row>
                     <Col md={8} className="home-about-description">
                         <h1 style={{fontSize: "2.6em"}}>
-                            <span className={"purple"}>{t("LET ME INTRODUCE MYSELF")}</span>
+                            <span className="purple">{t("LET ME INTRODUCE MYSELF")}</span>
                         </h1>
                         <p className="home-about-body">
-                            {t('Introduce1')}
-                            <i className={"purple"}><b> {t("Introduce1.1")}</b></i>
-                            <br/>
-                            <br/>
-                            {t('Introduce2')}
+                            {t("Introduce1")}
+                            <i className="purple"><b> {t("Introduce1.1")}</b></i>
+                            <br/><br/>
+                            {t("Introduce2")}
                             <i className="purple"><b>Java</b></i>
-                            <br/>
-                            <br/>
-                            {t('Introduce3')}
-                            <i className="purple"><b>{t('Introduce3.1')}</b></i>
-                            <br/>
-                            <br/>
-                            {/*{t('Introduce4')}*/}
+                            <br/><br/>
+                            {t("Introduce3")}
+                            <i className="purple"><b>{t("Introduce3.1")}</b></i>
+                            <br/><br/>
                         </p>
                     </Col>
                     <Col md={4} className="myAvtar">
@@ -40,14 +47,23 @@ function Home2() {
                         </Tilt>
                     </Col>
                 </Row>
+
                 <Row>
                     <Col md={12} className="home-about-social">
-                        <h1>{t('FIND ME ON')}</h1>
-                        <p>
-                            {t('Connect With Me')}
-                        </p>
-                        <ul className="home-about-social-links">
-                            <li className="social-icons" style={{ margin: "0 15px" }}>
+                        <h1>{t("FIND ME ON")}</h1>
+                        <p>{t("Connect With Me")}</p>
+                        <ul
+                            className="home-about-social-links"
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                flexWrap: "wrap",
+                                gap: "25px",
+                            }}
+                        >
+                            {/* GitHub */}
+                            <li className="social-icons">
                                 <OverlayTrigger
                                     placement="top"
                                     overlay={<Tooltip>GitHub Profile</Tooltip>}
@@ -57,14 +73,15 @@ function Home2() {
                                         target="_blank"
                                         rel="noreferrer"
                                         className="icon-colour home-social-icons"
-                                        style={{ fontSize: "2.5em" }}
+                                        style={{fontSize: "2.5em"}}
                                     >
                                         <GithubIcon/>
                                     </a>
                                 </OverlayTrigger>
                             </li>
 
-                            <li className="social-icons" style={{ margin: "0 15px" }}>
+                            {/* Stack Overflow */}
+                            <li className="social-icons">
                                 <OverlayTrigger
                                     placement="top"
                                     overlay={<Tooltip>Stack OverFlow</Tooltip>}
@@ -74,45 +91,69 @@ function Home2() {
                                         target="_blank"
                                         rel="noreferrer"
                                         className="icon-colour home-social-icons"
-                                        style={{ fontSize: "2.5em" }}
+                                        style={{fontSize: "2.5em"}}
                                     >
                                         <StackOverFlowIcon/>
                                     </a>
                                 </OverlayTrigger>
                             </li>
-                            <li className="social-icons" style={{ margin: "0 15px" }}>
-                                <OverlayTrigger
-                                    placement="top"
-                                    overlay={<Tooltip>cuong02n@gmail.com</Tooltip>}
-                                >
-                                    <a
-                                        href="mailto:cuong02n@gmail.com"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="icon-colour home-social-icons"
-                                        style={{ fontSize: "2.5em" }}
-                                    >
-                                        <EmailIcon/>
-                                    </a>
-                                </OverlayTrigger>
-                            </li>
 
-                            <li className="social-icons" style={{ margin: "0 15px" }}>
-                                <OverlayTrigger
-                                    placement="top"
-                                    overlay={<Tooltip>+84335652578</Tooltip>}
+                            {/* Email with text on the right */}
+                            <div
+                                className="social-icons"
+                                style={{
+                                    display: "flex",
+                                    // alignItems: "center",
+                                    gap: "10px"
+                                }}
+
+                            >
+                                <div
+                                    className={`icon-colour home-social-icons ${showEmailText ? 'email-icon-active' : ''}`}
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={toggleEmailText}
                                 >
-                                    <a
-                                        href="tel: +84335652578"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="icon-colour home-social-icons"
-                                        style={{ fontSize: "2.5em" }}
+                                    <EmailIcon/>
+                                </div>
+                                {showEmailText && (
+                                    <div
+                                        style={{
+                                            fontSize: "1.5em",
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
                                     >
-                                        <PhoneIcon/>
-                                    </a>
-                                </OverlayTrigger>
-                            </li>
+                                        hi@cuong02.com
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Phone with text on the right */}
+                            <div
+                                className="social-icons"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+
+                                }}
+                            >
+                                <div
+                                    className={`icon-colour home-social-icons ${showPhoneText ? 'phone-icon-active' : ''}`}
+                                    style={{fontSize: "2.5em", marginRight: "10px", cursor: "pointer"}}
+                                    onClick={togglePhoneText}
+
+                                >
+                                    <PhoneIcon/>
+                                </div>
+                                {showPhoneText && (
+                                    <span style={{fontSize: "1.5em"}}>+84335652578</span>
+                                )}
+                            </div>
                         </ul>
                     </Col>
                 </Row>
