@@ -1,0 +1,260 @@
+\documentclass[10pt,A4]{article}	
+\usepackage{fontawesome5}
+
+\usepackage[utf8]{inputenc}		
+\usepackage{setspace}
+% provides \isempty test
+\usepackage{xifthen}
+\usepackage{hyperref}
+\usepackage[default]{raleway}
+
+
+% set font default
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+
+
+\usepackage{moresize}		
+
+\usepackage[a4paper]{geometry}		
+
+% for example, change the margins to 2 inches all round
+\geometry{top=1.75cm, bottom=-.6cm, left=1.5cm, right=1.5cm} 	
+
+%use customized header
+\usepackage{fancyhdr}				
+\pagestyle{fancy}
+
+%less space between header and content
+\setlength{\headheight}{-5pt}		
+
+
+%customize entries left, center and right
+\lhead{}
+\chead{ \small{Nguyen Manh Cuong  $\cdot$Software Engineer $\cdot$  \textcolor{sectcol}{\textbf{cuong02n@gmail.com}}  $\cdot$ +84 335 652 578}}
+\rhead{}
+
+
+%indentation is zero
+\setlength{\parindent}{0mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%for layouting tables
+\usepackage{multicol}			
+\usepackage{multirow}
+
+%extended aligning of tabular cells
+\usepackage{array}
+
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+%for header image
+\usepackage{graphicx}
+
+%for floating figures
+\usepackage{wrapfig}
+\usepackage{float}
+%\floatstyle{boxed} 
+%\restylefloat{figure}
+
+%for drawing graphics		
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds,mindmap, trees}
+
+
+\usepackage{color}
+
+%accent color
+\definecolor{sectcol}{RGB}{255,150,0}
+
+%dark background color
+\definecolor{bgcol}{RGB}{110,110,110}
+
+%light background / accent color
+\definecolor{softcol}{RGB}{225,225,225}
+
+
+% remove top header line
+\renewcommand{\headrulewidth}{0pt} 
+
+%remove botttom header line
+\renewcommand{\footrulewidth}{0pt}	  	
+
+%remove pagenum
+\renewcommand{\thepage}{}	
+
+%remove section num		
+\renewcommand{\thesection}{}			
+
+\newcommand{\tzlarrow}{(0,0) -- (0.2,0) -- (0.3,0.2) -- (0.2,0.4) -- (0,0.4) -- (0.1,0.2) -- cycle;}	
+
+\newcommand{\larrow}[1]
+{\begin{tikzpicture}[scale=0.58]
+	 \filldraw[fill=#1!100,draw=#1!100!black]  \tzlarrow
+ \end{tikzpicture}
+}
+
+% a six pointed arrow poiting to the right
+\newcommand{\tzrarrow}{ (0,0.2) -- (0.1,0) -- (0.3,0) -- (0.2,0.2) -- (0.3,0.4) -- (0.1,0.4) -- cycle;}
+
+\newcommand{\rarrow}
+{\begin{tikzpicture}[scale=0.7]
+	\filldraw[fill=sectcol!100,draw=sectcol!100!black] \tzrarrow
+ \end{tikzpicture}
+}
+
+
+\newcommand{\cvsection}[2]
+{
+\colorbox{sectcol}{\mystrut \makebox[#2\linewidth][l]{
+\larrow{bgcol} \hspace{-8pt} \larrow{bgcol} \hspace{-8pt} \larrow{bgcol} \textcolor{white}{\textbf{#1}}\hspace{4pt}
+}}\\
+}
+
+%create a coloured arrow with title as cv meta section section
+% param 1: meta section title
+%
+\newcommand{\cveventshort}[4]
+{
+% \vspace{5pt}
+\begin{tabular*}{1\textwidth}{p{2.3cm}  p{10.8cm} x{3.9cm}}
+ \textcolor{bgcol}{#1}& \textbf{#2} & \vspace{2.5pt}\textcolor{sectcol}{#3}
+	\end{tabular*}
+% \vspace{-12pt}
+
+	\begin{tabular*}{1\textwidth}{p{2.3cm} p{14.4cm}}
+&		 \larrow{bgcol}  #4\\[4pt]
+	\end{tabular*}
+\textcolor{softcol}{\hrule}
+}
+
+
+
+\newcommand{\cvevent}[5]
+{
+% \vspace{5pt}
+	\begin{tabular*}{1\textwidth}{p{2.3cm}  p{10.8cm} x{3.9cm}}
+ \textcolor{bgcol}{#1}& \textbf{#2} & \vspace{2.5pt}\textcolor{sectcol}{#3}
+
+	\end{tabular*}
+\vspace{-12pt}
+
+\vspace{6pt}
+	\begin{tabular*}{1\textwidth}{p{2.3cm} p{14.4cm}}
+&		 \larrow{bgcol}  #4\\[2pt]
+&		 \larrow{bgcol}  #5\\[4pt]
+	\end{tabular*}
+\textcolor{softcol}{\hrule}
+}
+\newcommand{\cveventnew}[6]
+{
+\vspace{15pt}
+	\begin{tabular*}{1\textwidth}{p{2.3cm}  p{10.8cm} x{3.9cm}}
+ \textcolor{bgcol}{#1}& \textbf{#2} & \vspace{2.5pt}\textcolor{sectcol}{#3}
+
+	\end{tabular*}
+\vspace{-12pt}
+
+\vspace{6pt}
+	\begin{tabular*}{1\textwidth}{p{2.3cm} p{14.4cm}}
+&		 \larrow{bgcol}  #4\\[6pt]
+&		 \larrow{bgcol}  #5\\[6pt]
+&        \larrow{bgcol}  #6\\[8pt]
+	\end{tabular*}
+\textcolor{softcol}{\hrule}
+}
+
+
+% creates a stretched box as 
+\newcommand{\cveventmeta}[2]
+{
+	\mbox{\mystrut \hspace{87pt}\textit{#1}}\\
+	#2
+}
+
+\newcommand{\mystrut}{\rule[-.3\baselineskip]{0pt}{\baselineskip}}
+
+\begin{document}
+\setstretch{1.1}
+%use our custom fancy header definitions
+\pagestyle{fancy}	
+
+
+%---------------------------------------------------------------------------------------
+%	TITLE HEADLINE
+%----------------------------------------------------------------------------------------
+\vspace{-22pt}
+
+% use this for single words, e.g. CV or RESUME etc.
+\hspace{-0.25\linewidth}\colorbox{bgcol}{\makebox[1.5\linewidth][c]{\HUGE{\textcolor{white}{\textsc{NGUYEN MANH CUONG}}}}}
+
+
+%----------------------------------------------------------------------------------------
+%	HEADER IMAGE
+%----------------------------------------------------------------------------------------
+
+\begin{figure}[H]
+\begin{flushright}
+	\includegraphics[width=0.18\linewidth]{myfoto.jpg}
+\end{flushright}
+\end{figure}
+
+\newcommand{\metasection}[3]
+{
+\begin{tabular*}{1\textwidth}{p{2.4cm} p{11cm}}
+\makebox[15pt][c]{\faIcon{#1}} \normalsize{\textcolor{sectcol}{#2}} & #3\\[12pt]
+\end{tabular*}
+}
+
+\vspace{-155pt}
+\metasection{user}{ Objective:}{Software Engineer}
+\metasection{cogs}{Technical:}{\textbf{Java, Spring Boot}, MySQL, Python, ReactJs, Git}
+\metasection{heart}{ Loves:}{Gaming, Stack Overflow, data scraping, and discovering underlying patterns}
+\metasection{globe}{ English:}{Strong ability to read and understand technical documentation}
+\metasection{map-marker}{Address:}{Dong Anh, Ha Noi, Vietnam}
+\vspace{-10pt}
+
+
+\cvsection{Education}{0.75}
+
+\cvevent{9/20 - 1/25}{Information Technology: Computer Science}{\hspace{-20pt}Hanoi University of Science and Technology (HUST)}{Completed specialized courses in \textbf{Computer Science}}{Worked on collaborative projects and team assignments focusing on algorithms and software development}
+
+\cvsection{Project}{1}
+\underline{For more, please visit \href{portfolio.cuong02.com}{portfolio.cuong02.com}}
+\\
+\cvevent{9/21 - 3/22}{Android - Sudoku Game}{}{A Sudoku game, a Sudoku game solver written by Java, \textbf{\href{https://play.google.com/store/apps/details?id=com.cuong02n.sudoku2905\&pli=1}{deployed on Google Play Store}}}{This game contains basic UI, focuses on algorithm and performance}
+
+\cvsection{Certification / Achievement}{1}
+\cveventshort{5/22}{First deployed application}{Google Cloud Platform}{Deployed a game on the Google Play Store}
+\cveventshort{8/23}{Algorithm Code Arena}{Codeforces}{Achieved a rating of approximately 1600 on Codeforces in algorithmic competitions}
+\cveventshort{4/25}{Java Certificate 1Z0-808}{Oracle Corporation}{Earned Oracle Certified Associate (OCA) Java SE 8 – via a coding contest}
+\cveventshort{5/25}{Graduation}{HUST}{Graduated with a 3.65/4.00 GPA and an \textbf{Excellent} Bachelor's degree from HUST}
+
+\cvsection{Work Experiment}{1}
+
+%
+
+\cvevent{3/23 - 8/23}{Game Backend Developer}{Vietdefi LLC}{Develop multi-thread backend for PVP Game}{Using Java, its \textbf{fast framework: Vertx}, data structures, loop pattern, websocket, restAPI }
+
+%\textcolor{softcol}{\hrule}
+
+\cvevent{11/23 - 5/24}{Software Developer}{\hspace{-60pt}DAC Data Technology Vietnam JSC}{Developed a food ordering web tool for company staff using Java and the \textbf{Spring Boot framework}.}{Crawled data directly from Shopee Food (without using the official API)}
+
+
+%\textcolor{softcol}{\hrule}
+
+%
+\cvevent{5/24 - 5/25}{Data engineer}{\hspace{-60pt}DAC Data Technology Vietnam JSC}{Investigated the internal structure of Excel files composed of multiple .xml files and developed a custom algorithm to write data directly to XML, due to high performance and accuracy requirements unmet by existing libraries}
+{Used ETL tools to process advertising data and handle duplicates}
+
+%\textcolor{softcol}{\hrule}
+
+
+\vspace*{13pt}
+\hspace{-0.25\linewidth}\colorbox{bgcol}{\makebox[1.5\linewidth][c]{\mystrut \small \textcolor{white}{www.cuong02.com} $\cdot$ \textcolor{white}{github.com/cuong02n}}}
+
+\end{document}
