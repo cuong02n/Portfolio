@@ -3,11 +3,15 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { CgWebsite } from "react-icons/cg";
 import { BsGithub } from "react-icons/bs";
+import { BsPlayFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function ProjectCards(props) {
   const { t } = useTranslation();
 
+  // internalLink → in-app live demo route (react-router). Takes precedence as
+  // the clickable title target so anonymous viewers can open the demo directly.
   const getTitleLink = () => {
     if (props.demoLink) return props.demoLink;
     if (props.ghLink) return props.ghLink;
@@ -19,24 +23,51 @@ function ProjectCards(props) {
       <Card.Img variant="top" src={props.imgPath} alt="card-img" />
       <Card.Body style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <Card.Title className="purple">
-          <a 
-            href={getTitleLink()} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{ 
-              color: 'inherit', 
-              textDecoration: 'none',
-              cursor: 'pointer',
-              transition: 'opacity 0.3s ease'
-            }}
-            onMouseOver={(e) => e.target.style.opacity = '0.8'}
-            onMouseOut={(e) => e.target.style.opacity = '1'}
-          >
-            {props.title}
-          </a>
+          {props.internalLink ? (
+            <Link
+              to={props.internalLink}
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                transition: 'opacity 0.3s ease'
+              }}
+              onMouseOver={(e) => e.target.style.opacity = '0.8'}
+              onMouseOut={(e) => e.target.style.opacity = '1'}
+            >
+              {props.title}
+            </Link>
+          ) : (
+            <a
+              href={getTitleLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'inherit',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                transition: 'opacity 0.3s ease'
+              }}
+              onMouseOver={(e) => e.target.style.opacity = '0.8'}
+              onMouseOut={(e) => e.target.style.opacity = '1'}
+            >
+              {props.title}
+            </a>
+          )}
         </Card.Title>
         <Card.Text style={{ textAlign: 'left', flex: 1 }} dangerouslySetInnerHTML={{ __html: props.description }} />
         <div style={{ marginTop: 'auto' }}>
+          {props.internalLink && (
+            <Button as={Link} to={props.internalLink} variant="success">
+              <BsPlayFill /> &nbsp;
+              {t('Live Demo')}
+            </Button>
+          )}
+          {props.internalLink && (props.ghLink || props.demoLink) && (
+            <>
+              {"\n"}{"\n"}
+            </>
+          )}
           {props.ghLink && (
             <Button variant="primary" href={props.ghLink} target="_blank">
               <BsGithub /> &nbsp;

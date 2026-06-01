@@ -27,6 +27,16 @@ function Projects() {
         <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
           <Col md={4} className="project-card">
             <ProjectCard
+              imgPath={anonymous}
+              isBlog={false}
+              title={t('Phone Crawler')}
+              description={t('Phone Crawler Description')}
+              internalLink="/projects/phone-crawler"
+            />
+          </Col>
+
+          <Col md={4} className="project-card">
+            <ProjectCard
               imgPath={suicide}
               isBlog={false}
               title={t('Food Ordering Web Tool')}
