@@ -12,13 +12,15 @@ import './crawler.css'
 export const WsContext = createContext(null)
 export const useWsData = () => useContext(WsContext)
 
-// Relative paths — this app is mounted under /projects/phone-crawler/* by the
-// portfolio router, so links resolve against that base (no leading slash).
+// This app is mounted under CRAWLER_BASE by the portfolio router. Internal links
+// use absolute paths off this base (robust regardless of current sub-route).
+export const CRAWLER_BASE = '/projects/phone-crawler'
+
 const NAV = [
-  { to: '',         end: true,  icon: LayoutDashboard, label: 'Dashboard' },
-  { to: 'jobs',     end: false, icon: Briefcase,       label: 'Jobs'      },
-  { to: 'explorer', end: false, icon: Database,        label: 'Explorer'  },
-  { to: 'settings', end: false, icon: Settings,        label: 'Settings'  },
+  { to: CRAWLER_BASE,                 end: true,  icon: LayoutDashboard, label: 'Dashboard' },
+  { to: `${CRAWLER_BASE}/jobs`,       end: false, icon: Briefcase,       label: 'Jobs'      },
+  { to: `${CRAWLER_BASE}/explorer`,   end: false, icon: Database,        label: 'Explorer'  },
+  { to: `${CRAWLER_BASE}/settings`,   end: false, icon: Settings,        label: 'Settings'  },
 ]
 
 export default function CrawlerApp() {

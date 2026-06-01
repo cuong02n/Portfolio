@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronDown, ChevronUp, Play, Pause, RotateCcw, Trash2, Database } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { api } from '../api'
-import { useWsData } from '../CrawlerApp'
+import { useWsData, CRAWLER_BASE } from '../CrawlerApp'
 import { useAdminToken } from '../../../shared/adminToken'
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -662,7 +662,7 @@ function JobCard({ job, onRefresh }) {
 
         {output_file && (
           <button className="btn btn-ghost" style={{ fontSize: 12 }}
-            onClick={() => navigate(`../explorer?file=${encodeURIComponent(output_file)}`)}>
+            onClick={() => navigate(`${CRAWLER_BASE}/explorer?file=${encodeURIComponent(output_file)}`)}>
             <Database size={13} /> Xem data
           </button>
         )}
@@ -881,7 +881,7 @@ export default function Jobs() {
       {!hasProxy && !((network === 'viettel' || network === 'vietnamobile') && noProxy) && (
         <div className="alert alert-warning">
           ⚠ Chưa cấu hình proxy — crawler sẽ không chạy được.{' '}
-          <a href="../settings" style={{ color: 'inherit', fontWeight: 600 }}>Vào Settings để cấu hình.</a>{' '}
+          <Link to={`${CRAWLER_BASE}/settings`} style={{ color: 'inherit', fontWeight: 600 }}>Vào Settings để cấu hình.</Link>{' '}
           Hoặc tick <strong>"Không dùng proxy"</strong> trong form Viettel / Vietnamobile bên dưới.
         </div>
       )}
@@ -892,7 +892,7 @@ export default function Jobs() {
           <div className="card-title">➕ Tạo Job mới</div>
           <p className="muted" style={{ fontSize: 13 }}>
             🔒 Bạn đang ở chế độ chỉ xem. Nhập <strong>admin token</strong> ở trang{' '}
-            <a href="../settings" style={{ color: 'var(--accent)', fontWeight: 600 }}>Settings</a>{' '}
+            <Link to={`${CRAWLER_BASE}/settings`} style={{ color: 'var(--accent)', fontWeight: 600 }}>Settings</Link>{' '}
             để tạo và điều khiển job.
           </p>
         </div>
