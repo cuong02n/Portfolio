@@ -6,6 +6,7 @@ import About from "./components/About/About";
 import Projects from "./components/Projects/Projects";
 import Resume from "./components/Resume/ResumeNew";
 import CrawlerApp from "./features/phone-crawler/CrawlerApp";
+import SystemFlowApp from "./features/system-flow/SystemFlowApp";
 import {
     BrowserRouter as Router,
     Route,
@@ -35,6 +36,7 @@ function AppShell({ load }) {
 
                 {/* Project demos (multi-module: one feature per backend) */}
                 <Route path="/projects/phone-crawler/*" element={<CrawlerApp />} />
+                <Route path="/projects/system-flow/*" element={<SystemFlowApp />} />
 
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>

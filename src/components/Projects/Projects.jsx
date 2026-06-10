@@ -37,6 +37,16 @@ function Projects() {
 
           <Col md={4} className="project-card">
             <ProjectCard
+              imgPath={editor}
+              isBlog={false}
+              title={t('System Flow Board')}
+              description={t('System Flow Description')}
+              internalLink="/projects/system-flow"
+            />
+          </Col>
+
+          <Col md={4} className="project-card">
+            <ProjectCard
               imgPath={suicide}
               isBlog={false}
               title={t('Food Ordering Web Tool')}

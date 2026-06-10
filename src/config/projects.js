@@ -16,6 +16,14 @@ export const PROJECTS = [
     wsBase: import.meta.env.VITE_CRAWLER_WS,
     tags: ['FastAPI', 'PostgreSQL', 'Kubernetes', 'React'],
   },
+  {
+    slug: 'system-flow',
+    title: 'System Flow Board',
+    desc: 'Sơ đồ kiến trúc hệ thống kéo-thả; chỉnh sửa & lưu ngay trên trình duyệt (localStorage).',
+    route: '/projects/system-flow',
+    // Frontend-only: diagrams live in localStorage, no backend.
+    tags: ['React Flow', 'Diagram', 'localStorage'],
+  },
 ]
 
 export const getProject = (slug) => PROJECTS.find(p => p.slug === slug)
