@@ -11,9 +11,13 @@ trên Vercel).
 
 Đây là **frontend hub đa-module**: portfolio là một frontend repo duy nhất, mỗi
 "project" có demo chạy thật được nhúng làm **feature module** dưới
-`/projects/<slug>/*`, gọi tới **backend riêng** của nó qua URL tuyệt đối cấu
-hình bằng biến môi trường. Module đầu tiên là **phone-crawler**
-(`/projects/phone-crawler`) — xem [`docs/phone-crawler.md`](./docs/phone-crawler.md).
+`/projects/<slug>/*`. Module có thể gọi tới **backend riêng** qua URL tuyệt đối
+cấu hình bằng biến môi trường, hoặc **thuần frontend** (lưu localStorage). Hiện có:
+- **phone-crawler** (`/projects/phone-crawler`) — gọi backend FastAPI/PostgreSQL
+  riêng qua env URL. Xem [`docs/phone-crawler.md`](./docs/phone-crawler.md).
+- **system-flow** (`/projects/system-flow`) — bảng vẽ kiến trúc hệ thống kéo-thả
+  bằng React Flow, thuần frontend, lưu localStorage. Xem
+  [`docs/system-flow.md`](./docs/system-flow.md).
 
 Phần portfolio bắt nguồn từ template của Soumyajit Behera (còn sót vài đoạn
 code/comment gốc) nhưng đã tùy biến nội dung + thêm i18n, biểu đồ Codeforces,
@@ -40,8 +44,8 @@ automatic runtime); file `.js` chỉ chứa JS thuần (api builders, i18n, help
 - **Entry**: `index.html` (gốc repo) → `src/index.jsx` (`createRoot`), import
   toàn bộ CSS font (`@fontsource/*`); `i18n` nạp gián tiếp.
 - **Routing**: `src/App.jsx` dùng `react-router-dom` v6:
-  `/` (Home), `/about`, `/project` (Projects), `/resume`, và
-  `/projects/phone-crawler/*` (feature module). Route không khớp redirect `/`.
+  `/` (Home), `/about`, `/project` (Projects), `/resume`, và các feature module
+  `/projects/phone-crawler/*`, `/projects/system-flow/*`. Route không khớp redirect `/`.
   Navbar của portfolio **bị ẩn** trên route demo (`/projects/*`). Preloader 1.2s.
 - **Portfolio components**: theo từng trang trong `src/components/<Page>/`.
 - **Feature modules**: `src/features/<slug>/` — app con tự chứa, mount dưới
@@ -96,9 +100,16 @@ Chi tiết hơn xem thư mục [`docs/`](./docs/).
   khách không token = chỉ xem.
 - Đăng ký vào `src/config/projects.js` và (tuỳ chọn) thêm card vào trang Projects
   với prop `internalLink` của `ProjectCard`.
+- **Viết docs**: mỗi module mới phải có `docs/<slug>.md` (cấu trúc, dữ liệu,
+  routing, env/lưu trữ) và thêm dòng vào `docs/README.md` + danh sách module ở
+  đầu `CLAUDE.md`.
 
 ## Khi sửa code
 
 - Match style của file xung quanh (indent, cách đặt tên, mức comment).
 - Không tự ý chạy `npm run eject` (không thể đảo ngược).
+- **LUÔN cập nhật tài liệu khi đổi hành vi/cấu trúc**: sửa `CLAUDE.md` và file
+  liên quan trong `docs/` (vd thêm tính năng, đổi route, thêm dependency, đổi
+  quy ước). Tài liệu phải khớp với code — coi đây là một phần của thay đổi, không
+  phải việc làm sau.
 - Trước khi commit/push hãy hỏi người dùng; nhánh chính là `master`.
