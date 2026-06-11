@@ -31,8 +31,23 @@ thêm hạt). Được render độc lập trong mỗi trang.
 ## Trang Home
 
 ### `Home` — `src/components/Home/Home.js`
-Hero section: lời chào, tên, hiệu ứng `Type`, ảnh `home-main.svg`. Render `Home2`
-bên dưới.
+Hero section: lời chào, tên, hiệu ứng `Type`. Cột phải (trước là minh hoạ
+`home-main.svg`) nay là **hai màn game tự chơi** đặt cạnh nhau — `SnakeGame` +
+`TetrisGame` (cùng prop `fill`, bọc khung kính `.home-game`). `Home2` bên dưới.
+**Không còn** dải arcade riêng ở cuối trang.
+
+### Game tự chơi — `src/components/Arcade/{SnakeGame,TetrisGame}.js`
+Hai game **tự code, tự chơi vòng lặp vô hạn** trên canvas (không thư viện game),
+**không nhãn/tiêu đề**. Dùng trực tiếp trong `Home` (không còn wrapper `Arcade`).
+- `SnakeGame.jsx` — AI BFS tìm đường ngắn nhất tới mồi, fallback flood-fill để
+  sinh tồn; kẹt mới reset.
+- `TetrisGame.jsx` — AI heuristic (aggregate height / holes / bumpiness / lines,
+  kiểu El-Tetris) chọn xoay+cột tối ưu rồi thả. **Chế độ vô hạn — KHÔNG reset cả
+  bàn**: khi stack quá cao không đặt được, tự "nhả" hàng đáy (tụt stack xuống) để
+  có chỗ, chạy liên tục mãi.
+- **Props**: `cell`, `interval` (cả hai), `cols`/`rows` (Snake), `fill` (canvas
+  phủ kín container theo `object-fit`), `className`. Vòng lặp `setInterval`, dọn
+  dẹp khi unmount; canvas scale theo `devicePixelRatio`; màu theme Aurora.
 
 ### `Type` — `src/components/Home/Type.js`
 Hiệu ứng gõ chữ (`typewriter-effect`) luân phiên các vai trò: Java developer /
@@ -62,8 +77,8 @@ Ba hàng icon công nghệ (react-icons), nhóm theo mức độ thành thạo:
 - **TechStack2** ("And others"), **TechStack3** ("I also know"): các công nghệ phụ.
 
 ### `Github` — `src/components/About/Github.js`
-Lịch đóng góp GitHub (`react-github-calendar`, username `cuong02n`, màu
-`#c084f5`) kèm dòng "cập nhật lần cuối" theo thời gian thực.
+Lịch đóng góp GitHub (`react-github-calendar`, username `cuong02n`, màu accent
+`#a78bfa`) kèm dòng "cập nhật lần cuối" theo thời gian thực.
 
 ### `CodeforcesRatingChart` — `src/components/About/CodeforcesRatingChart.js`
 Component phức tạp nhất. Xem chi tiết ở [external-apis.md](./external-apis.md).
@@ -79,9 +94,10 @@ Hàm `ratingColor(rating)` → mã màu theo rank Codeforces.
 ## Trang Projects
 
 ### `Projects` — `src/components/Projects/Projects.js`
-Grid 8 project (`react-bootstrap` Row/Col, mỗi card `md={4}`). Mỗi card truyền
-`imgPath`, `title`, `description` (đều qua `t()`), tùy chọn `ghLink`, `demoLink`,
-`isBlog`.
+Grid **2 project** (`react-bootstrap` Row/Col, mỗi card `md={4}`) — chỉ giữ hai
+demo chạy thật: **Phone Crawler** và **System Flow Board** (đều có `internalLink`).
+Mỗi card truyền `imgPath`, `title`, `description` (đều qua `t()`), tùy chọn
+`ghLink`, `demoLink`, `isBlog`.
 
 ### `ProjectCards` — `src/components/Projects/ProjectCards.js`
 **Props**:

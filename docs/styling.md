@@ -30,12 +30,38 @@ Ba file CSS toàn cục, import trong `index.js` / `App.js`:
 
 | File | Vai trò |
 |------|---------|
-| `src/index.css` | reset/base toàn cục |
-| `src/App.css` | style cấp ứng dụng |
-| `src/style.css` | theme chính: màu nền tối, hiệu ứng, class section |
+| `src/index.css` | reset/base toàn cục (body nền navy `#080b14`) |
+| `src/App.css` | style cấp ứng dụng (phần lớn là default CRA, ít dùng) |
+| `src/style.css` | **theme chính "Aurora"**: design tokens, nền mesh động, glass, class section |
+
+### Theme "Aurora" (violet → cyan)
+
+`src/style.css` khai báo **design tokens** trong `html { … }` — dùng lại khắp nơi
+thay vì hardcode:
+
+| Token | Giá trị | Ý nghĩa |
+|-------|---------|---------|
+| `--accent` | `#a78bfa` | tím — màu nhấn chính (`.purple` = `--imp-text-color` = `--accent`) |
+| `--accent-2` | `#38bdf8` | cyan — màu nhấn phụ |
+| `--accent-3` | `#f472b6` | hồng — điểm xuyết trong mesh |
+| `--grad` | `linear-gradient(120deg, --accent, --accent-2)` | gradient chủ đạo (nút, gạch chân nav, tên hero) |
+| `--bg` / `--bg-2` | `#080b14` / `#0b1020` | nền navy |
+| `--glass` / `--glass-2` | `rgba(255,255,255,0.045 / 0.07)` | nền kính (card/section) |
+| `--border` | `rgba(255,255,255,0.09)` | viền mảnh |
+
+- **Nền mesh động**: `body::before` (fixed, `z-index:-2`) là 4 quầng radial
+  violet/cyan/hồng trên navy, chạy animation `mesh-shift` (tắt dưới
+  `prefers-reduced-motion`). Particles (`Particle.jsx`, tô màu accent) nằm trên
+  mesh; section dùng `--section-background-color` (navy translucent) để mesh hắt
+  qua mà chữ vẫn đọc được.
+- **Glassmorphism**: `.project-card-view`, `.blog-card-view`, `.tech-icons`,
+  social icons… dùng `--glass` + `--border` + `backdrop-filter: blur` + glow theo
+  accent khi hover.
+- Nút Bootstrap override: `.btn-primary` → gradient tím, `.btn-success`
+  (Live Demo) → gradient cyan.
 
 Các class custom hay gặp:
-- `.purple` — màu nhấn tím chủ đạo (dùng cho tiêu đề, link, highlight).
+- `.purple` — màu nhấn (nay là tím `--accent`; dùng cho tiêu đề, link, highlight).
 - `.home-section`, `.about-section`, `.project-section`, `.resume-section` —
   nền + spacing từng trang.
 - `.project-heading`, `.tech-icons`, `.project-card-view`, `.social-icons`,
@@ -66,6 +92,7 @@ thắng bên trong scope mà không rò ra ngoài.
 ## Quy ước khi sửa UI
 
 - Layout mới → ưu tiên `Container/Row/Col` của react-bootstrap cho đồng bộ.
-- Màu nhấn → dùng class `.purple` thay vì hardcode mã màu mới.
+- Màu nhấn → dùng class `.purple` hoặc các token `--accent`/`--accent-2`/`--grad`
+  thay vì hardcode mã màu mới (giữ theme Aurora đồng nhất).
 - Inline style xuất hiện nhiều trong code hiện tại (vd `style={{...}}`); chấp
   nhận được nhưng nếu giá trị dùng lại nhiều lần nên cân nhắc đưa vào CSS class.

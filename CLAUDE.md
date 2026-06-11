@@ -16,7 +16,9 @@ cấu hình bằng biến môi trường, hoặc **thuần frontend** (lưu loca
 - **phone-crawler** (`/projects/phone-crawler`) — gọi backend FastAPI/PostgreSQL
   riêng qua env URL. Xem [`docs/phone-crawler.md`](./docs/phone-crawler.md).
 - **system-flow** (`/projects/system-flow`) — bảng vẽ kiến trúc hệ thống kéo-thả
-  bằng React Flow, thuần frontend, lưu localStorage. Xem
+  bằng React Flow, thuần frontend, lưu localStorage. Có **landing page** (hero
+  "3D" CSS/SVG) ở route gốc và **editor** ở `/projects/system-flow/board`; click
+  node mở popup chi tiết tại con trỏ. Xem
   [`docs/system-flow.md`](./docs/system-flow.md).
 
 Phần portfolio bắt nguồn từ template của Soumyajit Behera (còn sót vài đoạn

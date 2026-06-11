@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Routes, Route, Navigate } from 'react-router-dom'
 import {
   ReactFlow, ReactFlowProvider, Background, Controls, MiniMap,
   applyNodeChanges, applyEdgeChanges, addEdge, useReactFlow, MarkerType,
@@ -8,15 +8,22 @@ import '@xyflow/react/dist/style.css'
 import {
   Monitor, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud,
   Plus, Trash2, RotateCcw, Download, Upload, ArrowLeft, X,
+  MousePointerClick, GripVertical, Boxes, Cable,
 } from 'lucide-react'
 import FlowNode from './nodes/FlowNode'
+import NodeDetailPopup from './nodes/NodeDetailPopup'
+import SystemFlowLanding from './SystemFlowLanding'
 import { NODE_KINDS, PALETTE, EDGE_KINDS, EDGE_ORDER, nodeKind, edgeKind } from './lib/palette'
 import {
   loadState, saveState, resetState, exportCompany, parseCompany,
 } from './lib/storage'
+import { SYSTEM_FLOW_BASE } from './routes'
 import './flow.css'
 
-export const SYSTEM_FLOW_BASE = '/projects/system-flow'
+export { SYSTEM_FLOW_BASE }
+
+// Split a comma-separated tag input into a clean array.
+const splitTags = (s) => s.split(',').map((t) => t.trim()).filter(Boolean)
 
 const PALETTE_ICONS = { Monitor, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud }
 const nodeTypes = { flowNode: FlowNode }
@@ -54,8 +61,12 @@ function FlowEditor() {
   const [companies, setCompanies] = useState(() => loadState().companies)
   const [activeId, setActiveId] = useState(() => loadState().companies[0]?.id)
   const [sel, setSel] = useState({ nodes: [], edges: [] })
+  const [popup, setPopup] = useState(null) // { id, x, y } — node detail at cursor
 
   const active = companies.find((c) => c.id === activeId) || companies[0]
+
+  // Close the detail popup when switching diagrams.
+  useEffect(() => { setPopup(null) }, [activeId])
 
   // Persist (debounced) on every change. localStorage only — never the seed file.
   useEffect(() => {
@@ -87,6 +98,13 @@ function FlowEditor() {
   )
 
   const displayEdges = useMemo(() => (active?.edges || []).map(decorate), [active?.edges])
+
+  // ── Node detail popup (opens at the cursor on click) ───────────────────────
+  const onNodeClick = useCallback((ev, node) => {
+    setPopup({ id: node.id, x: ev.clientX, y: ev.clientY })
+  }, [])
+  const onPaneClick = useCallback(() => setPopup(null), [])
+  const popupNode = popup && active?.nodes.find((n) => n.id === popup.id)
 
   // ── Add nodes (palette click → centre, or drag-drop → cursor) ──────────────
   const addNode = useCallback((kind, position) => {
@@ -165,7 +183,7 @@ function FlowEditor() {
     <div className="flow-scope">
       {/* ── Top toolbar ──────────────────────────────────────────────────── */}
       <header className="flow-topbar">
-        <Link to="/project" className="flow-back"><ArrowLeft size={14} /> Portfolio</Link>
+        <Link to={SYSTEM_FLOW_BASE} className="flow-back"><ArrowLeft size={14} /> Overview</Link>
         <div className="flow-title">System Flow <span>· architecture board</span></div>
         <div className="flow-tabs">
           {companies.map((c) => (
@@ -190,8 +208,8 @@ function FlowEditor() {
       <div className="flow-main">
         {/* ── Palette ────────────────────────────────────────────────────── */}
         <aside className="flow-palette">
-          <div className="flow-palette-head">Components</div>
-          <div className="flow-palette-hint">Drag onto canvas, or click to add</div>
+          <div className="flow-palette-head"><Boxes size={13} /> Components</div>
+          <div className="flow-palette-hint">Drag onto the canvas, or click to drop one in</div>
           {PALETTE.map((kind) => {
             const k = NODE_KINDS[kind]
             const Icon = PALETTE_ICONS[k.icon] || Box
@@ -205,21 +223,26 @@ function FlowEditor() {
                 onClick={() => addNode(kind, { x: 260, y: 200 })}
               >
                 <span className="pi-icon"><Icon size={16} /></span>
-                <span>{k.label}</span>
+                <span className="pi-label">{k.label}</span>
+                <GripVertical size={13} className="pi-grip" />
               </div>
             )
           })}
-          <div className="flow-palette-head" style={{ marginTop: 14 }}>Connections</div>
-          {EDGE_ORDER.map((k) => (
-            <div key={k} className="flow-legend-item">
-              <span className="legend-line" style={{ background: EDGE_KINDS[k].color }} />
-              <span>{EDGE_KINDS[k].label}</span>
-            </div>
-          ))}
+          <div className="flow-palette-head" style={{ marginTop: 16 }}><Cable size={13} /> Connections</div>
+          {EDGE_ORDER.map((k) => {
+            const ek = EDGE_KINDS[k]
+            return (
+              <div key={k} className="flow-legend-item">
+                <span className={`legend-line${ek.style === 'async' ? ' dashed' : ''}`} style={{ '--c': ek.color }} />
+                <span>{ek.label}</span>
+              </div>
+            )
+          })}
         </aside>
 
         {/* ── Canvas ─────────────────────────────────────────────────────── */}
         <div className="flow-canvas" onDrop={onDrop} onDragOver={onDragOver}>
+          <div className="flow-canvas-fx" aria-hidden="true" />
           <ReactFlow
             nodes={active?.nodes || []}
             edges={displayEdges}
@@ -228,25 +251,32 @@ function FlowEditor() {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onSelectionChange={setSel}
+            onNodeClick={onNodeClick}
+            onPaneClick={onPaneClick}
             deleteKeyCode={['Backspace', 'Delete']}
             fitView
             fitViewOptions={{ padding: 0.2 }}
             minZoom={0.2}
             proOptions={{ hideAttribution: true }}
           >
-            <Background gap={18} color="#1c2330" />
-            <Controls />
+            <Background variant="dots" gap={20} size={1.4} color="rgba(167, 139, 250, 0.18)" />
+            <Controls showInteractive={false} />
             <MiniMap
               pannable
               zoomable
               nodeColor={(n) => nodeKind(n.data?.kind).color}
-              maskColor="rgba(0,0,0,0.55)"
+              nodeStrokeColor="rgba(255,255,255,0.15)"
+              maskColor="rgba(5, 8, 16, 0.66)"
             />
           </ReactFlow>
+          <div className="flow-hint">
+            <MousePointerClick size={13} /> Click a node for details · drag a handle to connect
+          </div>
         </div>
 
         {/* ── Inspector ──────────────────────────────────────────────────── */}
         <aside className="flow-inspector">
+          <div className="flow-ins-label">Diagram</div>
           <input
             className="flow-company-name"
             value={active?.name || ''}
@@ -270,6 +300,21 @@ function FlowEditor() {
                 <select value={selNode.data.kind} onChange={(e) => patchNode(selNode.id, { kind: e.target.value })}>
                   {PALETTE.map((k) => <option key={k} value={k}>{NODE_KINDS[k].label}</option>)}
                 </select>
+              </label>
+              <label>Description
+                <textarea
+                  rows={3}
+                  value={selNode.data.description || ''}
+                  onChange={(e) => patchNode(selNode.id, { description: e.target.value })}
+                  placeholder="What does this component do?"
+                />
+              </label>
+              <label>Tech tags
+                <input
+                  value={(selNode.data.tags || []).join(', ')}
+                  onChange={(e) => patchNode(selNode.id, { tags: splitTags(e.target.value) })}
+                  placeholder="Spring Boot, Java 17"
+                />
               </label>
               <button className="ins-delete" onClick={removeSelected}><Trash2 size={13} /> Delete node</button>
             </div>
@@ -296,20 +341,44 @@ function FlowEditor() {
 
           {!selNode && !selEdge && (
             <div className="flow-inspect-empty">
-              Select a node or connection to edit it.<br /><br />
-              Drag from a node handle to another to connect them.
+              <span className="flow-empty-ic"><MousePointerClick size={22} /></span>
+              <p>Select a node or connection to edit it.</p>
+              <p className="dim">Drag from one node's handle to another to wire them up.</p>
             </div>
           )}
         </aside>
       </div>
+
+      {popupNode && (
+        <NodeDetailPopup
+          node={popupNode}
+          nodes={active.nodes}
+          edges={active.edges}
+          at={{ x: popup.x, y: popup.y }}
+          onClose={() => setPopup(null)}
+          onEdit={() => setPopup(null)}
+        />
+      )}
     </div>
+  )
+}
+
+// Mount the editor under its own provider so the landing page (which has no
+// canvas) doesn't pay for React Flow's context.
+function BoardRoute() {
+  return (
+    <ReactFlowProvider>
+      <FlowEditor />
+    </ReactFlowProvider>
   )
 }
 
 export default function SystemFlowApp() {
   return (
-    <ReactFlowProvider>
-      <FlowEditor />
-    </ReactFlowProvider>
+    <Routes>
+      <Route index element={<SystemFlowLanding />} />
+      <Route path="board" element={<BoardRoute />} />
+      <Route path="*" element={<Navigate to={SYSTEM_FLOW_BASE} replace />} />
+    </Routes>
   )
 }

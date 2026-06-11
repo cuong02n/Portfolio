@@ -1,17 +1,33 @@
+/*
+ * Portfolio theme — "Aurora": deep navy canvas with a violet → cyan accent,
+ * matching the System Flow demo module. A single animated gradient-mesh sits
+ * behind everything (body::before); sections layer translucent glass on top.
+ */
 html {
+  /* ── Design tokens ─────────────────────────────────────────────────────── */
+  --bg:        #080b14;
+  --bg-2:      #0b1020;
+  --accent:    #a78bfa;   /* violet */
+  --accent-2:  #38bdf8;   /* cyan   */
+  --accent-3:  #f472b6;   /* pink (mesh accent) */
+  --text:      #e8eef6;
+  --muted:     #93a1b5;
+  --border:    rgba(255, 255, 255, 0.09);
+  --glass:     rgba(255, 255, 255, 0.045);
+  --glass-2:   rgba(255, 255, 255, 0.07);
+  --grad:      linear-gradient(120deg, var(--accent), var(--accent-2));
+
+  --imp-text-color: var(--accent);
   --section-background-color: linear-gradient(
-    to bottom left,
-    rgba(17, 16, 16, 0.582),
-    rgba(12, 8, 24, 0.904)
+    180deg,
+    rgba(8, 11, 20, 0.45),
+    rgba(8, 11, 20, 0.66)
   );
-
   --image-gradient: linear-gradient(
-    to bottom left,
-    rgba(17, 16, 16, 0.678),
-    rgba(12, 10, 22, 0.863)
+    180deg,
+    rgba(8, 11, 20, 0.55),
+    rgba(8, 11, 20, 0.8)
   );
-
-  --imp-text-color: #c770f0;
 }
 
 .purple {
@@ -20,6 +36,31 @@ html {
 
 button:focus {
   box-shadow: none !important;
+}
+
+/* --------- */
+/*  Animated gradient mesh (sits behind particles + content)  */
+/* --------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(620px 520px at 12% 16%, rgba(167, 139, 250, 0.22), transparent 60%),
+    radial-gradient(640px 540px at 86% 12%, rgba(56, 189, 248, 0.18), transparent 60%),
+    radial-gradient(560px 520px at 72% 86%, rgba(244, 114, 182, 0.14), transparent 60%),
+    radial-gradient(560px 520px at 20% 84%, rgba(56, 189, 248, 0.12), transparent 60%);
+  animation: mesh-shift 26s ease-in-out infinite alternate;
+}
+@keyframes mesh-shift {
+  0%   { transform: translate(0, 0) scale(1.05); }
+  50%  { transform: translate(-3%, 2%) scale(1.12); }
+  100% { transform: translate(2%, -2%) scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
 }
 
 /* --------- */
@@ -32,7 +73,7 @@ button:focus {
   width: 100%;
   height: 100%;
   z-index: 999999;
-  background-color: #0c0513;
+  background-color: var(--bg);
   background-image: url(./Assets/pre.svg);
   background-repeat: no-repeat;
   background-position: center;
@@ -52,23 +93,23 @@ button:focus {
 /* --------- */
 
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #2d1950;
+  background: #0c1322;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(178, 121, 216, 0.959);
+  background: rgba(167, 139, 250, 0.55);
   border-radius: 12px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(222, 130, 235, 0.911);
+  background: rgba(56, 189, 248, 0.7);
   border-radius: 12px;
 }
 
@@ -76,9 +117,10 @@ button:focus {
 /* Navbar Section  */
 /* --------- */
 .sticky {
-  background-color: #1b1a2ea9 !important;
+  background-color: rgba(11, 16, 32, 0.66) !important;
   transition: all 0.3s ease-out 0s !important;
-  box-shadow: 0px 10px 10px 0px rgba(9, 5, 29, 0.171) !important;
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.7) !important;
+  border-bottom: 1px solid var(--border) !important;
   backdrop-filter: blur(15px) !important;
 }
 
@@ -97,7 +139,7 @@ button:focus {
 
 .navbar-toggler span {
   display: block !important;
-  background-color: #be50f4 !important;
+  background: var(--grad) !important;
   height: 4px !important;
   width: 27px !important;
   margin-top: 5px !important;
@@ -144,7 +186,7 @@ button:focus {
   .navbar {
     padding: 1rem 2rem !important;
     font-size: 1.4rem !important;
-    background-color: #181a27 !important;
+    background-color: rgba(11, 16, 32, 0.92) !important;
   }
   .navbar-nav .nav-item a::after {
     display: none !important;
@@ -194,7 +236,7 @@ button:focus {
   height: 5px;
   width: 0;
   border-radius: 16px;
-  background: #c95bf5;
+  background: var(--grad);
   bottom: 1px;
   left: 0;
   z-index: -1;
@@ -257,14 +299,52 @@ button:focus {
 .home-section {
   position: relative;
   z-index: -1;
-  background-image: var(--image-gradient), url(./Assets/home-bg.jpg);
+  background: transparent;
   background-position: top center;
   background-repeat: no-repeat;
   padding-bottom: 30px !important;
   padding-top: 30px !important;
+  overflow: hidden;
+}
+
+/* Self-playing game screens (Snake + Tetris) that replace the old hero art. */
+.home-game-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.home-games {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.home-game {
+  padding: 14px;
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(167, 139, 250, 0.14), transparent 60%),
+    rgba(6, 9, 16, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 2px 22px rgba(0, 0, 0, 0.55),
+    0 30px 60px -28px rgba(167, 139, 250, 0.5);
+  backdrop-filter: blur(8px);
+}
+.home-game--snake { width: min(240px, 50vw); aspect-ratio: 1 / 1; }
+.home-game--tetris { width: min(150px, 32vw); aspect-ratio: 1 / 2; }
+.home-game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .home-content {
+  position: relative;
+  z-index: 2;
   padding: 9rem 0 2rem !important;
   color: whitesmoke;
   text-align: left;
@@ -281,17 +361,21 @@ button:focus {
 }
 
 .main-name {
-  color: #cd5ff8;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
 }
 
 .Typewriter__wrapper {
   font-size: 2.2em !important;
-  color: #be6adf !important;
+  color: var(--accent-2) !important;
   font-weight: 600 !important;
 }
 .Typewriter__cursor {
   font-size: 2.4em !important;
-  color: #b562d6 !important;
+  color: var(--accent) !important;
 }
 
 @media (max-width: 767px) {
@@ -315,8 +399,11 @@ button:focus {
   width: 300px !important;
   height: 300px !important;
   object-fit: cover !important;
-  border: 3px solid #be50f4 !important;
-  box-shadow: 0 0 15px rgba(190, 80, 244, 0.5) !important;
+  border: 3px solid transparent !important;
+  background:
+    linear-gradient(var(--bg), var(--bg)) padding-box,
+    var(--grad) border-box !important;
+  box-shadow: 0 0 40px -6px rgba(167, 139, 250, 0.55) !important;
 }
 
 @media (max-width: 767px) {
@@ -381,9 +468,10 @@ button:focus {
   height: 40px !important;
   text-align: center !important;
   font-size: 1.2em !important;
-  background: rgba(255, 255, 255, 0.972) !important;
+  background: var(--glass-2) !important;
+  border: 1px solid var(--border) !important;
   border-radius: 50% !important;
-  transition: 0.5s !important;
+  transition: 0.4s !important;
 }
 
 .home-social-icons::before {
@@ -394,42 +482,48 @@ button:focus {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: #68187a;
-  transition: 0.5s;
+  background: var(--grad);
+  transition: 0.4s;
   transform: scale(0.9);
+  opacity: 0;
   z-index: -1;
 }
 
 .home-social-icons:hover::before {
-  transform: scale(1.1);
-  box-shadow: 0 0 15px #801f95;
+  transform: scale(1.12);
+  opacity: 1;
+  box-shadow: 0 0 18px rgba(167, 139, 250, 0.6);
 }
 
 .home-social-icons:hover {
-  color: #87209e;
-  box-shadow: 0 0 5px #87209e;
-  text-shadow: 0 0 2px #87209e;
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
 }
 
 /* Add new class for email icon when showEmailText is true */
 .email-icon-active {
-  background: #87209e !important;
+  background: var(--grad) !important;
+  border-color: transparent !important;
 }
 
 /* Add new class for phone icon when showPhoneText is true */
 .phone-icon-active {
-  background: #87209e !important;
+  background: var(--grad) !important;
+  border-color: transparent !important;
 }
 
 .icon-colour {
-  color: #700c86 !important;
+  color: var(--accent) !important;
 }
 
 /* --------- */
 /* Footer */
 /* --------- */
 .footer {
-  background-color: rgb(10, 4, 22);
+  background-color: rgba(6, 9, 16, 0.7);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(10px);
   bottom: 0 !important;
   padding-top: 10px !important;
   padding-bottom: 8px !important ;
@@ -466,7 +560,7 @@ button:focus {
 }
 
 .blockquote-footer {
-  color: #a588c0 !important;
+  color: var(--muted) !important;
 }
 /* --------- */
 /* Projects */
@@ -487,17 +581,20 @@ button:focus {
 }
 
 .project-card-view {
-  box-shadow: 0 4px 5px 3px rgba(119, 53, 136, 0.459) !important;
+  background: var(--glass) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.8) !important;
   color: white !important;
-  background-color: transparent !important;
-  opacity: 0.9 !important;
-  transition: all 0.5s ease 0s !important;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease !important;
   height: 100% !important;
+  overflow: hidden !important;
 }
 .project-card-view:hover {
-  transform: scale(1.02) !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 4px 5px rgba(129, 72, 144, 0.561) !important;
+  transform: translateY(-6px) !important;
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent) !important;
+  box-shadow: 0 26px 50px -20px rgba(167, 139, 250, 0.45) !important;
 }
 
 .blog-card {
@@ -509,10 +606,13 @@ button:focus {
 }
 
 .blog-card-view {
-  background-color: transparent !important;
-  box-shadow: 0 3px 3px 2px rgba(145, 77, 161, 0.459) !important;
+  background: var(--glass) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.8) !important;
   color: white !important;
-  transition: all 0.5s ease 0s !important;
+  transition: transform 0.35s ease, box-shadow 0.35s ease !important;
   height: 100% !important;
 }
 
@@ -526,15 +626,14 @@ button:focus {
 }
 
 .blog-card-view:hover {
-  transform: scale(1.02) !important;
-  overflow: hidden !important;
-  box-shadow: 0 3px 3px 5px rgba(155, 88, 173, 0.65) !important;
+  transform: translateY(-6px) !important;
+  box-shadow: 0 26px 50px -20px rgba(56, 189, 248, 0.4) !important;
 }
 
 .card-img-top {
   padding: 20px !important;
-  opacity: 0.8 !important;
-  border-radius: 10px !important;
+  opacity: 0.92 !important;
+  border-radius: 14px !important;
   height: 200px !important;
   object-fit: cover !important;
   object-position: center !important;
@@ -548,14 +647,27 @@ button:focus {
 
 .btn-primary {
   color: #fff !important;
-  background-color: #623686 !important;
-  border-color: #623686 !important;
+  border: none !important;
+  background-image: linear-gradient(120deg, #8b5cf6, #6d28d9) !important;
+  box-shadow: 0 8px 22px -10px rgba(139, 92, 246, 0.8) !important;
 }
 
 .btn-primary:hover {
   color: #fff !important;
-  background-color: #6d20c5d7 !important;
-  border-color: #6d20c5d7 !important;
+  background-image: linear-gradient(120deg, #a78bfa, #7c3aed) !important;
+  transform: translateY(-2px) !important;
+}
+.btn-success {
+  color: #06121a !important;
+  border: none !important;
+  font-weight: 600 !important;
+  background-image: linear-gradient(120deg, #38bdf8, #0ea5e9) !important;
+  box-shadow: 0 8px 22px -10px rgba(56, 189, 248, 0.8) !important;
+}
+.btn-success:hover {
+  color: #06121a !important;
+  background-image: linear-gradient(120deg, #7dd3fc, #38bdf8) !important;
+  transform: translateY(-2px) !important;
 }
 .btn:focus {
   outline: none !important;
@@ -564,7 +676,7 @@ button:focus {
 .project-heading {
   color: white !important;
   font-size: 2.3em !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   padding-top: 10px !important;
 }
 
@@ -584,15 +696,17 @@ button:focus {
   font-size: 4.5em !important;
   margin: 15px !important;
   padding: 10px !important;
-  opacity: 0.93 !important;
-  border: 1.7px solid rgba(200, 137, 230, 0.637) !important;
+  opacity: 0.99 !important;
+  border: 1px solid var(--border) !important;
+  background: var(--glass) !important;
+  backdrop-filter: blur(8px) !important;
   vertical-align: middle !important;
   text-align: center !important;
-  border-radius: 5px !important;
+  border-radius: 12px !important;
   display: table !important;
-  box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137) !important;
+  box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.8) !important;
   overflow: hidden !important;
-  transition: all 0.4s ease 0s !important;
+  transition: all 0.35s ease 0s !important;
 }
 
 @media (max-width: 767px) {
@@ -602,9 +716,10 @@ button:focus {
 }
 
 .tech-icons:hover {
-  transform: scale(1.05) !important;
+  transform: translateY(-5px) scale(1.04) !important;
   overflow: hidden !important;
-  border: 2.2px solid rgba(197, 115, 230, 0.883) !important;
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent) !important;
+  box-shadow: 0 20px 36px -18px rgba(167, 139, 250, 0.5) !important;
 }
 .tech-icon-images {
   padding: 20px !important;
@@ -682,14 +797,16 @@ button:focus {
 .resume .resume-item {
   padding: 0 0 10px 25px;
   margin-top: -2px;
-  border-left: 2px solid #8a49a8;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
   position: relative;
 }
 
 .resume .resume-item .resume-title {
   line-height: 18px;
   font-size: 0.9em;
-  background: #5234795d;
+  background: rgba(167, 139, 250, 0.16);
+  border: 1px solid var(--border);
+  border-radius: 6px;
   padding: 8px 15px;
   display: inline-block;
   font-weight: 600;
@@ -718,8 +835,9 @@ button:focus {
   border-radius: 50px;
   left: -9px;
   top: 0;
-  background: #fff;
-  border: 2px solid #8a49a8;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 10px -1px var(--accent);
 }
 
 .like-item {
@@ -729,18 +847,18 @@ button:focus {
 }
 
 .like-btn {
-  background-color: #934cce5e !important;
-  border-color: #934cce5e !important;
+  background-color: rgba(167, 139, 250, 0.22) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent) !important;
   padding: 0.25rem 0.98rem !important;
-  border-radius: 5px !important;
+  border-radius: 8px !important;
   line-height: 1.4 !important;
   transition: 0.3s ease !important;
 }
 
 .like-btn:hover {
   transform: translateY(-2px) !important;
-  background-color: #a24dd386 !important;
-  border-color: #a24dd386 !important;
+  background-color: rgba(167, 139, 250, 0.35) !important;
+  border-color: var(--accent) !important;
 }
 
 .animate-like {
@@ -764,7 +882,8 @@ button:focus {
 
 .fork-btn-inner {
   line-height: 1.4em !important;
-  background-color: #934cce5e !important;
+  background-color: rgba(167, 139, 250, 0.22) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent) !important;
   padding: 0.25rem 1.1rem !important;
   vertical-align: middle !important;
   text-align: center !important;
@@ -772,8 +891,8 @@ button:focus {
 
 .fork-btn-inner:hover {
   transform: translateY(-2px) !important;
-  background-color: #a24dd386 !important;
-  border-color: #a24dd386 !important;
+  background-color: rgba(56, 189, 248, 0.3) !important;
+  border-color: var(--accent-2) !important;
 }
 .fork-btn-inner::after {
   display: none !important;

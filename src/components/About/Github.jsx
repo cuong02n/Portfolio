@@ -20,7 +20,7 @@ function Github() {
                 username="cuong02n"
                 blockSize={13}
                 blockMargin={7}
-                color="#c084f5"
+                color="#a78bfa"
                 fontSize={16}
             />
             <h6 style={{paddingBottom: "20px"}}>

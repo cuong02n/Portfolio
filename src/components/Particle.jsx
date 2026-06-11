@@ -14,22 +14,29 @@ function Particle() {
               value_area: 1500,
             },
           },
+          color: {
+            value: ["#a78bfa", "#38bdf8", "#f472b6"],
+          },
           line_linked: {
-            enable: false,
-            opacity: 0.03,
+            enable: true,
+            distance: 150,
+            color: "#a78bfa",
+            opacity: 0.12,
+            width: 1,
           },
           move: {
             direction: "right",
-            speed: 0.05,
+            speed: 0.18,
           },
           size: {
-            value: 1,
+            value: 1.4,
           },
           opacity: {
+            value: 0.5,
             anim: {
               enable: true,
               speed: 1,
-              opacity_min: 0.05,
+              opacity_min: 0.08,
             },
           },
         },
