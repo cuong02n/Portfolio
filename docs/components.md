@@ -93,13 +93,19 @@ Hàm `ratingColor(rating)` → mã màu theo rank Codeforces.
 
 ## Trang Projects
 
-### `Projects` — `src/components/Projects/Projects.js`
-Grid **2 project** (`react-bootstrap` Row/Col, mỗi card `md={4}`) — chỉ giữ hai
-demo chạy thật: **Phone Crawler** và **System Flow Board** (đều có `internalLink`).
-Mỗi card truyền `imgPath`, `title`, `description` (đều qua `t()`), tùy chọn
-`ghLink`, `demoLink`, `isBlog`.
+### `Projects` — `src/components/Projects/Projects.jsx`
+Layout **master-detail**: **tab dọc bên trái** + **panel demo ở giữa/phải** (state
+`active`, `summaryOpen`). Mảng `TABS`: **Phone Crawler**, **NexusTI Flow**,
+**Sample Flow** (mỗi mục `label`, `sub`, `html` = key mô tả HTML tái dùng, `src`).
+Bấm tab → panel phải **nhúng thẳng demo qua `<iframe src>`** (route full-screen,
+Navbar portfolio tự ẩn trên `/projects/*` nên không lồng portfolio; `key` theo tab
+để remount). Phone Crawler → `/projects/phone-crawler`; flow →
+`/projects/system-flow/board?company=<id>`. **Summary** không hiện mặc định mà nằm
+trong **dropdown** xổ dưới tiêu đề (nút toggle `proj-summary-toggle` →
+`proj-summary` render `t(html)`). Có link "Open full screen". Style
+`.proj-layout/.proj-side*/.proj-content*/.proj-summary*/.proj-frame` trong `src/style.css`.
 
-### `ProjectCards` — `src/components/Projects/ProjectCards.js`
+### `ProjectCards` — `src/components/Projects/ProjectCards.jsx` (không còn dùng trên trang Projects)
 **Props**:
 | Prop | Kiểu | Ý nghĩa |
 |------|------|---------|

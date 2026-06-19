@@ -128,6 +128,44 @@
 }
 .flow-actions button:active { transform: translateY(1px); }
 
+/* Collapse toggle — shrinks the toolbar to a thin strip for more canvas room */
+.flow-topbar-toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.flow-topbar-toggle:hover {
+  color: #fff;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface-2));
+}
+.flow-topbar { transition: height 0.2s ease, padding 0.2s ease; }
+.flow-topbar.collapsed {
+  height: 26px;
+  padding: 0 8px;
+  gap: 0;
+}
+.flow-topbar.collapsed .flow-back,
+.flow-topbar.collapsed .flow-title,
+.flow-topbar.collapsed .flow-tabs,
+.flow-topbar.collapsed .flow-actions {
+  display: none;
+}
+.flow-topbar.collapsed .flow-topbar-toggle {
+  margin-left: auto;
+  height: 20px;
+  width: 40px;
+}
+
 /* ── Main 3-column layout ────────────────────────────────────────────────── */
 .flow-main { flex: 1; display: flex; min-height: 0; }
 

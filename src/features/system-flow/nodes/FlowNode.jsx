@@ -1,14 +1,17 @@
 import { memo } from 'react'
 import { Handle, Position } from '@xyflow/react'
 import {
-  Monitor, Network, Box, KeyRound, Radio,
-  Database, Zap, HardDrive, Cloud,
+  Monitor, Smartphone, Network, Box, KeyRound, Radio,
+  Database, Zap, HardDrive, Cloud, Package, Workflow, GitBranch, Activity,
 } from 'lucide-react'
 import { nodeKind } from '../lib/palette'
 
 // Map the palette's icon *name* (a string, so seed/palette stay JSX-free) to
 // the actual lucide component.
-const ICONS = { Monitor, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud }
+const ICONS = {
+  Monitor, Smartphone, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud,
+  Package, Workflow, GitBranch, Activity,
+}
 
 // A single diagram block. Four connection handles (one per side) act as both
 // source and target so the user can wire edges from whichever side is closest.
