@@ -10,8 +10,8 @@ import {useTranslation} from "react-i18next";
 
 function Home2() {
     const {t} = useTranslation();
-    const [showEmailText, setShowEmailText] = useState(true);
-    const [showPhoneText, setShowPhoneText] = useState(true);
+    const [showEmailText, setShowEmailText] = useState(false);
+    const [showPhoneText, setShowPhoneText] = useState(false);
 
     const toggleEmailText = () => {
         setShowEmailText(!showEmailText);
