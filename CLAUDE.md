@@ -16,10 +16,11 @@ cấu hình bằng biến môi trường, hoặc **thuần frontend** (lưu loca
 - **phone-crawler** (`/projects/phone-crawler`) — gọi backend FastAPI/PostgreSQL
   riêng qua env URL. Xem [`docs/phone-crawler.md`](./docs/phone-crawler.md).
 - **system-flow** (`/projects/system-flow`) — bảng vẽ kiến trúc hệ thống kéo-thả
-  bằng React Flow, thuần frontend, lưu localStorage. Có **landing page** (hero
-  "3D" CSS/SVG) ở route gốc và **editor** ở `/projects/system-flow/board`; click
-  node mở popup chi tiết tại con trỏ. Xem
-  [`docs/system-flow.md`](./docs/system-flow.md).
+  bằng React Flow, thuần frontend, lưu localStorage. **Route gốc mở thẳng editor
+  (sơ đồ)** — cả `/projects/system-flow` và `…/board` đều render board; `?company=
+  <id>` chọn sẵn công ty. Click node mở popup chi tiết tại con trỏ. (Component
+  `SystemFlowLanding.jsx` vẫn còn trong repo nhưng **không còn là entry** — đã bỏ
+  bước landing "Open the board".) Xem [`docs/system-flow.md`](./docs/system-flow.md).
 
 Phần portfolio bắt nguồn từ template của Soumyajit Behera (còn sót vài đoạn
 code/comment gốc) nhưng đã tùy biến nội dung + thêm i18n, biểu đồ Codeforces,
@@ -69,12 +70,22 @@ Chi tiết hơn xem thư mục [`docs/`](./docs/).
 - **Mọi chuỗi hiển thị phải qua i18n.** Khi thêm/sửa text UI, thêm key vào
   CẢ HAI khối `en` và `vi` trong `src/Assets/lang/i18n.js`, rồi dùng `t('Key')`.
   Đừng hardcode text tiếng Anh/Việt trực tiếp trong JSX.
-- **Mô tả project** trong trang Projects render bằng `dangerouslySetInnerHTML`
-  nên các key `*Description` chứa HTML (`<br/>`, `<b>`). Giữ nguyên định dạng đó.
+- **Trang Projects (`/project`)** là layout **master-detail**: cột **tab dọc bên
+  trái** + **panel demo ở giữa/phải**. Bấm tab → panel **nhúng thẳng demo qua
+  `<iframe>`** route full-screen (Navbar portfolio **tự ẩn trên `/projects/*`**
+  nên iframe không lồng lại portfolio). **Summary ẩn mặc định**, nằm trong
+  **dropdown** xổ dưới tiêu đề. System-flow nhúng bằng `…/board?company=<id>`.
+  Component cũ `ProjectCards.jsx` không còn dùng ở đây nhưng vẫn giữ lại để tham khảo.
 - **Styling trộn 3 hệ**: Bootstrap/react-bootstrap (layout `Container/Row/Col`,
   `Button`, `Card`), Tailwind (chủ yếu ở `CodeforcesRatingChart`), và CSS custom
   (`src/style.css`, `App.css`, `index.css`). Class `.purple` là màu nhấn chủ đạo.
   Khi sửa giao diện, ưu tiên theo phong cách của component đang sửa.
+- **⚠️ Bẫy Tailwind × Bootstrap `.collapse`**: Bootstrap dùng `.collapse` cho menu
+  Navbar; Tailwind cũng có utility `.collapse { visibility: collapse }`. Tailwind
+  quét `src/**/*.{js,jsx,...}` nên **chỉ cần chữ `collapse` đứng riêng trong code
+  (kể cả comment)** là nó sinh utility đè Bootstrap → **ẩn toàn bộ nav links cả
+  site**. Đã chặn bằng `blocklist: ["collapse"]` trong `tailwind.config.js`; đừng
+  gỡ. Tránh viết token `collapse` trần trong source.
 - **Thông tin cá nhân hardcode** (handle Codeforces `cuong2905say`, GitHub
   username `cuong02n`, email, SĐT, link project) nằm rải trong các component —
   xem [`docs/personal-data.md`](./docs/personal-data.md) để biết vị trí khi cần

@@ -5,14 +5,22 @@ phác họa/sửa sơ đồ các hệ thống (microservices, API gateway, Kafka
 PostgreSQL, Redis…) ngay trên trình duyệt. Khác phone-crawler, module này
 **thuần frontend — không có backend**: dữ liệu sơ đồ lưu ở `localStorage`.
 
-Module có **2 màn**: một **landing page** (cửa ngõ giới thiệu, hero "3D" thuần
+> **Cập nhật:** route gốc giờ **mở thẳng editor (sơ đồ)** — cả
+> `/projects/system-flow` và `…/board` đều render board (đã bỏ bước landing
+> "Open the board" cho nhanh). `SystemFlowLanding.jsx` + `landing.css` vẫn còn
+> trong repo nhưng **không còn được route** (giữ lại để tái dùng nếu cần). Phần
+> mô tả landing bên dưới giữ làm tham khảo.
+
+Module có **2 màn** (lịch sử): một **landing page** (cửa ngõ giới thiệu, hero "3D" thuần
 CSS/SVG) ở route gốc, và **editor** (bảng vẽ) ở route con `/board`.
 
 - **Routes** (khai báo nested trong `SystemFlowApp.jsx`, mount tại
   `/projects/system-flow/*` ở `src/App.jsx`):
-  - `/projects/system-flow` → **landing** (`SystemFlowLanding.jsx`)
+  - `/projects/system-flow` → **editor** (board) — mở thẳng sơ đồ
   - `/projects/system-flow/board` → **editor** (`FlowEditor`, bọc `ReactFlowProvider`)
-  - path lạ → redirect về landing.
+  - path lạ → redirect về route gốc.
+  - **`?company=<id>`** (vd `board?company=nexus-ti`) chọn sẵn công ty khi mở —
+    trang Projects dùng để nhúng đúng 1 sơ đồ vào từng tab.
 - **Thư mục**: `src/features/system-flow/`
 - **Thư viện**: [React Flow](https://reactflow.dev) (`@xyflow/react` v12) — render
   canvas, node, edge, minimap, controls. Landing **không** dùng React Flow (chỉ
@@ -39,7 +47,8 @@ features/system-flow/
   nodes/NodeDetailPopup.jsx# popup chi tiết node, hiện ở vị trí con trỏ khi click
   lib/palette.js           # NODE_KINDS, PALETTE, EDGE_KINDS, EDGE_ORDER (data thuần, no JSX)
   lib/storage.js           # load/save/reset + export/import JSON 1 công ty
-  data/seed.js             # SCHEMA_VERSION + SEED_COMPANIES (2 sơ đồ mẫu, có description/tags)
+  data/seed.js             # SCHEMA_VERSION + SEED_COMPANIES (3 sơ đồ mẫu, có description/tags)
+                           #   NexusTI (DCMS/Lending, ~31 node, tab mặc định) + Company A + Company B
 ```
 
 ## Mô hình dữ liệu (JSON-serialisable)
@@ -51,11 +60,16 @@ node    = { id, type:'flowNode', position:{x,y},
 edge    = { id, source, target, label?, data:{ kind } }
 ```
 
-- **`node.data.kind`** ∈ `palette.NODE_KINDS` (frontend, gateway, service, iam,
-  broker, database, cache, storage, external) → chọn icon (lucide) + màu accent.
+- **`node.data.kind`** ∈ `palette.NODE_KINDS` (frontend, mobile, gateway, service,
+  iam, broker, database, cache, storage, external, + nhóm Platform/DevOps:
+  registry, cicd, vcs, observability) → chọn icon (lucide) + màu accent.
 - **`description` + `tags`** (tuỳ chọn) là dữ liệu "chi tiết" hiển thị trong popup
   khi click node; sửa được ở inspector. Thêm 2 trường này nên đã **bump
-  `SCHEMA_VERSION` lên `2`** (state cũ version 1 sẽ tự fallback về seed).
+  `SCHEMA_VERSION`** (state version cũ sẽ tự fallback về seed). Hiện ở `4`
+  (v2 thêm description/tags; v3 thay sơ đồ NexusTI bằng kiến trúc DCMS/Lending thật;
+  v4 bỏ node Kafka, vẽ event Kafka thành edge nét đứt thẳng giữa các service;
+  v5 thêm kind `mobile` + app field cho nhân viên thu hồi nợ hiện trường;
+  v6 thêm cụm Platform/DevOps: Git, CI/CD, Nexus Repository, Prometheus+Grafana, Alerting).
 - **`edge.data.kind`** ∈ `palette.EDGE_KINDS` (api, grpc, kafka, jdbc, redis,
   oauth) → chọn màu + nhãn + kiểu line. `style:'async'` (kafka) → line nét đứt +
   animation; `style:'sync'` → line liền. Edge được "decorate" lúc render
@@ -87,6 +101,10 @@ edge    = { id, source, target, label?, data:{ kind } }
 - **Inspector** (phải): đổi tên/xoá công ty; sửa label/subtitle/**description**/
   **tags**/kind của node; sửa kind/label của edge; nút xoá.
 - **Tabs công ty**: chuyển/thêm nhiều sơ đồ tách biệt.
+- **Thu gọn topbar**: nút chevron (`flow-topbar-toggle`, state `topbarOpen`) thu
+  gọn thanh công cụ trên cùng thành dải mỏng để lấy thêm chỗ cho canvas; bấm lại
+  để mở. (Palette dùng `PALETTE_ICONS` map đủ icon cho mọi kind, kể cả nhóm
+  mobile + Platform/DevOps.)
 - **Reset / Export / Import**: Export/Import một công ty dạng `.json`
   (`exportCompany`/`parseCompany`).
 - **Landing page** (`SystemFlowLanding.jsx`): hero "3D" thuần CSS (`perspective`

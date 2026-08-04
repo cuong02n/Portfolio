@@ -10,6 +10,7 @@
 
 export const NODE_KINDS = {
   frontend: { label: 'Frontend',     icon: 'Monitor',      color: '#38bdf8' },
+  mobile:   { label: 'Mobile App',   icon: 'Smartphone',   color: '#22d3ee' },
   gateway:  { label: 'API Gateway',  icon: 'Network',      color: '#a78bfa' },
   service:  { label: 'Microservice', icon: 'Box',          color: '#4ade80' },
   iam:      { label: 'IAM',          icon: 'KeyRound',     color: '#fbbf24' },
@@ -18,12 +19,18 @@ export const NODE_KINDS = {
   cache:    { label: 'Cache',        icon: 'Zap',          color: '#f472b6' },
   storage:  { label: 'Object Store', icon: 'HardDrive',    color: '#2dd4bf' },
   external: { label: 'External',     icon: 'Cloud',        color: '#94a3b8' },
+  // Platform / DevOps
+  registry:      { label: 'Artifact Repo',  icon: 'Package',   color: '#facc15' },
+  cicd:          { label: 'CI/CD',          icon: 'Workflow',  color: '#34d399' },
+  vcs:           { label: 'Source Control', icon: 'GitBranch', color: '#fb923c' },
+  observability: { label: 'Observability',  icon: 'Activity',  color: '#e879f9' },
 }
 
 // Palette order shown in the sidebar (drag source list).
 export const PALETTE = [
-  'frontend', 'gateway', 'service', 'iam', 'broker',
+  'frontend', 'mobile', 'gateway', 'service', 'iam', 'broker',
   'database', 'cache', 'storage', 'external',
+  'registry', 'cicd', 'vcs', 'observability',
 ]
 
 // Connection types. `style` controls the edge line: `async` edges animate and

@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link, Routes, Route, Navigate } from 'react-router-dom'
+import { Link, Routes, Route, Navigate, useSearchParams } from 'react-router-dom'
 import {
   ReactFlow, ReactFlowProvider, Background, Controls, MiniMap,
   applyNodeChanges, applyEdgeChanges, addEdge, useReactFlow, MarkerType,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import {
-  Monitor, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud,
+  Monitor, Smartphone, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud,
+  Package, Workflow, GitBranch, Activity,
   Plus, Trash2, RotateCcw, Download, Upload, ArrowLeft, X,
-  MousePointerClick, GripVertical, Boxes, Cable,
+  MousePointerClick, GripVertical, Boxes, Cable, ChevronUp, ChevronDown,
 } from 'lucide-react'
 import FlowNode from './nodes/FlowNode'
 import NodeDetailPopup from './nodes/NodeDetailPopup'
-import SystemFlowLanding from './SystemFlowLanding'
 import { NODE_KINDS, PALETTE, EDGE_KINDS, EDGE_ORDER, nodeKind, edgeKind } from './lib/palette'
 import {
   loadState, saveState, resetState, exportCompany, parseCompany,
@@ -25,7 +25,10 @@ export { SYSTEM_FLOW_BASE }
 // Split a comma-separated tag input into a clean array.
 const splitTags = (s) => s.split(',').map((t) => t.trim()).filter(Boolean)
 
-const PALETTE_ICONS = { Monitor, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud }
+const PALETTE_ICONS = {
+  Monitor, Smartphone, Network, Box, KeyRound, Radio, Database, Zap, HardDrive, Cloud,
+  Package, Workflow, GitBranch, Activity,
+}
 const nodeTypes = { flowNode: FlowNode }
 
 let _seq = 0
@@ -58,10 +61,18 @@ function FlowEditor() {
   const fileRef = useRef(null)
   const saveTimer = useRef(null)
 
+  const [searchParams] = useSearchParams()
   const [companies, setCompanies] = useState(() => loadState().companies)
-  const [activeId, setActiveId] = useState(() => loadState().companies[0]?.id)
+  // Initial company can be pre-selected via ?company=<id> (used by the Projects
+  // page to embed one specific diagram); falls back to the first company.
+  const [activeId, setActiveId] = useState(() => {
+    const list = loadState().companies
+    const want = searchParams.get('company')
+    return (want && list.find((c) => c.id === want)?.id) || list[0]?.id
+  })
   const [sel, setSel] = useState({ nodes: [], edges: [] })
   const [popup, setPopup] = useState(null) // { id, x, y } — node detail at cursor
+  const [topbarOpen, setTopbarOpen] = useState(true) // shrink the top toolbar for more canvas
 
   const active = companies.find((c) => c.id === activeId) || companies[0]
 
@@ -181,9 +192,9 @@ function FlowEditor() {
 
   return (
     <div className="flow-scope">
-      {/* ── Top toolbar ──────────────────────────────────────────────────── */}
-      <header className="flow-topbar">
-        <Link to={SYSTEM_FLOW_BASE} className="flow-back"><ArrowLeft size={14} /> Overview</Link>
+      {/* ── Top toolbar (collapsible for more canvas room) ───────────────── */}
+      <header className={`flow-topbar${topbarOpen ? '' : ' collapsed'}`}>
+        <Link to="/project" className="flow-back"><ArrowLeft size={14} /> Portfolio</Link>
         <div className="flow-title">System Flow <span>· architecture board</span></div>
         <div className="flow-tabs">
           {companies.map((c) => (
@@ -203,6 +214,14 @@ function FlowEditor() {
           <button onClick={() => fileRef.current?.click()} title="Import JSON"><Upload size={14} /> Import</button>
           <input ref={fileRef} type="file" accept="application/json,.json" hidden onChange={onImport} />
         </div>
+        <button
+          className="flow-topbar-toggle"
+          onClick={() => setTopbarOpen((v) => !v)}
+          title={topbarOpen ? 'Collapse toolbar' : 'Expand toolbar'}
+          aria-label={topbarOpen ? 'Collapse toolbar' : 'Expand toolbar'}
+        >
+          {topbarOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+        </button>
       </header>
 
       <div className="flow-main">
@@ -376,7 +395,10 @@ function BoardRoute() {
 export default function SystemFlowApp() {
   return (
     <Routes>
-      <Route index element={<SystemFlowLanding />} />
+      {/* Open straight onto the diagram — both the base route and /board render
+          the editor (the landing page was an extra "Open the board" hop). The
+          ?company=<id> query still selects the company on either path. */}
+      <Route index element={<BoardRoute />} />
       <Route path="board" element={<BoardRoute />} />
       <Route path="*" element={<Navigate to={SYSTEM_FLOW_BASE} replace />} />
     </Routes>
