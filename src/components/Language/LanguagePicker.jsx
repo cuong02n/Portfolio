@@ -1,80 +1,82 @@
-import React, { useCallback, memo, useState } from 'react';
-import { Button, Dropdown } from 'react-bootstrap';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ReactCountryFlag from "react-country-flag";
-import { FaChevronDown } from "react-icons/fa";
+import { FiChevronDown, FiCheck } from "react-icons/fi";
 
-const LanguagePicker = memo(() => {
-    const { t, i18n } = useTranslation();
-    const [show, setShow] = useState(false);
+const LANGUAGES = [
+  { code: "en", short: "EN", label: "English" },
+  { code: "vi", short: "VI", label: "Tiếng Việt" },
+];
 
-    const changeLanguage = useCallback((lang) => {
-        i18n.changeLanguage(lang);
-        localStorage.setItem('language', lang);
-        setShow(false);
-    }, [i18n]);
+// The chosen language is persisted under localStorage['language'] and read back
+// by i18n.init on the next visit.
+function LanguagePicker() {
+  const { i18n } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
 
-    const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-        <Button
-            ref={ref}
-            onClick={(e) => {
-                e.preventDefault();
-                onClick(e);
-            }}
-            variant="outline-light"
-            className="d-flex align-items-center gap-2"
-        >
-            {children}
-            <FaChevronDown size={12} />
-        </Button>
-    ));
+  const current =
+    LANGUAGES.find((l) => l.code === i18n.language) || LANGUAGES[0];
 
-    return (
-        <Dropdown show={show} onToggle={(nextShow) => setShow(nextShow)}>
-            <Dropdown.Toggle as={CustomToggle}>
-                <ReactCountryFlag
-                    countryCode={i18n.language === 'en' ? 'GB' : 'VN'}
-                    svg
-                    style={{
-                        width: '1.5em',
-                        height: '1.5em',
-                    }}
-                />
-                {t('Language')}
-            </Dropdown.Toggle>
+  const choose = useCallback(
+    (code) => {
+      i18n.changeLanguage(code);
+      localStorage.setItem("language", code);
+      setOpen(false);
+    },
+    [i18n]
+  );
 
-            <Dropdown.Menu>
-                <Dropdown.Item onClick={() => changeLanguage('en')}>
-                    <div className="d-flex align-items-center gap-2">
-                        <ReactCountryFlag
-                            countryCode="GB"
-                            svg
-                            style={{
-                                width: '1.5em',
-                                height: '1.5em',
-                            }}
-                        />
-                        English
-                    </div>
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => changeLanguage('vi')}>
-                    <div className="d-flex align-items-center gap-2">
-                        <ReactCountryFlag
-                            countryCode="VN"
-                            svg
-                            style={{
-                                width: '1.5em',
-                                height: '1.5em',
-                            }}
-                        />
-                        Tiếng Việt
-                    </div>
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>
-    );
-});
+  useEffect(() => {
+    if (!open) return undefined;
+    const onPointerDown = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    const onKeyDown = (e) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
-LanguagePicker.displayName = 'LanguagePicker';
+  return (
+    <div className="pf-lang" ref={ref}>
+      <button
+        type="button"
+        className="pf-lang-btn"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {current.short}
+        <FiChevronDown size={13} />
+      </button>
+
+      {open && (
+        <div className="pf-lang-menu" role="listbox">
+          {LANGUAGES.map((lang) => (
+            <button
+              key={lang.code}
+              type="button"
+              role="option"
+              aria-selected={lang.code === current.code}
+              className={`pf-lang-item${
+                lang.code === current.code ? " is-active" : ""
+              }`}
+              onClick={() => choose(lang.code)}
+            >
+              <span className="pf-mono">{lang.short}</span>
+              {lang.label}
+              {lang.code === current.code && (
+                <FiCheck size={14} style={{ marginLeft: "auto" }} />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default LanguagePicker;

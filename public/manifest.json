@@ -1,7 +1,7 @@
 {
-  "short_name": "Cuong Portfolio",
-  "name": "Nguyen Manh Cuong | Portfolio",
-  "description": "Personal portfolio website showcasing my work and skills",
+  "short_name": "Cuong Nguyen",
+  "name": "Nguyen Manh Cuong — Backend Engineer",
+  "description": "Backend engineer in Hanoi. Java, Spring Boot, PostgreSQL and Kafka on Kubernetes.",
   "icons": [
     {
       "src": "favicon.png",
@@ -23,10 +23,9 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "orientation": "portrait",
-  "theme_color": "#1a1a1a",
-  "background_color": "#ffffff",
-  "categories": ["portfolio", "web development", "personal"],
-  "lang": "en-US",
+  "theme_color": "#070912",
+  "background_color": "#070912",
+  "categories": ["portfolio", "software development", "personal"],
+  "lang": "en",
   "dir": "ltr"
 }

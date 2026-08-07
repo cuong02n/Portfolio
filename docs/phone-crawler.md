@@ -74,7 +74,8 @@ kèm token; `previewData`/`downloadUrl`/stats/jobs/log... để public.
   điều hướng nội bộ dùng `navigate('../explorer?...')`. Navbar portfolio bị ẩn
   trên `/projects/*` (xem `App.jsx`).
 - **Style**: mọi selector trong `crawler.css` đều prefix `.crawler-scope` để không
-  đụng `.btn`/`.card`/`.badge`... của Bootstrap và CSS portfolio. `body`/`:root`
+  đụng CSS portfolio (design system portfolio dùng tiền tố `pf-` nên khả năng va
+  chạm thấp, nhưng scope vẫn giữ để phòng selector theo tên thẻ). `body`/`:root`
   gốc được gập vào `.crawler-scope`.
 
 ## WebSocket payload (mỗi giây)

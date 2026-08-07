@@ -1,12 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
+/*
+ * Tailwind lives here and is used by the Codeforces rating chart only; the rest
+ * of the portfolio is styled by the `pf-` design system in src/style.css, which
+ * is imported after this file so it wins over preflight.
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Painted before style.css parses, so the first frame is dark rather than a
+   white flash. */
+html,
 body {
-  margin: 0;
-  font-family: "Raleway", serif !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #080b14;
+  background-color: #070912;
 }

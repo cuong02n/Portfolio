@@ -13,7 +13,6 @@ import {
 import timestamp from "unix-timestamp";
 import {GET_RATING_GRAPH, USER_STATUS} from "../../api/CodeforcesApi";
 import {ratingColor} from "./RatingColor";
-import {useTranslation} from "react-i18next";
 
 const CustomTooltip = ({active, payload}) => {
     if (active && payload && payload.length) {
@@ -22,9 +21,13 @@ const CustomTooltip = ({active, payload}) => {
             <div
                 className="custom-tooltip"
                 style={{
-                    backgroundColor: "#fff",
-                    padding: "10px",
-                    border: "1px solid #ccc",
+                    backgroundColor: "rgba(10, 14, 28, 0.96)",
+                    color: "var(--pf-text)",
+                    padding: "10px 12px",
+                    border: "1px solid var(--pf-border)",
+                    borderRadius: "10px",
+                    fontSize: "0.78rem",
+                    lineHeight: 1.5,
                 }}
             >
                 <p className="label">{`Rank: ${data.rank}`}</p>
@@ -50,7 +53,6 @@ const CustomTooltip = ({active, payload}) => {
 
 const CodeforcesRatingChart = ({username}) => {
 
-    const {t} = useTranslation();
     const [graphData, setGraphData] = useState([]);
     const [data, setData] = useState([]);
     const [problemsSolved, setProblemsSolved] = useState([]);
@@ -145,7 +147,10 @@ const CodeforcesRatingChart = ({username}) => {
     }, [data, problemsSolved]);
 
     const [bottomStatDisplay, setBottomStatDisplay] = useState({});
-    const fillOp = 1;
+    // Rank bands are drawn at full saturation on Codeforces' white background.
+    // On this dark canvas that reads as a glowing block, so they are dropped to
+    // a tint — still legible as bands, no longer the loudest thing on the page.
+    const fillOp = 0.16;
     const interval = graphData.length > 10 ? Math.floor(graphData.length / 10) : 0;
 
     let currentRating = data[data.length - 1]?.newRating;
@@ -305,7 +310,7 @@ const CodeforcesRatingChart = ({username}) => {
                     <Tooltip
                         layout={"vertical"}
                         verticalAlign={"top"}
-                        wrapperStyle={{color: "#000", fontSize: 12}}
+                        wrapperStyle={{fontSize: 12}}
                         content={<CustomTooltip/>}
                     />
                     <Legend/>
@@ -353,13 +358,12 @@ const CodeforcesRatingChart = ({username}) => {
                         </div>
                     )}
                     <div className="flex-col items-center justify-center">
-                        )
                         <div className="grid grid-flow-col grid-cols-3 grid-rows-5 gap-x-6 text-nowrap">
                             {bottomStatDisplay.counts &&
                                 Object.keys(bottomStatDisplay.counts).map((key) => {
                                     if (key !== "total") {
                                         return (
-                                            <div className="flex gap-x-1 text-sm">
+                                            <div className="flex gap-x-1 text-sm" key={key}>
                                                 {/* <p className={`text-[${ratingColor(key)}]`}>{`${key} :`}</p> */}
                                                 <p
                                                     className="font-medium"

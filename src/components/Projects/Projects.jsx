@@ -1,115 +1,127 @@
-import React, { useState } from "react";
-import { Container } from "react-bootstrap";
-import Particle from "../Particle";
-import { ChevronDown, ArrowUpRight } from "lucide-react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FiChevronDown, FiArrowUpRight } from "react-icons/fi";
+import SectionHead from "../ui/SectionHead";
+import ProjectCard from "./ProjectCard";
+import { LIVE_DEMOS, PROJECTS, KIND } from "../../data/projects";
 
-// Left vertical tabs → right panel shows the live demo directly (iframe of the
-// full-screen route; the portfolio Navbar is hidden on /projects/*). The summary
-// is tucked into a dropdown under the title, hidden by default. System-flow
-// demos pass ?company=<id>.
-const TABS = [
-  {
-    key: "crawler",
-    label: "Phone Crawler",
-    sub: "Phone Crawler Tab Desc",
-    html: "Phone Crawler Description",
-    src: "/projects/phone-crawler",
-  },
-  {
-    key: "nexus",
-    label: "NexusTI Flow",
-    sub: "NexusTI Flow Tab Desc",
-    html: "System Flow Description",
-    src: "/projects/system-flow/board?company=nexus-ti",
-  },
-  {
-    key: "sample",
-    label: "Sample Flow",
-    sub: "Sample Flow Tab Desc",
-    html: "System Flow Description",
-    src: "/projects/system-flow/board?company=company-a",
-  },
-];
+const FILTERS = ["all", ...Object.keys(KIND)];
 
 function Projects() {
   const { t } = useTranslation();
-  const [active, setActive] = useState(TABS[0].key);
+  const [active, setActive] = useState(LIVE_DEMOS[0].key);
   const [summaryOpen, setSummaryOpen] = useState(false);
-  const current = TABS.find((x) => x.key === active) || TABS[0];
+  const [filter, setFilter] = useState("all");
 
-  const selectTab = (key) => {
+  const current = LIVE_DEMOS.find((d) => d.key === active) || LIVE_DEMOS[0];
+
+  const visible = useMemo(
+    () => (filter === "all" ? PROJECTS : PROJECTS.filter((p) => p.kind === filter)),
+    [filter]
+  );
+
+  const selectDemo = (key) => {
     setActive(key);
-    setSummaryOpen(false); // hide the summary when switching projects
+    setSummaryOpen(false); // a summary belongs to the demo it was opened under
   };
 
   return (
-    <Container fluid className="project-section">
-      <Particle />
-      <Container fluid className="proj-fluid">
-        <h1 className="project-heading">
-          {t("My Recent")} <strong className="purple">{t("Works")}</strong>
-        </h1>
-        <p style={{ color: "white" }}>
-          {t("Here are a few projects I've worked on recently.")}
-        </p>
+    <>
+      {/* Live demos ----------------------------------------------------- */}
+      <section className="pf-container pf-section pf-section--first">
+        <SectionHead
+          as="h1"
+          eyebrow={t("projects.eyebrow")}
+          title={t("projects.live.title")}
+          lead={t("projects.live.desc")}
+        />
 
-        <div className="proj-layout">
-          {/* Left: vertical tabs */}
-          <div className="proj-side" role="tablist">
-            {TABS.map((tab) => (
+        <div className="pf-demo">
+          <div className="pf-demo-tabs" role="tablist">
+            {LIVE_DEMOS.map((demo) => (
               <button
-                key={tab.key}
+                key={demo.key}
+                type="button"
                 role="tab"
-                aria-selected={active === tab.key}
-                className={`proj-side-tab${active === tab.key ? " active" : ""}`}
-                onClick={() => selectTab(tab.key)}
+                aria-selected={active === demo.key}
+                className={`pf-demo-tab${active === demo.key ? " is-active" : ""}`}
+                onClick={() => selectDemo(demo.key)}
               >
-                <span className="proj-side-label">{t(tab.label)}</span>
-                <span className="proj-side-sub">{t(tab.sub)}</span>
+                <span className="pf-demo-tab-label">{t(demo.labelKey)}</span>
+                <span className="pf-demo-tab-sub">{t(demo.subKey)}</span>
               </button>
             ))}
           </div>
 
-          {/* Right: live demo, with a collapsible summary under the title */}
-          <div className="proj-content" role="tabpanel">
-            <div className="proj-content-head">
-              <h2 className="proj-content-title">{t(current.label)}</h2>
+          <div className="pf-demo-panel" role="tabpanel">
+            <div className="pf-demo-head">
+              <h3 className="pf-demo-title">{t(current.labelKey)}</h3>
               <button
-                className={`proj-summary-toggle${summaryOpen ? " open" : ""}`}
-                onClick={() => setSummaryOpen((v) => !v)}
+                type="button"
+                className={`pf-toggle${summaryOpen ? " is-open" : ""}`}
                 aria-expanded={summaryOpen}
+                onClick={() => setSummaryOpen((v) => !v)}
               >
-                {t("Summary")} <ChevronDown size={15} />
+                {t("projects.summary")} <FiChevronDown size={15} />
               </button>
               <a
-                className="proj-content-open"
+                className="pf-link-arrow"
                 href={current.src}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {t("Open full screen")} <ArrowUpRight size={14} />
+                {t("projects.fullscreen")} <FiArrowUpRight size={15} />
               </a>
             </div>
 
             {summaryOpen && (
               <div
-                className="proj-summary"
-                dangerouslySetInnerHTML={{ __html: t(current.html) }}
+                className="pf-demo-summary"
+                // Copy carries <br/> and <b> for emphasis; the source is our own
+                // translation file, not user input.
+                dangerouslySetInnerHTML={{ __html: t(current.bodyKey) }}
               />
             )}
 
-            {/* key forces a fresh load (one demo mounted) per tab */}
+            {/* Keyed so switching tabs remounts the frame — only one demo is
+                ever live, and each starts from a clean route. */}
             <iframe
               key={current.key}
-              title={current.label}
+              title={t(current.labelKey)}
               src={current.src}
-              className="proj-frame"
+              className="pf-demo-frame"
             />
           </div>
         </div>
-      </Container>
-    </Container>
+      </section>
+
+      {/* Full catalogue -------------------------------------------------- */}
+      <section className="pf-container pf-section">
+        <SectionHead
+          title={t("projects.all.title")}
+          lead={t("projects.all.desc")}
+        />
+
+        <div className="pf-filters">
+          {FILTERS.map((key) => (
+            <button
+              key={key}
+              type="button"
+              className={`pf-filter${filter === key ? " is-active" : ""}`}
+              onClick={() => setFilter(key)}
+            >
+              {key === "all" ? t("projects.filter.all") : t(KIND[key])}
+            </button>
+          ))}
+        </div>
+
+        <div className="pf-projects">
+          {visible.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
 

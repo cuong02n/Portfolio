@@ -1,38 +1,51 @@
 import React from "react";
 import GitHubCalendar from "react-github-calendar";
-import {Row} from "react-bootstrap";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { FiArrowUpRight } from "react-icons/fi";
+import SectionHead from "../ui/SectionHead";
+import { PROFILE } from "../../data/profile";
+
+// The `color` prop generates its ramp for a LIGHT page — level0 lands on
+// #ebebeb, so every empty day glowed near-white against the dark canvas. An
+// explicit theme keeps the accent hue but starts the ramp inside the surface.
+const CALENDAR_THEME = {
+  level0: "rgba(255, 255, 255, 0.055)",
+  level1: "rgba(167, 139, 250, 0.30)",
+  level2: "rgba(167, 139, 250, 0.55)",
+  level3: "rgba(167, 139, 250, 0.80)",
+  level4: "#c4b5fd",
+};
 
 function Github() {
-    const {t} = useTranslation();
-    const getMin2Digit = (input) => {
-        if (input < 10) {
-            return "0" + input
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <SectionHead
+        title={t("about.github.title")}
+        action={
+          <a
+            className="pf-link-arrow"
+            href={PROFILE.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            github.com/{PROFILE.github} <FiArrowUpRight size={15} />
+          </a>
         }
-        return input
-    }
-    return (
-        <Row style={{justifyContent: "center", paddingBottom: "10px"}}>
-            <h1 className="project-heading" style={{paddingBottom: "20px"}}>
-                <strong className="purple">{t("Day I Code")}</strong>
-            </h1>
-            <GitHubCalendar
-                username="cuong02n"
-                blockSize={13}
-                blockMargin={7}
-                color="#a78bfa"
-                fontSize={16}
-            />
-            <h6 style={{paddingBottom: "20px"}}>
-                <strong>{t("Updated on")}
-                    &nbsp;
-                    {new Date().getFullYear()}-{getMin2Digit(new Date().getMonth() + 1)}-{getMin2Digit(new Date().getDate())}
-                    &nbsp; &nbsp;
-                    {getMin2Digit(new Date().getHours())}:{getMin2Digit(new Date().getMinutes())}:{getMin2Digit(new Date().getSeconds())}
-                </strong>
-            </h6>
-        </Row>
-    );
+      />
+
+      <div className="pf-panel">
+        <GitHubCalendar
+          username={PROFILE.github}
+          blockSize={12}
+          blockMargin={5}
+          theme={CALENDAR_THEME}
+          fontSize={14}
+        />
+      </div>
+    </>
+  );
 }
 
 export default Github;

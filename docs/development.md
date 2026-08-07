@@ -18,8 +18,11 @@ npm install
 | `npm run dev` | Dev server Vite tại http://localhost:3000 (HMR). `npm start` là alias. |
 | `npm run build` | Build production tĩnh vào `/build` |
 | `npm run preview` | Phục vụ thử bản `/build` |
+| `npm run check:i18n` | Kiểm tra key i18n có đủ ở **cả `en` và `vi`**, và không có key chết |
 
-Không có script lint/test riêng. Không TypeScript.
+Không có test runner / lint script. Không TypeScript. `check:i18n` là kiểm tra tự
+động duy nhất — chạy nó sau mỗi lần thêm/sửa chuỗi hiển thị (xem
+[i18n.md](./i18n.md)).
 
 ## Stack & cấu hình
 
@@ -29,6 +32,9 @@ Không có script lint/test riêng. Không TypeScript.
 - `public/` được serve tĩnh ở root (`/favicon.png`, `/manifest.json`, `/resume/...`).
 - PostCSS + Tailwind tự chạy qua `postcss.config.js` / `tailwind.config.js`.
 - **JSX chỉ ở file `.jsx`**; `.js` là JS thuần.
+- **Code-splitting**: chỉ `Home` nằm trong entry chunk; các trang còn lại và hai
+  feature module nạp bằng `React.lazy` (xem [architecture.md](./architecture.md)).
+  Cảnh báo "chunk > 500 kB" của Vite đã hết sau khi tách.
 
 ## Biến môi trường (Vite)
 
@@ -42,6 +48,27 @@ VITE_CRAWLER_WS=ws://localhost:9000/ws        # prod: wss://<backend>/ws
 
 Copy sang `.env.local` cho dev (đã gitignore). Trên Vercel: đặt trong Project
 Settings → Environment Variables.
+
+## Thiết kế lại (2026)
+
+Toàn bộ phần portfolio được viết lại: lớp dữ liệu `src/data/`, design system
+`pf-*`, thêm trang `/stack`, code-splitting, SEO + JSON-LD. Dependency gỡ bỏ
+trong đợt này:
+
+| Gỡ | Vì sao |
+|----|--------|
+| `bootstrap`, `react-bootstrap` | thay bằng design system `pf-*` + CSS Grid/Flex |
+| `react-tsparticles` | nền mesh + lưới CSS đủ dùng và nhẹ hơn nhiều |
+| `react-pdf`, `@react-pdf/renderer` | trang Resume dùng `<object>`, bỏ worker pdf.js từ CDN |
+| `@radix-ui/themes`, `@radix-ui/react-icons` | không component nào dùng |
+| `@fortawesome/*` | footer viết lại bằng `react-icons` |
+| `react-country-flag` | language picker dùng nhãn `EN` / `VI` |
+| `react-parallax-tilt` | component `Home2` đã bỏ |
+| `@fontsource/pixelify-sans` | không dùng |
+| `axios`, `i18n`, `web-vitals` | không dùng (fetch native / `i18next` / bỏ `reportWebVitals`) |
+
+Sau khi pull thay đổi này, chạy lại `npm install` để prune `node_modules` (không
+bắt buộc — bản build vẫn chạy nếu package cũ còn nằm đó).
 
 ## Migrate CRA → Vite (lịch sử)
 

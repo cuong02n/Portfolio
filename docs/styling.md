@@ -1,98 +1,108 @@
 # Styling
 
-Dự án trộn **ba hệ thống style**. Khi sửa giao diện, ưu tiên theo phong cách của
-component đang chỉnh để giữ nhất quán cục bộ.
+Portfolio dùng **một design system CSS custom** (`src/style.css`), cộng Tailwind
+**chỉ cho biểu đồ Codeforces**. Bootstrap / react-bootstrap **đã được gỡ bỏ hoàn
+toàn**.
 
-## 1. Bootstrap + react-bootstrap
+## 1. Design system `pf-*` — `src/style.css`
 
-- `bootstrap` (CSS) import trong `App.js`: `bootstrap/dist/css/bootstrap.min.css`.
-- `react-bootstrap` cung cấp các component layout & UI: `Container`, `Row`,
-  `Col`, `Button`, `Card`, `Navbar`, `Nav`, `Dropdown`, `OverlayTrigger`,
-  `Tooltip`.
-- Đây là hệ chính cho **bố cục** (grid `Row`/`Col`, `Container fluid`) và phần
-  lớn UI.
+Mọi class của portfolio đều mang tiền tố **`pf-`** để không thể đụng với CSS của
+feature module (`src/features/*`) hay utility của Tailwind.
+
+### Design tokens (`:root`)
+
+| Token | Giá trị | Ý nghĩa |
+|-------|---------|---------|
+| `--pf-bg` | `#070912` | nền navy đậm |
+| `--pf-accent` | `#a78bfa` | tím — màu nhấn chính |
+| `--pf-accent-2` | `#38bdf8` | cyan — màu nhấn phụ |
+| `--pf-accent-3` | `#f472b6` | hồng — chỉ dùng trong nền mesh |
+| `--pf-grad` | `linear-gradient(115deg, accent, accent-2)` | gradient chủ đạo (nút primary, tên hero, filter active) |
+| `--pf-text` / `--pf-muted` / `--pf-dim` | `#e9eef7` / `#97a3ba` / `#6c7893` | ba cấp độ chữ |
+| `--pf-border` / `--pf-border-soft` | `rgba(255,255,255,.085 / .05)` | viền mảnh |
+| `--pf-surface` / `--pf-surface-2` | `rgba(255,255,255,.028 / .055)` | nền kính (card/panel) |
+| `--pf-r-sm` / `--pf-r` / `--pf-r-lg` | `8px` / `14px` / `22px` | bo góc |
+| `--pf-sans` / `--pf-mono` | Inter / Space Mono | font |
+| `--pf-max` | `1180px` | bề rộng container |
+| `--pf-nav-h` | `68px` | chiều cao navbar (dùng cho `pf-section--first`) |
+
+`.purple` được giữ lại (trỏ về `--pf-accent`) cho tương thích ngược.
+
+### Nền
+
+- `body::before` — 4 quầng radial violet/cyan/hồng trên navy, animation
+  `pf-mesh` (tắt dưới `prefers-reduced-motion`).
+- `body::after` — lưới mảnh 64px, mask mờ dần xuống dưới; tạo cảm giác "kỹ thuật"
+  mà không gây nhiễu.
+
+> Trước đây có thêm `react-tsparticles` (160 hạt) render lại trên **mọi** trang.
+> Đã gỡ: nền mesh + lưới đủ hiệu quả thị giác và nhẹ hơn nhiều.
+
+### Nhóm class chính
+
+| Nhóm | Class tiêu biểu |
+|------|-----------------|
+| Layout | `pf-container`, `pf-section`, `pf-section--tight`, `pf-section--first`, `pf-grid-2`, `pf-grid-3` |
+| Chữ | `pf-eyebrow`, `pf-h1`, `pf-h2`, `pf-h3`, `pf-lead`, `pf-muted`, `pf-dim`, `pf-mono`, `pf-gradient-text` |
+| Nút / link | `pf-btn`, `pf-btn--primary`, `pf-btn--sm`, `pf-link-arrow`, `pf-toggle` |
+| Bề mặt | `pf-card`, `pf-card--hover`, `pf-card-icon`, `pf-panel` |
+| Nhãn | `pf-tag`, `pf-tags`, `pf-badge--{live,work,oss,infra}`, `pf-dot` |
+| Navbar | `pf-nav`, `pf-nav--scrolled`, `pf-nav-link.is-active`, `pf-lang*` |
+| Hero | `pf-hero`, `pf-hero-status`, `pf-stats`, `pf-term*` |
+| About | `pf-bio`, `pf-timeline`, `pf-tl-*`, `pf-cred*`, `pf-contact-*` |
+| Stack | `pf-legend`, `pf-level--{core,working,familiar}`, `pf-filters`, `pf-stack-*`, `pf-skill*` |
+| Projects | `pf-demo*`, `pf-projects`, `pf-proj-*` |
+| Footer | `pf-footer*` |
+
+`pf-section--first` cộng thêm chiều cao navbar vào padding-top — dùng cho section
+đầu tiên của mỗi trang con để nội dung không chui dưới thanh nav.
 
 ## 2. Tailwind CSS
 
 - Cấu hình: `tailwind.config.js`, build qua `postcss.config.js`.
 - `content` quét `./src/**/*.{js,ts,jsx,tsx}` và `./index.html`.
-- Định nghĩa thêm font family: `inter`, `spaceMono`.
-- **Dùng hạn chế** — chủ yếu trong `CodeforcesRatingChart.js` (vd `h-96 w-[100%]`,
-  `font-spaceMono`, `border-b`, grid utilities).
+- **Chỉ còn dùng trong `CodeforcesRatingChart.jsx`** (`h-96 w-[100%]`,
+  `font-spaceMono`, các utility grid/flex).
+- Directive `@tailwind base/components/utilities` nằm ở `src/index.css`, và
+  `src/index.jsx` **import `index.css` trước `App`** để preflight không đè lên
+  `style.css`.
 
-> Lưu ý: cần đảm bảo directives `@tailwind base/components/utilities` được nạp
-> (thường trong `index.css`). Nếu thêm class Tailwind mới mà không có hiệu lực,
-> kiểm tra file CSS gốc có import Tailwind layer không.
+### ⚠️ `blocklist: ["collapse"]`
 
-## 3. CSS custom
+Giữ nguyên. Tailwind sinh utility `.collapse { visibility: collapse }` chỉ vì
+trong source có chữ `collapse` đứng riêng (kể cả trong comment). Bootstrap đã
+được gỡ nên rủi ro hiện thấp hơn, nhưng blocklist là hàng rào rẻ tiền — đừng bỏ,
+và tránh viết token `collapse` trần trong source.
 
-Ba file CSS toàn cục, import trong `index.js` / `App.js`:
+## 3. Font (`@fontsource`)
 
-| File | Vai trò |
-|------|---------|
-| `src/index.css` | reset/base toàn cục (body nền navy `#080b14`) |
-| `src/App.css` | style cấp ứng dụng (phần lớn là default CRA, ít dùng) |
-| `src/style.css` | **theme chính "Aurora"**: design tokens, nền mesh động, glass, class section |
+Nạp trong `src/index.jsx`, self-host (không gọi CDN Google Fonts):
+- **Inter** (300–800) — toàn bộ UI.
+- **Space Mono** (400, 700) — eyebrow, tag, thẻ terminal, nhãn mono.
 
-### Theme "Aurora" (violet → cyan)
+> Đã bỏ: `@import` Raleway từ Google Fonts trong `index.css` (request chặn
+> render), `@fontsource/pixelify-sans` (không dùng), `@radix-ui/themes/styles.css`
+> (không component nào dùng Radix).
 
-`src/style.css` khai báo **design tokens** trong `html { … }` — dùng lại khắp nơi
-thay vì hardcode:
-
-| Token | Giá trị | Ý nghĩa |
-|-------|---------|---------|
-| `--accent` | `#a78bfa` | tím — màu nhấn chính (`.purple` = `--imp-text-color` = `--accent`) |
-| `--accent-2` | `#38bdf8` | cyan — màu nhấn phụ |
-| `--accent-3` | `#f472b6` | hồng — điểm xuyết trong mesh |
-| `--grad` | `linear-gradient(120deg, --accent, --accent-2)` | gradient chủ đạo (nút, gạch chân nav, tên hero) |
-| `--bg` / `--bg-2` | `#080b14` / `#0b1020` | nền navy |
-| `--glass` / `--glass-2` | `rgba(255,255,255,0.045 / 0.07)` | nền kính (card/section) |
-| `--border` | `rgba(255,255,255,0.09)` | viền mảnh |
-
-- **Nền mesh động**: `body::before` (fixed, `z-index:-2`) là 4 quầng radial
-  violet/cyan/hồng trên navy, chạy animation `mesh-shift` (tắt dưới
-  `prefers-reduced-motion`). Particles (`Particle.jsx`, tô màu accent) nằm trên
-  mesh; section dùng `--section-background-color` (navy translucent) để mesh hắt
-  qua mà chữ vẫn đọc được.
-- **Glassmorphism**: `.project-card-view`, `.blog-card-view`, `.tech-icons`,
-  social icons… dùng `--glass` + `--border` + `backdrop-filter: blur` + glow theo
-  accent khi hover.
-- Nút Bootstrap override: `.btn-primary` → gradient tím, `.btn-success`
-  (Live Demo) → gradient cyan.
-
-Các class custom hay gặp:
-- `.purple` — màu nhấn (nay là tím `--accent`; dùng cho tiêu đề, link, highlight).
-- `.home-section`, `.about-section`, `.project-section`, `.resume-section` —
-  nền + spacing từng trang.
-- `.project-heading`, `.tech-icons`, `.project-card-view`, `.social-icons`,
-  `.home-about-*` — style các khối nội dung.
-- `#no-scroll` / `#scroll` — bật/tắt scroll khi preloader đang chạy.
-
-## 4. Font (`@fontsource`)
-
-Nạp trong `src/index.js`:
-- **Inter** (100–900)
-- **Space Mono** (400, 700)
-- **Pixelify Sans** (400–700)
-
-Cùng với `@radix-ui/themes/styles.css` (Radix UI themes, import ở `index.js`).
-
-## 5. CSS của feature module (scope)
+## 4. CSS của feature module (scope)
 
 Mỗi feature module (`src/features/<slug>/`) có CSS riêng và **phải scope dưới một
-class gốc** để không đụng Bootstrap/Tailwind/CSS portfolio. Ví dụ phone-crawler:
+class gốc** để không đụng CSS portfolio. Ví dụ phone-crawler:
 - UI bọc trong `<div className="crawler-scope">` (xem `CrawlerApp.jsx`).
 - Mọi selector trong `crawler.css` được prefix `.crawler-scope ` — kể cả các class
   generic dễ trùng (`.btn`, `.card`, `.badge`, `nav`, `h3/h4`, scrollbar).
-- `body`/`:root` gốc của module được gập vào `.crawler-scope` (biến CSS + nền tối).
+- `body`/`:root` gốc của module được gập vào `.crawler-scope`.
 
-Nhờ độ ưu tiên cao hơn (`.crawler-scope .btn` > Bootstrap `.btn`), style module
-thắng bên trong scope mà không rò ra ngoài.
+Vì design system portfolio dùng tiền tố `pf-`, hai bên gần như không thể va nhau;
+scope của module vẫn giữ để phòng các selector theo tên thẻ.
 
 ## Quy ước khi sửa UI
 
-- Layout mới → ưu tiên `Container/Row/Col` của react-bootstrap cho đồng bộ.
-- Màu nhấn → dùng class `.purple` hoặc các token `--accent`/`--accent-2`/`--grad`
-  thay vì hardcode mã màu mới (giữ theme Aurora đồng nhất).
-- Inline style xuất hiện nhiều trong code hiện tại (vd `style={{...}}`); chấp
-  nhận được nhưng nếu giá trị dùng lại nhiều lần nên cân nhắc đưa vào CSS class.
+- Dùng lại class `pf-*` sẵn có trước khi viết class mới; class mới cũng phải mang
+  tiền tố `pf-`.
+- Màu → dùng token `--pf-accent` / `--pf-accent-2` / `--pf-grad`, không hardcode
+  mã màu mới.
+- Section mới → `<section className="pf-container pf-section">` + `SectionHead`
+  để giữ nhịp dọc.
+- Inline style chỉ dùng cho giá trị dùng một lần (khoảng cách nhỏ, flex ad-hoc);
+  cái gì lặp lại thì đưa vào `style.css`.

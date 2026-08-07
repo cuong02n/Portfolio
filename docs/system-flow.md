@@ -116,13 +116,13 @@ edge    = { id, source, target, label?, data:{ kind } }
 
 - `src/config/projects.js`: thêm entry slug `system-flow` (không có `apiBase`/
   `wsBase` vì không backend).
-- `src/components/Projects/Projects.jsx`: thêm `<ProjectCard internalLink=
-  "/projects/system-flow">` — link này nay mở **landing page** (cửa ngõ), từ đó
-  bấm "Open the board" để vào editor.
-- i18n: key `System Flow Board` + `System Flow Description` ở **cả** khối `en` và
-  `vi` của `src/Assets/lang/i18n.js`. Lưu ý: UI **bên trong** module (editor +
-  landing) hardcode tiếng Anh — bám theo style sẵn có của `FlowEditor`, không qua
-  i18n; i18n chỉ dùng cho card ở trang Projects của portfolio.
+- `src/data/projects.js`: hai chỗ — entry `system-flow` trong `PROJECTS` (thẻ ở
+  lưới dự án) và hai tab trong `LIVE_DEMOS` (`nexus` → `…/board?company=nexus-ti`,
+  `sample` → `…/board?company=company-a`) để trang Projects nhúng qua `<iframe>`.
+- i18n: key `proj.flow.*` và `demo.nexus.*` / `demo.sample.*` ở **cả** object `en`
+  và `vi` của `src/Assets/lang/i18n.js`. Lưu ý: UI **bên trong** module (editor)
+  hardcode tiếng Anh — bám theo style sẵn có của `FlowEditor`, không qua i18n;
+  i18n chỉ dùng cho phần portfolio bọc ngoài.
 - **CSS scope**: editor scope dưới `.flow-scope`, landing scope dưới `.sf-landing`
   (prefix mọi selector, kể cả override `.react-flow__*`). Hai scope tách biệt.
 

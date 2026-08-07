@@ -1,134 +1,159 @@
 # Components
 
 Mô tả từng component portfolio, vai trò và props. Mọi text hiển thị đều qua
-`t()` của `react-i18next` (xem [i18n.md](./i18n.md)).
+`t()` của `react-i18next` (xem [i18n.md](./i18n.md)); nội dung dạng danh sách đọc
+từ `src/data/` (xem [data-layer.md](./data-layer.md)).
 
-> Lưu ý: từ khi migrate sang Vite, các file component là **`.jsx`** (đường dẫn
-> bên dưới ghi `.js` theo tên cũ — file thực tế có đuôi `.jsx`). Component của
-> feature module nằm ở `src/features/<slug>/` — xem [phone-crawler.md](./phone-crawler.md).
+Component của feature module nằm ở `src/features/<slug>/` — xem
+[phone-crawler.md](./phone-crawler.md) và [system-flow.md](./system-flow.md).
 
 ## Khung chung
 
-### `App` — `src/App.js`
-Root component. Quản lý preloader (`load`, tự tắt sau 1.2s), khai báo `Router`,
-`Navbar` và các `Route`.
+### `App` — `src/App.jsx`
+Root component. Quản lý preloader (`load`, tự tắt sau 0.9s), khai báo `Router`,
+`ScrollToTop`, `Navbar`/`Footer` (ẩn trên `/projects/*`) và các `Route`. Mọi route
+trừ `Home` được nạp bằng `React.lazy` trong một `<Suspense>` chung.
 
-### `Navbar` — `src/components/Navbar.js`
-Thanh điều hướng cố định trên cùng (`react-bootstrap` Navbar). Đổi class
-`navbar` ↔ `sticky` khi cuộn quá 20px. Chứa `LanguagePicker` ở brand, các link
-Home/About/Projects/Resume, và nút "fork" trỏ tới GitHub.
+### `Navbar` — `src/components/Layout/Navbar.jsx`
+Thanh điều hướng cố định. Thêm class `pf-nav--scrolled` (kính mờ + viền) khi cuộn
+quá 16px. Dùng `NavLink` nên trang đang mở tự nhận class `is-active`. Dưới 860px
+danh sách link biến thành drawer, mở/đóng bằng state `open` + class `is-open`;
+route đổi thì drawer tự đóng. Bên phải có `LanguagePicker` và nút mailto (ẩn dưới
+560px).
 
-### `Pre` — `src/components/Pre.js`
-Màn hình preloader hiển thị khi `load === true`.
+### `Footer` — `src/components/Layout/Footer.jsx`
+Ba cột: thương hiệu + tagline + social, danh sách trang, danh sách liên kết
+ngoài. Thanh dưới cùng hiện năm bản quyền. Dữ liệu lấy từ `PROFILE`.
 
-### `Particle` — `src/components/Particle.js`
-Nền hạt động dùng `react-tsparticles` (160 hạt, di chuyển sang phải, click để
-thêm hạt). Được render độc lập trong mỗi trang.
+### `SectionHead` — `src/components/ui/SectionHead.jsx`
+Bộ ba **eyebrow → tiêu đề → lead** mở đầu mọi section, giữ nhịp dọc đồng nhất.
 
-### `Footer`, `ScrollToTop`
-Đã import nhưng **đang bị comment** trong `App.js` → không hiển thị.
-
-## Trang Home
-
-### `Home` — `src/components/Home/Home.js`
-Hero section: lời chào, tên, hiệu ứng `Type`. Cột phải (trước là minh hoạ
-`home-main.svg`) nay là **hai màn game tự chơi** đặt cạnh nhau — `SnakeGame` +
-`TetrisGame` (cùng prop `fill`, bọc khung kính `.home-game`). `Home2` bên dưới.
-**Không còn** dải arcade riêng ở cuối trang.
-
-### Game tự chơi — `src/components/Arcade/{SnakeGame,TetrisGame}.js`
-Hai game **tự code, tự chơi vòng lặp vô hạn** trên canvas (không thư viện game),
-**không nhãn/tiêu đề**. Dùng trực tiếp trong `Home` (không còn wrapper `Arcade`).
-- `SnakeGame.jsx` — AI BFS tìm đường ngắn nhất tới mồi, fallback flood-fill để
-  sinh tồn; kẹt mới reset.
-- `TetrisGame.jsx` — AI heuristic (aggregate height / holes / bumpiness / lines,
-  kiểu El-Tetris) chọn xoay+cột tối ưu rồi thả. **Chế độ vô hạn — KHÔNG reset cả
-  bàn**: khi stack quá cao không đặt được, tự "nhả" hàng đáy (tụt stack xuống) để
-  có chỗ, chạy liên tục mãi.
-- **Props**: `cell`, `interval` (cả hai), `cols`/`rows` (Snake), `fill` (canvas
-  phủ kín container theo `object-fit`), `className`. Vòng lặp `setInterval`, dọn
-  dẹp khi unmount; canvas scale theo `devicePixelRatio`; màu theme Aurora.
-
-### `Type` — `src/components/Home/Type.js`
-Hiệu ứng gõ chữ (`typewriter-effect`) luân phiên các vai trò: Java developer /
-Software Engineering / Problem Solving / pursuing Solution Architect.
-
-### `Home2` — `src/components/Home/Home2.js`
-Khối "LET ME INTRODUCE MYSELF": đoạn giới thiệu, avatar nghiêng 3D
-(`react-parallax-tilt`), và danh sách social. Email/SĐT có thể bấm để ẩn/hiện
-text (`showEmailText`, `showPhoneText`).
-
-### `Home/Icon/*`
-Các icon SVG tùy biến: `EmailIcon`, `PhoneIcon`, `GithubIcon`,
-`StackOverFlowIcon`.
-
-## Trang About
-
-### `About` — `src/components/About/About.js`
-Bố cục trang: `AboutCard`, ba nhóm tech stack, lịch GitHub, biểu đồ Codeforces.
-Truyền `username="cuong2905say"` cho `CodeforcesRatingChart`.
-
-### `AboutCard` — `src/components/About/AboutCard.js`
-Thẻ giới thiệu bản thân.
-
-### `TechStack1 / TechStack2 / TechStack3`
-Ba hàng icon công nghệ (react-icons), nhóm theo mức độ thành thạo:
-- **TechStack1** ("What I have experience"): Java, Spring Boot, MySQL.
-- **TechStack2** ("And others"), **TechStack3** ("I also know"): các công nghệ phụ.
-
-### `Github` — `src/components/About/Github.js`
-Lịch đóng góp GitHub (`react-github-calendar`, username `cuong02n`, màu accent
-`#a78bfa`) kèm dòng "cập nhật lần cuối" theo thời gian thực.
-
-### `CodeforcesRatingChart` — `src/components/About/CodeforcesRatingChart.js`
-Component phức tạp nhất. Xem chi tiết ở [external-apis.md](./external-apis.md).
-- **Props**: `username` (Codeforces handle).
-- Fetch `user.rating` (đồ thị rating) và `user.status` (số bài đã giải).
-- Vẽ `LineChart` (recharts) với các dải màu rank nền (`ReferenceArea`),
-  `CustomTooltip` hiển thị contest/delta/rating.
-- Trục X là tổng số bài đã giải tích lũy, trục Y là rating.
-
-### `RatingColor` — `src/components/About/RatingColor.js`
-Hàm `ratingColor(rating)` → mã màu theo rank Codeforces.
-
-## Trang Projects
-
-### `Projects` — `src/components/Projects/Projects.jsx`
-Layout **master-detail**: **tab dọc bên trái** + **panel demo ở giữa/phải** (state
-`active`, `summaryOpen`). Mảng `TABS`: **Phone Crawler**, **NexusTI Flow**,
-**Sample Flow** (mỗi mục `label`, `sub`, `html` = key mô tả HTML tái dùng, `src`).
-Bấm tab → panel phải **nhúng thẳng demo qua `<iframe src>`** (route full-screen,
-Navbar portfolio tự ẩn trên `/projects/*` nên không lồng portfolio; `key` theo tab
-để remount). Phone Crawler → `/projects/phone-crawler`; flow →
-`/projects/system-flow/board?company=<id>`. **Summary** không hiện mặc định mà nằm
-trong **dropdown** xổ dưới tiêu đề (nút toggle `proj-summary-toggle` →
-`proj-summary` render `t(html)`). Có link "Open full screen". Style
-`.proj-layout/.proj-side*/.proj-content*/.proj-summary*/.proj-frame` trong `src/style.css`.
-
-### `ProjectCards` — `src/components/Projects/ProjectCards.jsx` (không còn dùng trên trang Projects)
-**Props**:
 | Prop | Kiểu | Ý nghĩa |
 |------|------|---------|
-| `imgPath` | string | ảnh thumbnail |
-| `title` | string | tiêu đề (đã dịch) |
-| `description` | string (HTML) | mô tả — render bằng `dangerouslySetInnerHTML` |
-| `ghLink` | string? | link GitHub (hiện nút GitHub/Blog) |
-| `demoLink` | string? | link demo ngoài (hiện nút "Deployed") |
-| `internalLink` | string? | route demo nội bộ (vd `/projects/phone-crawler`) — hiện nút "Live Demo" + tiêu đề là `<Link>` |
-| `isBlog` | bool | nếu true thì nút GitHub đổi nhãn thành "Blog" |
+| `eyebrow` | string? | nhãn mono in hoa phía trên |
+| `title` | string? | tiêu đề `h2` |
+| `lead` | string? | đoạn mô tả |
+| `action` | node? | phần tử bên phải tiêu đề (vd link "xem tất cả") |
+| `id` | string? | id gắn vào `h2` |
 
-Tiêu đề là link: nếu có `internalLink` → react-router `<Link>` (demo nội bộ);
-ngược lại `<a>` ưu tiên `demoLink` → `ghLink` → `#`.
+### `Fallback` — `src/components/ui/Fallback.jsx`
+Chỗ giữ layout khi chunk lazy đang tải. Prop `height` (mặc định `60vh`).
 
-## Trang Resume
+### `Pre` — `src/components/Pre.jsx`
+Màn hình preloader hiển thị khi `load === true`.
 
-### `ResumeNew` — `src/components/Resume/ResumeNew.js`
-Nhúng file PDF `src/Assets/Resume_CuongNguyenManh.pdf` bằng `react-pdf`
-(`Document`/`Page`, chỉ trang 1). Có 2 nút "Download CV". Scale theo bề rộng màn
-hình (1.7 nếu > 786px, ngược lại 0.6). Worker pdf.js lấy từ CDN cloudflare.
+### `ScrollToTop` — `src/components/ScrollToTop.jsx`
+Cuộn về đầu trang mỗi khi `pathname` đổi.
 
-## Đa ngôn ngữ
+## Trang Home — `src/components/Home/`
 
-### `LanguagePicker` — `src/components/Language/LanguagePicker.js`
-Dropdown (`react-bootstrap`) chọn EN/VI kèm cờ (`react-country-flag`). Gọi
-`i18n.changeLanguage(lang)` và lưu `localStorage['language']`. Được `memo` hóa.
+### `Home` — `Home.jsx`
+Ghép các section: `Hero` → "What I do" (3 thẻ năng lực) → dự án tiêu biểu
+(`FEATURED_PROJECTS`) → dải `CORE_STACK` + link sang `/stack` → dải CTA liên hệ →
+`Arcade`.
+
+### `Hero` — `Hero.jsx`
+Hai cột. Trái: badge trạng thái, lời chào, tên (gradient), `Type`, đoạn giới
+thiệu, 3 nút CTA, lưới 4 số liệu từ `STATS`. Phải: `Terminal` + chú thích.
+
+### `Terminal` — `Terminal.jsx`
+Thẻ terminal tĩnh tóm tắt stack dưới dạng `whoami` / `cat stack.json` /
+`kubectl get deploy | wc -l`. **Cố ý chung chung** — không hostname, IP hay bất
+kỳ thông tin nào thuộc về công ty.
+
+### `Type` — `Type.jsx`
+Hiệu ứng gõ chữ (`typewriter-effect`) chạy qua `TYPED_ROLE_KEYS`. Widget được
+`key={i18n.language}` để remount khi đổi ngôn ngữ (thư viện chỉ đọc `strings` lúc
+mount).
+
+### `Arcade` — `Arcade.jsx`
+Khối gập, **mặc định đóng** — canvas chạy vòng lặp vô hạn nên không nên tự động
+chạy với khách mới vào. Mở ra thì render `SnakeGame` + `TetrisGame`.
+
+### Game tự chơi — `src/components/Arcade/{SnakeGame,TetrisGame}.jsx`
+Hai game tự code, tự chơi trên canvas (không thư viện game).
+- `SnakeGame` — AI BFS tìm đường ngắn nhất tới mồi, fallback flood-fill để sinh
+  tồn; kẹt mới reset. Props: `cols`, `rows`, `cell`, `interval`, `fill`, `className`.
+- `TetrisGame` — AI heuristic (aggregate height / holes / bumpiness / lines, kiểu
+  El-Tetris) chọn xoay + cột tối ưu rồi thả. Props: `cell`, `interval`, `fill`,
+  `className`.
+
+## Trang About — `src/components/About/`
+
+### `About` — `About.jsx`
+Bố cục trang: tiểu sử + avatar → `Timeline` → `Credentials` → `Github` → biểu đồ
+Codeforces (lazy) → `Contact`.
+
+### `Timeline` — `Timeline.jsx`
+Dòng thời gian sự nghiệp đọc từ `EXPERIENCE`, mới nhất trước. Mục `current: true`
+có chấm nhấn sáng và hiển thị "Hiện tại" thay cho ngày kết thúc.
+
+### `Credentials` — `Credentials.jsx`
+Hai thẻ cạnh nhau: học vấn (`EDUCATION`) và chứng chỉ (`CERTIFICATIONS`).
+
+### `Contact` — `Contact.jsx`
+Lưới liên hệ: email, điện thoại, GitHub, Codeforces, Stack Overflow. Dữ liệu từ
+`PROFILE` — đều là thông tin đã có sẵn trên CV công khai.
+
+### `Github` — `Github.jsx`
+Lịch đóng góp GitHub (`react-github-calendar`, username từ `PROFILE.github`, màu
+accent `#a78bfa`) kèm link tới profile.
+
+### `CodeforcesRatingChart` — `CodeforcesRatingChart.jsx`
+Component phức tạp nhất, **nạp lazy** vì kéo theo `recharts`. Xem chi tiết ở
+[external-apis.md](./external-apis.md).
+- **Props**: `username` (Codeforces handle).
+- Fetch `user.rating` (đồ thị rating) và `user.status` (số bài đã giải).
+- Vẽ `LineChart` với các dải màu rank nền (`ReferenceArea`), `CustomTooltip`
+  hiển thị contest/delta/rating. Trục X là tổng số bài đã giải tích lũy.
+
+### `RatingColor` — `RatingColor.js`
+Hàm `ratingColor(rating)` → mã màu theo rank Codeforces.
+
+## Trang Stack — `src/components/Stack/Stack.jsx`
+
+Trang công nghệ đầy đủ, đọc từ `SKILL_GROUPS`.
+- **Chú giải** ba mức (`core` / `working` / `familiar`) + tổng số công nghệ.
+- **Bộ lọc** theo nhóm (chip `pf-filter`), mặc định "Tất cả".
+- Mỗi nhóm là một thẻ: icon + tiêu đề + blurb + danh sách skill. Mỗi skill hiển
+  thị 3 chấm mức độ (`LevelDots`, component nội bộ), tên, và `note` ngữ cảnh.
+- Nhóm `devops` có `featured: true` → nền nhấn và chiếm 2 cột từ 1100px trở lên.
+
+## Trang Projects — `src/components/Projects/`
+
+### `Projects` — `Projects.jsx`
+Hai phần.
+1. **Demo chạy thật**: tab dọc bên trái (`LIVE_DEMOS`) + panel bên phải nhúng
+   `<iframe>` route full-screen. `key` theo tab để remount khi đổi demo. Summary
+   ẩn mặc định, nằm trong dropdown dưới tiêu đề (render `t(bodyKey)` qua
+   `dangerouslySetInnerHTML` vì chuỗi dịch có `<br/>`, `<b>`). Có link "Mở toàn
+   màn hình".
+2. **Toàn bộ danh mục**: bộ lọc theo `KIND` (`live` / `oss` / `work` / `infra`) +
+   lưới `ProjectCard` từ `PROJECTS`.
+
+### `ProjectCard` — `ProjectCard.jsx`
+Một thẻ dự án.
+
+| Prop | Kiểu | Ý nghĩa |
+|------|------|---------|
+| `project` | object | phần tử của `PROJECTS` (xem [data-layer.md](./data-layer.md)) |
+
+Hiển thị icon, badge loại, khoảng thời gian (`ongoing` → "— Hiện tại"), tiêu đề,
+mô tả, tag công nghệ, và các link. `links: []` → hiện nhãn "Mã nguồn riêng tư";
+link có `internal: true` dùng `<Link>` của react-router.
+
+## Trang Resume — `src/components/Resume/Resume.jsx`
+
+Nhúng `src/Assets/Resume_CuongNguyenManh.pdf` bằng thẻ `<object>` — giao cho
+trình xem PDF sẵn có của trình duyệt. Trình duyệt không xem được inline thì
+`<object>` tự rơi về khối fallback có nút tải. Nút "Tải PDF" xuất hiện cả ở
+header section lẫn cuối trang.
+
+> Bản cũ (`ResumeNew.jsx`) render bằng `react-pdf` với worker pdf.js lấy từ CDN
+> cloudflare — CDN lỗi là trang trắng. Đã bỏ cùng dependency `react-pdf`.
+
+## Đa ngôn ngữ — `src/components/Language/LanguagePicker.jsx`
+
+Dropdown tự viết (không react-bootstrap) chọn EN/VI, hiển thị mã ngôn ngữ dạng
+mono. Đóng khi click ra ngoài hoặc nhấn Escape. Gọi `i18n.changeLanguage(lang)`
+và lưu `localStorage['language']`.

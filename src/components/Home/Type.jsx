@@ -1,24 +1,25 @@
 import React from "react";
 import Typewriter from "typewriter-effect";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { TYPED_ROLE_KEYS } from "../../data/profile";
 
+// Typewriter reads its `strings` once on mount, so the whole widget is keyed on
+// the active language — switching locale remounts it with translated copy.
 function Type() {
-    const {t} = useTranslation()
-    return (
-        <Typewriter
-            options={{
-                strings: [
-                    t("Java developer"),
-                    t("Software Engineering"),
-                    t("Problem Solving"),
-                    t("And ...... pursuing a career as a Solution Architect"),
-                ],
-                autoStart: true,
-                loop: true,
-                deleteSpeed: 50,
-            }}
-        />
-    );
+  const { t, i18n } = useTranslation();
+
+  return (
+    <Typewriter
+      key={i18n.language}
+      options={{
+        strings: TYPED_ROLE_KEYS.map((key) => t(key)),
+        autoStart: true,
+        loop: true,
+        delay: 55,
+        deleteSpeed: 30,
+      }}
+    />
+  );
 }
 
 export default Type;
