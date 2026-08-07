@@ -46,7 +46,9 @@ function About() {
           </div>
 
           <aside className="pf-avatar-frame">
-            <img src={avatar} alt={t("profile.name")} />
+            <div className="pf-avatar-photo">
+              <img src={avatar} alt={t("profile.name")} />
+            </div>
             <div className="pf-avatar-meta">
               <span>
                 <b>{t("profile.role")}</b>

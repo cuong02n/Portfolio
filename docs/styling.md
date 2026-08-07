@@ -18,7 +18,7 @@ feature module (`src/features/*`) hay utility của Tailwind.
 | `--pf-accent-2` | `#38bdf8` | cyan — màu nhấn phụ |
 | `--pf-accent-3` | `#f472b6` | hồng — chỉ dùng trong nền mesh |
 | `--pf-grad` | `linear-gradient(115deg, accent, accent-2)` | gradient chủ đạo (nút primary, tên hero, filter active) |
-| `--pf-text` / `--pf-muted` / `--pf-dim` | `#e9eef7` / `#97a3ba` / `#6c7893` | ba cấp độ chữ |
+| `--pf-text` / `--pf-muted` / `--pf-dim` | `#e9eef7` / `#97a3ba` / `#828fa9` | ba cấp độ chữ |
 | `--pf-border` / `--pf-border-soft` | `rgba(255,255,255,.085 / .05)` | viền mảnh |
 | `--pf-surface` / `--pf-surface-2` | `rgba(255,255,255,.028 / .055)` | nền kính (card/panel) |
 | `--pf-r-sm` / `--pf-r` / `--pf-r-lg` | `8px` / `14px` / `22px` | bo góc |

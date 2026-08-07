@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
 import { Routes, Route, NavLink, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { LayoutDashboard, Briefcase, Database, Settings, ArrowLeft } from 'lucide-react'
 import Dashboard from './pages/Dashboard'
 import Jobs from './pages/Jobs'
@@ -17,13 +18,14 @@ export const useWsData = () => useContext(WsContext)
 export const CRAWLER_BASE = '/projects/phone-crawler'
 
 const NAV = [
-  { to: CRAWLER_BASE,                 end: true,  icon: LayoutDashboard, label: 'Dashboard' },
-  { to: `${CRAWLER_BASE}/jobs`,       end: false, icon: Briefcase,       label: 'Jobs'      },
-  { to: `${CRAWLER_BASE}/explorer`,   end: false, icon: Database,        label: 'Explorer'  },
-  { to: `${CRAWLER_BASE}/settings`,   end: false, icon: Settings,        label: 'Settings'  },
+  { to: CRAWLER_BASE,                 end: true,  icon: LayoutDashboard, label: 'crawler.nav.dashboard' },
+  { to: `${CRAWLER_BASE}/jobs`,       end: false, icon: Briefcase,       label: 'crawler.nav.jobs'      },
+  { to: `${CRAWLER_BASE}/explorer`,   end: false, icon: Database,        label: 'crawler.nav.explorer'  },
+  { to: `${CRAWLER_BASE}/settings`,   end: false, icon: Settings,        label: 'crawler.nav.settings'  },
 ]
 
 export default function CrawlerApp() {
+  const { t } = useTranslation()
   const wsData = useWs()
 
   return (
@@ -32,7 +34,7 @@ export default function CrawlerApp() {
         <div className="layout">
           <aside className="sidebar">
             <Link to="/project" className="back-portfolio">
-              <ArrowLeft size={14} /> Portfolio
+              <ArrowLeft size={14} /> {t('crawler.nav.portfolio')}
             </Link>
             <div className="logo">📱 <span>Sim</span>Crawler</div>
             <nav>
@@ -44,7 +46,7 @@ export default function CrawlerApp() {
                   className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                 >
                   <Icon size={15} />
-                  {label}
+                  {t(label)}
                 </NavLink>
               ))}
             </nav>
@@ -52,10 +54,10 @@ export default function CrawlerApp() {
               <span className={`ws-dot ws-${wsData.wsStatus}`} />
               <span className="ws-label">
                 {wsData.wsStatus === 'connected'
-                  ? `Live · ${wsData.wsMsgCount ?? 0} msg`
-                  : wsData.wsStatus === 'connecting' ? 'Connecting...'
-                  : wsData.wsStatus === 'error' ? 'WS Error'
-                  : 'Disconnected'}
+                  ? t('crawler.ws.live', { count: wsData.wsMsgCount ?? 0 })
+                  : wsData.wsStatus === 'connecting' ? t('crawler.ws.connecting')
+                  : wsData.wsStatus === 'error' ? t('crawler.ws.error')
+                  : t('crawler.ws.disconnected')}
               </span>
             </div>
           </aside>

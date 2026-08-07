@@ -44,7 +44,7 @@ function Hero() {
         <div className="pf-stats">
           {STATS.map((stat) => (
             <div className="pf-stat" key={stat.labelKey}>
-              <span className="pf-stat-value pf-gradient-text">{stat.value}</span>
+              <span className="pf-stat-value">{stat.value}</span>
               <span className="pf-stat-label">{t(stat.labelKey)}</span>
             </div>
           ))}

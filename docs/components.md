@@ -116,8 +116,10 @@ Trang công nghệ đầy đủ, đọc từ `SKILL_GROUPS`.
 - **Chú giải** ba mức (`core` / `working` / `familiar`) + tổng số công nghệ.
 - **Bộ lọc** theo nhóm (chip `pf-filter`), mặc định "Tất cả".
 - Mỗi nhóm là một thẻ: icon + tiêu đề + blurb + danh sách skill. Mỗi skill hiển
-  thị 3 chấm mức độ (`LevelDots`, component nội bộ), tên, và `note` ngữ cảnh.
-- Nhóm `devops` có `featured: true` → nền nhấn và chiếm 2 cột từ 1100px trở lên.
+  thị 3 chấm mức độ (`LevelDots`, component nội bộ — chấm đặc = đạt mức đó, vòng
+  rỗng = chưa), tên, và `note` ngữ cảnh.
+- 10 nhóm xếp lưới 2 cột đều nhau. (`featured: true` vẫn được hỗ trợ để cho một
+  nhóm chiếm 2 cột từ 1100px trở lên — hiện không nhóm nào bật.)
 
 ## Trang Projects — `src/components/Projects/`
 

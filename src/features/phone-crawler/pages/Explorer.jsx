@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Download, RefreshCw } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom'
 import { api } from '../api'
@@ -72,6 +73,7 @@ function resolvePresets(active, paramInputs) {
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export default function Explorer() {
+  const { t }                     = useTranslation()
   const [searchParams]            = useSearchParams()
   const [files, setFiles]         = useState([])
   const [selected, setSelected]   = useState('')
@@ -109,7 +111,7 @@ export default function Explorer() {
       if (e.name === 'AbortError') return  // superseded by newer request — silent
       if (reqId === reqIdRef.current) {
         console.error('[preview failed]', e)
-        setError(e.message || 'Lỗi không xác định')
+        setError(e.message || t('crawler.common.unknownErr'))
       }
     } finally {
       if (reqId === reqIdRef.current) setLoading(false)
@@ -195,7 +197,7 @@ export default function Explorer() {
 
   return (
     <div>
-      <h1 className="page-title">Data Explorer</h1>
+      <h1 className="page-title">{t('crawler.explorer.title')}</h1>
 
       <div className="card">
         {/* File selector + download + refresh */}
@@ -206,7 +208,7 @@ export default function Explorer() {
             value={selected}
             onChange={e => handleFileChange(e.target.value)}
           >
-            {files.length === 0 && <option>Chưa có file CSV...</option>}
+            {files.length === 0 && <option>{t('crawler.explorer.noFilesOption')}</option>}
             {files.map(f => (
               <option key={f.path} value={f.path}>
                 {f.name}  ({(f.size / 1024).toFixed(1)} KB)
@@ -215,29 +217,31 @@ export default function Explorer() {
           </select>
 
           <button className="btn btn-ghost" onClick={handleRefresh} disabled={refreshing}
-            title="Tải lại danh sách file">
+            title={t('crawler.explorer.refreshTitle')}>
             <RefreshCw size={13} style={refreshing ? { animation: 'spin 0.8s linear infinite' } : undefined} />
-            {refreshing ? 'Đang tải...' : 'Refresh'}
+            {refreshing ? t('crawler.explorer.refreshing') : t('crawler.common.refresh')}
           </button>
 
           {selected && (
             <a className="btn btn-ghost" href={api.downloadUrl(selected)} download>
-              <Download size={13} /> Download
+              <Download size={13} /> {t('crawler.common.download')}
             </a>
           )}
         </div>
 
         {/* Filter presets */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-          <div className="card-title" style={{ marginBottom: 0 }}>🎯 Bộ lọc số đẹp</div>
+          <div className="card-title" style={{ marginBottom: 0 }}>🎯 {t('crawler.explorer.filters')}</div>
           {totalActive > 0 && (
             <>
               <span className="muted" style={{ fontSize: 11 }}>
-                {totalActive} đang bật {totalActive > 1 ? '(AND)' : ''}
+                {totalActive > 1
+                  ? t('crawler.explorer.activeAnd', { count: totalActive })
+                  : t('crawler.explorer.active', { count: totalActive })}
               </span>
               <button className="btn btn-ghost" style={{ padding: '1px 8px', fontSize: 11 }}
                 onClick={clearAll}>
-                Xóa tất cả
+                {t('crawler.explorer.clearAll')}
               </button>
             </>
           )}
@@ -266,7 +270,7 @@ export default function Explorer() {
           <div style={{ marginBottom: 10 }}>
             <div style={{ fontSize: 10, color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.05em',
                           textTransform: 'uppercase', marginBottom: 5 }}>
-              Tùy chỉnh
+              {t('crawler.explorer.custom')}
             </div>
             <div className="preset-grid" style={{ marginBottom: 0 }}>
               {PARAM_PRESETS.map(({ key, label, placeholder, maxLength, isValid }) => {
@@ -311,19 +315,19 @@ export default function Explorer() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, marginTop: 4 }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12 }}>
             <input type="checkbox" checked={fetchAll} onChange={e => setFetchAll(e.target.checked)} />
-            Lấy hết (không giới hạn 200)
+            {t('crawler.explorer.fetchAll')}
           </label>
         </div>
 
         {/* Results */}
-        {loading && <p className="muted" style={{ marginTop: 12 }}>Đang lọc…</p>}
+        {loading && <p className="muted" style={{ marginTop: 12 }}>{t('crawler.explorer.filtering')}</p>}
 
         {error && !loading && (
           <div className="alert alert-error" style={{ marginTop: 12, fontSize: 12 }}>
-            ❌ Lỗi: {error}
+            ❌ {t('crawler.explorer.error')}: {error}
             <button className="btn btn-ghost" style={{ marginLeft: 10, padding: '2px 8px', fontSize: 11 }}
               onClick={() => preview(selected, resolvePresets(activePresets, paramInputs))}>
-              Thử lại
+              {t('crawler.common.retry')}
             </button>
           </div>
         )}
@@ -332,16 +336,16 @@ export default function Explorer() {
           <>
             <div className="result-bar">
               <strong>{result.filtered_count.toLocaleString()}</strong>
-              <span className="muted">kết quả</span>
+              <span className="muted">{t('crawler.explorer.results')}</span>
               <span className="muted">/</span>
-              <span className="muted">{result.total_count.toLocaleString()} tổng</span>
+              <span className="muted">{result.total_count.toLocaleString()} {t('crawler.explorer.total')}</span>
               {!fetchAll && totalActive > 0 && result.numbers.length < result.filtered_count && (
-                <span className="muted" style={{ fontSize: 12 }}>(hiển thị 200 đầu)</span>
+                <span className="muted" style={{ fontSize: 12 }}>{t('crawler.explorer.first200')}</span>
               )}
             </div>
 
             {result.numbers.length === 0 ? (
-              <p className="muted">Không tìm thấy số nào khớp bộ lọc.</p>
+              <p className="muted">{t('crawler.explorer.noMatch')}</p>
             ) : (
               <div className="number-grid">
                 {result.numbers.map((n, i) => (
@@ -354,7 +358,7 @@ export default function Explorer() {
 
         {files.length === 0 && (
           <p className="muted" style={{ marginTop: 8 }}>
-            Chưa có file dữ liệu. Hãy chạy crawler để thu thập số.
+            {t('crawler.explorer.noData')}
           </p>
         )}
       </div>

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CheckCircle } from 'lucide-react'
 import { api } from '../api'
 import { useAdminToken } from '../../../shared/adminToken'
 
 // ── Admin token card ─────────────────────────────────────────────────────────
 function AdminTokenCard() {
+  const { t } = useTranslation()
   const { token, hasToken, setToken } = useAdminToken()
   const [draft, setDraft] = useState(token)
   const [saved, setSaved] = useState(false)
@@ -25,34 +27,32 @@ function AdminTokenCard() {
 
   return (
     <div className="card settings-card">
-      <div className="card-title">🔑 Admin Token</div>
+      <div className="card-title">🔑 {t('crawler.settings.token.title')}</div>
       <p className="muted" style={{ fontSize: 12, marginBottom: 12, lineHeight: 1.6 }}>
-        Cần admin token để tạo/điều khiển job và xem/sửa cấu hình proxy. Token được
-        lưu trong trình duyệt (localStorage) và gửi qua header <code>X-Admin-Token</code>.
-        Không có token → chỉ xem (Dashboard, Explorer, feed).
+        {t('crawler.settings.token.desc')}
       </p>
       <form className="form-stack" onSubmit={save}>
         <div className="form-group">
-          <label>Token</label>
+          <label>{t('crawler.settings.token.label')}</label>
           <input
             className="form-input"
             type="password"
             value={draft}
             onChange={e => setDraft(e.target.value)}
-            placeholder="Dán admin token…"
+            placeholder={t('crawler.settings.token.placeholder')}
             autoComplete="off"
           />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button type="submit" className="btn btn-primary">💾 Lưu token</button>
+          <button type="submit" className="btn btn-primary">💾 {t('crawler.settings.token.save')}</button>
           {hasToken && (
-            <button type="button" className="btn btn-ghost" onClick={clear}>Xóa token</button>
+            <button type="button" className="btn btn-ghost" onClick={clear}>{t('crawler.settings.token.clear')}</button>
           )}
           {saved && (
-            <span className="saved-notice"><CheckCircle size={14} /> Đã lưu!</span>
+            <span className="saved-notice"><CheckCircle size={14} /> {t('crawler.common.saved')}</span>
           )}
           <span style={{ marginLeft: 'auto', fontSize: 12, color: hasToken ? 'var(--green)' : 'var(--muted)' }}>
-            {hasToken ? '● Có token (admin)' : '○ Chưa có token (chỉ xem)'}
+            {hasToken ? t('crawler.settings.token.has') : t('crawler.settings.token.none')}
           </span>
         </div>
       </form>
@@ -62,13 +62,14 @@ function AdminTokenCard() {
 
 // ── Proxy configuration card (admin only) ───────────────────────────────────
 function ProxyConfigCard() {
+  const { t } = useTranslation()
   const [cfg, setCfg]     = useState({ proxy_dns: '', username: '', password: '', proxy_mode: 'sticky' })
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    api.getConfig().then(setCfg).catch(err => setError(err.message || 'Không tải được cấu hình'))
-  }, [])
+    api.getConfig().then(setCfg).catch(err => setError(err.message || t('crawler.settings.proxy.loadErr')))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const set = (k) => (e) => setCfg(c => ({ ...c, [k]: e.target.value }))
 
@@ -80,35 +81,35 @@ function ProxyConfigCard() {
       setSaved(true)
       setTimeout(() => setSaved(false), 2500)
     } catch (err) {
-      setError(err.message || 'Lưu cấu hình thất bại')
+      setError(err.message || t('crawler.settings.proxy.saveErr'))
     }
   }
 
   return (
     <div className="card settings-card">
-      <div className="card-title">⚙️ Proxy Configuration</div>
+      <div className="card-title">⚙️ {t('crawler.settings.proxy.title')}</div>
       {error && <div className="alert alert-error" style={{ fontSize: 12 }}>{error}</div>}
       <form className="form-stack" onSubmit={save}>
         <div className="form-group">
-          <label>Proxy DNS (ip:port)</label>
+          <label>{t('crawler.settings.proxy.dns')}</label>
           <input className="form-input" value={cfg.proxy_dns} onChange={set('proxy_dns')}
             placeholder="43.153.x.x:2334" />
         </div>
         <div className="form-group">
-          <label>Username</label>
+          <label>{t('crawler.settings.proxy.username')}</label>
           <input className="form-input" value={cfg.username} onChange={set('username')} />
         </div>
         <div className="form-group">
-          <label>Password</label>
+          <label>{t('crawler.settings.proxy.password')}</label>
           <input className="form-input" type="password" value={cfg.password} onChange={set('password')} />
         </div>
 
         <div className="form-group">
-          <label>Proxy Mode</label>
+          <label>{t('crawler.settings.proxy.mode')}</label>
           <div style={{ display: 'flex', gap: 16, marginTop: 4 }}>
             {[
-              ['sticky',   'Sticky (per-job)',    'Cùng IP cho toàn bộ job. D1N challenge chỉ 1 lần đầu. Phù hợp nếu rate limit per-session.'],
-              ['rotating', 'Rotating (per-pattern)', 'IP mới mỗi pattern. Bypass rate limit per-IP. Mỗi pattern tốn thêm 1 request D1N challenge.'],
+              ['sticky',   t('crawler.settings.proxy.sticky'),   t('crawler.settings.proxy.stickyDesc')],
+              ['rotating', t('crawler.settings.proxy.rotating'), t('crawler.settings.proxy.rotatingDesc')],
             ].map(([val, label, desc]) => (
               <label key={val} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, cursor: 'pointer', flex: 1 }}>
                 <input type="radio" name="proxy_mode" value={val}
@@ -126,27 +127,28 @@ function ProxyConfigCard() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <button type="submit" className="btn btn-primary">💾 Lưu cấu hình</button>
+          <button type="submit" className="btn btn-primary">💾 {t('crawler.settings.proxy.save')}</button>
           {saved && (
-            <span className="saved-notice"><CheckCircle size={14} /> Đã lưu!</span>
+            <span className="saved-notice"><CheckCircle size={14} /> {t('crawler.common.saved')}</span>
           )}
         </div>
       </form>
 
       <p className="muted" style={{ marginTop: 16, fontSize: 12, lineHeight: 1.6 }}>
-        <strong>Proxy DNS là bắt buộc</strong> — crawler sẽ không chạy nếu chưa cấu hình.<br />
-        Cấu hình được đọc mỗi lần gửi request — không cần restart crawler.
+        <strong>{t('crawler.settings.proxy.note1')}</strong><br />
+        {t('crawler.settings.proxy.note2')}
       </p>
     </div>
   )
 }
 
 export default function Settings() {
+  const { t } = useTranslation()
   const { hasToken } = useAdminToken()
 
   return (
     <div>
-      <h1 className="page-title">Settings</h1>
+      <h1 className="page-title">{t('crawler.settings.title')}</h1>
 
       <AdminTokenCard />
 
@@ -154,19 +156,19 @@ export default function Settings() {
         <ProxyConfigCard />
       ) : (
         <div className="card settings-card">
-          <div className="card-title">⚙️ Proxy Configuration</div>
+          <div className="card-title">⚙️ {t('crawler.settings.proxy.title')}</div>
           <p className="muted" style={{ fontSize: 13 }}>
-            🔒 Nhập admin token ở trên để xem và chỉnh sửa cấu hình proxy.
+            🔒 {t('crawler.settings.proxy.locked')}
           </p>
         </div>
       )}
 
       <div className="card" style={{ maxWidth: 460 }}>
-        <div className="card-title">ℹ️ Thông tin hệ thống</div>
+        <div className="card-title">ℹ️ {t('crawler.settings.info.title')}</div>
         <table style={{ fontSize: 12, lineHeight: 2, width: '100%' }}>
           <tbody>
-            <tr><td className="muted">Dữ liệu crawl</td><td><code className="mono">data/{'{'}network{'}'}_{'{'}{'{'}job_id{'}'}{'}'}.csv</code></td></tr>
-            <tr><td className="muted">Backend</td><td className="muted">FastAPI + PostgreSQL (deploy độc lập)</td></tr>
+            <tr><td className="muted">{t('crawler.settings.info.data')}</td><td><code className="mono">data/{'{'}network{'}'}_{'{'}{'{'}job_id{'}'}{'}'}.csv</code></td></tr>
+            <tr><td className="muted">{t('crawler.settings.info.backend')}</td><td className="muted">{t('crawler.settings.info.backendVal')}</td></tr>
           </tbody>
         </table>
       </div>

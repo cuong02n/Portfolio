@@ -19,9 +19,20 @@ import resumePdf from "../../Assets/Resume_CuongNguyenManh.pdf";
 function Resume() {
   const { t } = useTranslation();
   const [canInline, setCanInline] = useState(false);
+  const [isWide, setIsWide] = useState(false);
 
   useEffect(() => {
     setCanInline(navigator.pdfViewerEnabled === true);
+  }, []);
+
+  // Inline the PDF only on wider viewports — on a phone the one-page CV shrinks
+  // to an illegible thumbnail, so there the download card is the better answer.
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 760px)");
+    const update = () => setIsWide(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
 
   const download = (
@@ -45,13 +56,15 @@ function Resume() {
         action={download}
       />
 
-      {canInline ? (
-        <object
-          className="pf-resume-frame"
-          data={resumePdf}
-          type="application/pdf"
-          aria-label={t("resume.title")}
-        />
+      {canInline && isWide ? (
+        <div className="pf-resume-viewer">
+          <object
+            className="pf-resume-frame"
+            data={resumePdf}
+            type="application/pdf"
+            aria-label={t("resume.title")}
+          />
+        </div>
       ) : (
         <div className="pf-card pf-resume-card">
           <span className="pf-card-icon">

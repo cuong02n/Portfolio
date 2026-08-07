@@ -53,8 +53,9 @@ Vietdefi.
 | `CORE_STACK` | Dải tag ngắn hiển thị ở trang chủ |
 
 Nhóm (theo thứ tự hiển thị): `languages`, `backend`, `architecture`, `data`,
-`messaging`, `workflow`, `security`, **`devops`** (đánh dấu `featured: true` →
-chiếm 2 cột trên màn rộng), `frontend`, `tooling`.
+`messaging`, `workflow`, `security`, `devops`, `frontend`, `tooling`. Hiện không
+nhóm nào bật `featured` (cơ chế vẫn hỗ trợ: `featured: true` → nhóm chiếm 2 cột
+trên màn rộng).
 
 Mỗi skill gồm:
 

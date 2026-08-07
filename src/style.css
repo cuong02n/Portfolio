@@ -23,7 +23,7 @@
 
   --pf-text:        #e9eef7;
   --pf-muted:       #97a3ba;
-  --pf-dim:         #6c7893;
+  --pf-dim:         #828fa9;
 
   --pf-border:      rgba(255, 255, 255, 0.085);
   --pf-border-soft: rgba(255, 255, 255, 0.05);
@@ -748,7 +748,24 @@ button { font: inherit; color: inherit; }
   padding: 10px;
   background: var(--pf-surface);
 }
-.pf-avatar-frame img { border-radius: 16px; width: 100%; }
+/* The source photo has a busy background; a theme-tinted scrim over the image
+   (not the meta below it) keeps it from competing. Swap for a clean headshot
+   when one exists and this overlay can be dialled back or removed. */
+.pf-avatar-photo {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.pf-avatar-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7, 9, 18, 0.12), rgba(7, 9, 18, 0.52)),
+    linear-gradient(125deg, rgba(167, 139, 250, 0.24), rgba(56, 189, 248, 0.14));
+}
+.pf-avatar-frame img { display: block; border-radius: 16px; width: 100%; }
 .pf-avatar-meta {
   display: flex;
   flex-direction: column;
@@ -888,18 +905,21 @@ button { font: inherit; color: inherit; }
 
 .pf-level {
   display: inline-flex;
-  gap: 3px;
+  gap: 4px;
   flex: none;
 }
+/* Filled = experience reaches this depth; hollow ring = it does not. Filled-vs-
+   hollow reads faster than three faint dots of near-equal weight. */
 .pf-level i {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
 }
-.pf-level--core i          { background: var(--pf-accent); }
-.pf-level--working i:nth-child(-n+2) { background: var(--pf-accent-2); }
-.pf-level--familiar i:nth-child(1)   { background: #64748b; }
+.pf-level--core i          { background: var(--pf-accent);   box-shadow: none; }
+.pf-level--working i:nth-child(-n+2) { background: var(--pf-accent-2); box-shadow: none; }
+.pf-level--familiar i:nth-child(1)   { background: #94a3b8;  box-shadow: none; }
 
 .pf-filters {
   display: flex;
@@ -931,9 +951,9 @@ button { font: inherit; color: inherit; }
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 18px;
   align-items: start;
-  /* The DevOps card spans two columns, which leaves an odd number of single
-     cells and strands one group beside a hole. `dense` lets a later group
-     backfill it. */
+  /* A group marked `featured` spans two columns; `dense` then lets a later
+     single-column group backfill the cell left beside it. (No group is
+     featured by default — all ten tile evenly two-up.) */
   grid-auto-flow: dense;
 }
 .pf-stack-group.is-featured {
@@ -1072,6 +1092,9 @@ button { font: inherit; color: inherit; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   gap: 18px;
+  /* Cards take their natural height instead of stretching to the tallest in the
+     row — otherwise a short card leaves a hollow gap above its pinned footer. */
+  align-items: start;
 }
 .pf-proj { display: flex; flex-direction: column; }
 .pf-proj-top {
@@ -1112,12 +1135,22 @@ button { font: inherit; color: inherit; }
 /* ══════════════════════════════════════════════════════════════════════════
    Résumé
    ══════════════════════════════════════════════════════════════════════════ */
+/* A dark matte around the white PDF page so it doesn't hard-cut against the
+   Aurora background. */
+.pf-resume-viewer {
+  padding: clamp(10px, 1.6vw, 18px);
+  border: 1px solid var(--pf-border);
+  border-radius: var(--pf-r-lg);
+  background:
+    radial-gradient(600px 200px at 50% 0%, rgba(167, 139, 250, 0.10), transparent 70%),
+    var(--pf-bg-elevated);
+}
 .pf-resume-frame {
   display: block;
   width: 100%;
-  height: clamp(520px, 84vh, 1100px);
-  border: 1px solid var(--pf-border);
-  border-radius: var(--pf-r-lg);
+  height: clamp(520px, 82vh, 1100px);
+  border: 0;
+  border-radius: var(--pf-r);
   background: #1c2030;
 }
 

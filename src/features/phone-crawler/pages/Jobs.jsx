@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChevronDown, ChevronUp, Play, Pause, RotateCcw, Trash2, Database } from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom'
 import { api } from '../api'
@@ -16,14 +17,14 @@ const STATUS = {
 }
 
 const PATTERN_PRESETS = [
-  { label: 'Toàn bộ Viettel (03/08/09)', value: '0?????????' },
-  { label: 'Toàn bộ 09x',                value: '09????????' },
-  { label: 'Toàn bộ 08x',                value: '08????????' },
-  { label: 'Toàn bộ 03x',                value: '03????????' },
-  { label: '0901 xxxxxx',                value: '0901??????' },
-  { label: '0909 xxxxxx',                value: '0909??????' },
-  { label: '0888 xxxxxx',                value: '0888??????' },
-  { label: '0333 xxxxxx',                value: '0333??????' },
+  { labelKey: 'crawler.jobs.preset.p1', value: '0?????????' },
+  { labelKey: 'crawler.jobs.preset.p2', value: '09????????' },
+  { labelKey: 'crawler.jobs.preset.p3', value: '08????????' },
+  { labelKey: 'crawler.jobs.preset.p4', value: '03????????' },
+  { labelKey: 'crawler.jobs.preset.p5', value: '0901??????' },
+  { labelKey: 'crawler.jobs.preset.p6', value: '0909??????' },
+  { labelKey: 'crawler.jobs.preset.p7', value: '0888??????' },
+  { labelKey: 'crawler.jobs.preset.p8', value: '0333??????' },
 ]
 
 // ── Progress bar ───────────────────────────────────────────────────────────────
@@ -88,6 +89,7 @@ function extractViettelSession(lines) {
 // ── Thread sub-panels (reused in both ThreadLogs and LiveLogMonitor) ───────────
 
 function ThreadPanels({ threadData, panelRefs, wrap = true, defaultW = 280, defaultH = 200, network = '' }) {
+  const { t } = useTranslation()
   const threadNums = Object.keys(threadData).map(Number).sort((a, b) => a - b)
   if (threadNums.length === 0) return null
 
@@ -171,7 +173,7 @@ function ThreadPanels({ threadData, panelRefs, wrap = true, defaultW = 280, defa
               }}
             >
               {lines.length === 0
-                ? <div style={{ color: 'var(--muted)', fontStyle: 'italic' }}>đang chờ…</div>
+                ? <div style={{ color: 'var(--muted)', fontStyle: 'italic' }}>{t('crawler.jobs.waiting')}</div>
                 : lines.map((l, i) => (
                     <div key={i} style={{ color: logColor(l), ...lineStyle }}>
                       {l.time && <span style={{ color: 'var(--muted)', marginRight: 5 }}>{l.time}</span>}
@@ -190,6 +192,7 @@ function ThreadPanels({ threadData, panelRefs, wrap = true, defaultW = 280, defa
 // ── Per-thread log panels (inside expanded job card) ──────────────────────────
 
 function ThreadLogs({ jobId, status, open, log, network = '' }) {
+  const { t } = useTranslation()
   const [threadData, setThreadData] = useState({})
   const panelRefs   = useRef({})
   const intervalRef = useRef(null)
@@ -221,10 +224,10 @@ function ThreadLogs({ jobId, status, open, log, network = '' }) {
   return (
     <div className="log-section">
       <h4 style={{ margin: '0 0 8px' }}>
-        📜 Log{threadNums.length > 0 ? ` — ${threadNums.length} luồng` : ''}
+        📜 {threadNums.length > 0 ? t('crawler.jobs.logThreads', { count: threadNums.length }) : t('crawler.jobs.log')}
       </h4>
       {threadNums.length === 0
-        ? <pre className="log-pre">{log || 'Chưa có log...'}</pre>
+        ? <pre className="log-pre">{log || t('crawler.jobs.noLog')}</pre>
         : <ThreadPanels threadData={threadData} panelRefs={panelRefs} defaultW={260} defaultH={180} network={network} />
       }
     </div>
@@ -234,6 +237,7 @@ function ThreadLogs({ jobId, status, open, log, network = '' }) {
 // ── Live multi-job log monitor ─────────────────────────────────────────────────
 
 function JobLogPanel({ job }) {
+  const { t } = useTranslation()
   const [threadData, setThreadData] = useState({})
   const [rawLog, setRawLog]         = useState('')
   const [merged, setMerged]         = useState(false)
@@ -297,7 +301,7 @@ function JobLogPanel({ job }) {
         <code style={{ fontSize: 11, color: 'var(--muted)' }}>{job.pattern}</code>
         <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--muted)' }}>
           {!merged && threadNums.length > 0 ? `${threadNums.length}T · ` : ''}
-          {lineCount} dòng · {job.total_saved.toLocaleString()} số
+          {lineCount} {t('crawler.jobs.linesWord')} · {job.total_saved.toLocaleString()} {t('crawler.jobs.numbersWord')}
         </span>
       </div>
 
@@ -311,26 +315,26 @@ function JobLogPanel({ job }) {
           border: '1px solid var(--border)',
           borderRadius: 5,
         }}>
-          <span title="Số request đã gửi đến API">
+          <span title={t('crawler.jobs.tip.req')}>
             📨 <strong style={{ color: 'var(--text)' }}>{(job.live_stats.requests ?? 0).toLocaleString()}</strong> req
           </span>
           {job.live_stats.session_refreshes !== undefined && (
-            <span title="Số lần lấy lại laravel_session bằng Playwright">
+            <span title={t('crawler.jobs.tip.session')}>
               🔑 <strong style={{ color: 'var(--text)' }}>{job.live_stats.session_refreshes}</strong> session
             </span>
           )}
           {job.live_stats.d1n_refreshes !== undefined && (
-            <span title="Số lần giải D1N challenge">
+            <span title={t('crawler.jobs.tip.d1n')}>
               🛡 <strong style={{ color: 'var(--text)' }}>{job.live_stats.d1n_refreshes}</strong> D1N
             </span>
           )}
           {job.live_stats.ip_rotates !== undefined && (
-            <span title="Số lần rotate IP proxy">
+            <span title={t('crawler.jobs.tip.rotate')}>
               🌐 <strong style={{ color: 'var(--text)' }}>{job.live_stats.ip_rotates}</strong> rotate
             </span>
           )}
           {job.live_stats.ec1 !== undefined && (
-            <span title="Số lần Viettel trả ec=1 (rate limit). Tỷ lệ ec1/req nên < 3%."
+            <span title={t('crawler.jobs.tip.ec1')}
                   style={{ color: job.live_stats.ec1 > 0 ? '#e3a008' : undefined }}>
               ⛔ <strong style={{ color: job.live_stats.ec1 > 0 ? '#e3a008' : 'var(--text)' }}>
                 {job.live_stats.ec1}
@@ -360,21 +364,21 @@ function JobLogPanel({ job }) {
           className={`btn ${merged ? 'btn-primary' : 'btn-ghost'}`}
           style={{ padding: '2px 8px', fontSize: 11 }}
           onClick={() => setMerged(m => !m)}
-          title={merged ? 'Tách thành các thread riêng' : 'Gộp tất cả thread vào 1 panel'}
+          title={merged ? t('crawler.jobs.tip.split') : t('crawler.jobs.tip.merge')}
         >
-          {merged ? '⊟ Đang gộp' : '⊞ Gộp'}
+          {merged ? `⊟ ${t('crawler.jobs.merged')}` : `⊞ ${t('crawler.jobs.merge')}`}
         </button>
         <button
           type="button"
           className={`btn ${wrap ? 'btn-primary' : 'btn-ghost'}`}
           style={{ padding: '2px 8px', fontSize: 11 }}
           onClick={() => setWrap(w => !w)}
-          title="Bật/tắt xuống dòng cho log dài"
+          title={t('crawler.jobs.tip.wrap')}
         >
           ↵ Wrap
         </button>
         <span style={{ marginLeft: 'auto', color: 'var(--muted)', fontStyle: 'italic' }}>
-          {merged ? '⇕ kéo cạnh dưới để resize' : '⤡ kéo góc mỗi panel để resize'}
+          {merged ? `⇕ ${t('crawler.jobs.mergeTip')}` : `⤡ ${t('crawler.jobs.splitTip')}`}
         </span>
       </div>
 
@@ -399,11 +403,11 @@ function JobLogPanel({ job }) {
             minWidth: 240,
           }}
         >
-          {rawLog || <span style={{ color: 'var(--muted)', fontStyle: 'italic' }}>đang chờ log…</span>}
+          {rawLog || <span style={{ color: 'var(--muted)', fontStyle: 'italic' }}>{t('crawler.jobs.waitingLog')}</span>}
         </div>
       ) : threadNums.length === 0 ? (
         <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted)', fontStyle: 'italic' }}>
-          đang khởi động…
+          {t('crawler.jobs.startingLog')}
         </div>
       ) : (
         <ThreadPanels threadData={threadData} panelRefs={panelRefs} wrap={wrap} network={job.network} />
@@ -413,13 +417,14 @@ function JobLogPanel({ job }) {
 }
 
 function LiveLogMonitor({ jobs }) {
+  const { t } = useTranslation()
   const active = jobs.filter(j => j.status === 'running' || j.status === 'paused')
   if (active.length === 0) return null
 
   return (
     <div className="card" style={{ marginBottom: 16 }}>
       <div className="card-title" style={{ marginBottom: 10 }}>
-        📺 Live Log — {active.length} job
+        📺 {t('crawler.jobs.liveLog', { count: active.length })}
       </div>
       <div style={{
         display: 'grid',
@@ -435,6 +440,7 @@ function LiveLogMonitor({ jobs }) {
 // ── Job card ───────────────────────────────────────────────────────────────────
 
 function JobCard({ job, onRefresh }) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { has_proxy: hasProxy } = useWsData()
   const { hasToken } = useAdminToken()
@@ -495,7 +501,7 @@ function JobCard({ job, onRefresh }) {
     try {
       await fn()
     } catch (err) {
-      window.alert(err.message || 'Thao tác thất bại')
+      window.alert(err.message || t('crawler.common.actionFailed'))
     } finally {
       await onRefresh()
       setBusy(false)
@@ -510,7 +516,7 @@ function JobCard({ job, onRefresh }) {
       setResumeSession(res)
       setSessionStatus('ok')
     } catch (err) {
-      setSessionError(err.message || 'Lỗi không xác định')
+      setSessionError(err.message || t('crawler.common.unknownErr'))
       setSessionStatus('error')
     }
   }
@@ -526,7 +532,7 @@ function JobCard({ job, onRefresh }) {
   }
 
   const doDelete = () => {
-    if (!window.confirm(`Xóa job ${id} (${network} ${pattern})? Hành động này không thể hoàn tác.`)) return
+    if (!window.confirm(t('crawler.jobs.deleteConfirm', { id, network, pattern }))) return
     return api.deleteJob(id)
   }
 
@@ -543,20 +549,20 @@ function JobCard({ job, onRefresh }) {
           <strong style={{ fontSize: 12 }}>{network.toUpperCase()}</strong>
           <code className="job-pattern">{pattern}</code>
           {network === 'viettel' && metaObj.isdn_type === 22 && (
-            <span className="badge" style={{ background: '#7c3aed', color: 'white' }}>💼 trả sau</span>
+            <span className="badge" style={{ background: '#7c3aed', color: 'white' }}>💼 {t('crawler.jobs.postpaid')}</span>
           )}
           {network === 'viettel' && (metaObj.isdn_type === 2 || metaObj.isdn_type === undefined) && (
-            <span className="badge" style={{ background: '#0891b2', color: 'white' }}>📱 trả trước</span>
+            <span className="badge" style={{ background: '#0891b2', color: 'white' }}>📱 {t('crawler.jobs.prepaid')}</span>
           )}
           {(network === 'viettel' || network === 'vietnamobile') && metaObj.no_proxy && (
-            <span className="badge" style={{ background: '#e3a008', color: 'white' }}>🏠 no proxy</span>
+            <span className="badge" style={{ background: '#e3a008', color: 'white' }}>🏠 {t('crawler.jobs.noProxy')}</span>
           )}
           {outputName && (
             <code className="job-id" style={{ color: 'var(--muted)' }}>{outputName}</code>
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span className="saved-count">{total_saved.toLocaleString()} số</span>
+          <span className="saved-count">{total_saved.toLocaleString()} {t('crawler.jobs.numbersWord')}</span>
           <button className="icon-btn" onClick={e => { e.stopPropagation(); toggle() }}>
             {open ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
           </button>
@@ -598,14 +604,14 @@ function JobCard({ job, onRefresh }) {
       <div className="job-actions">
         {!hasToken && (
           <span className="muted" style={{ fontSize: 12 }}>
-            🔒 Chỉ xem — nhập admin token ở Settings để điều khiển job.
+            🔒 {t('crawler.jobs.cardViewOnly')}
           </span>
         )}
         {hasToken && status === 'running' && (
           <>
             <button className="btn btn-warning" disabled={busy}
               onClick={() => act(() => api.pauseJob(id))}>
-              <Pause size={13} /> Pause
+              <Pause size={13} /> {t('crawler.jobs.pause')}
             </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <button className="btn btn-ghost" style={{ padding: '2px 8px' }} disabled={busy || threads <= 1}
@@ -625,11 +631,11 @@ function JobCard({ job, onRefresh }) {
                 <button type="button" className="btn btn-ghost"
                   disabled={sessionStatus === 'loading' || !hasProxy}
                   onClick={fetchSessionForResume}>
-                  {sessionStatus === 'loading' ? '⏳ Đang lấy session...' : '🤖 Lấy session mới'}
+                  {sessionStatus === 'loading' ? `⏳ ${t('crawler.jobs.gettingSession')}` : `🤖 ${t('crawler.jobs.getSession')}`}
                 </button>
                 {sessionStatus === 'ok' && (
                   <span style={{ fontSize: 11, color: 'var(--green)' }}>
-                    ✓ session: <code>{resumeSession.proxy_session_id}</code>
+                    ✓ {t('crawler.jobs.sessionLabel')}: <code>{resumeSession.proxy_session_id}</code>
                   </span>
                 )}
                 {sessionStatus === 'error' && (
@@ -643,11 +649,11 @@ function JobCard({ job, onRefresh }) {
                 className="form-input" value={resumeThreads}
                 onChange={e => setResumeThreads(Math.max(1, parseInt(e.target.value) || 1))}
                 style={{ width: 52, padding: '3px 6px' }} />
-              <span style={{ fontSize: 11, color: 'var(--muted)' }}>threads</span>
+              <span style={{ fontSize: 11, color: 'var(--muted)' }}>{t('crawler.jobs.threadsShort')}</span>
               <button className="btn btn-success" disabled={busy}
                 onClick={() => act(doResume)}>
-                <Play size={13} /> Resume
-                {isViettelFailed && resumeSession && ' (session mới)'}
+                <Play size={13} /> {t('crawler.jobs.resume')}
+                {isViettelFailed && resumeSession && ` ${t('crawler.jobs.resumeNewSession')}`}
               </button>
             </div>
           </div>
@@ -656,21 +662,21 @@ function JobCard({ job, onRefresh }) {
         {hasToken && progress.failed > 0 && (
           <button className="btn btn-ghost" disabled={busy}
             onClick={() => act(() => api.retryJob(id))}>
-            <RotateCcw size={13} /> Retry failed ({progress.failed})
+            <RotateCcw size={13} /> {t('crawler.jobs.retryFailed', { count: progress.failed })}
           </button>
         )}
 
         {output_file && (
           <button className="btn btn-ghost" style={{ fontSize: 12 }}
             onClick={() => navigate(`${CRAWLER_BASE}/explorer?file=${encodeURIComponent(output_file)}`)}>
-            <Database size={13} /> Xem data
+            <Database size={13} /> {t('crawler.jobs.viewData')}
           </button>
         )}
 
         {hasToken && (
           <button className="btn btn-danger" disabled={busy}
             onClick={() => act(doDelete)}>
-            <Trash2 size={13} /> Xóa
+            <Trash2 size={13} /> {t('crawler.jobs.delete')}
           </button>
         )}
       </div>
@@ -680,7 +686,7 @@ function JobCard({ job, onRefresh }) {
         <div className="job-details">
           {failedPatterns.length > 0 && (
             <div className="failed-section">
-              <h4>❌ Failed Patterns ({failedPatterns.length})</h4>
+              <h4>❌ {t('crawler.jobs.failedPatterns', { count: failedPatterns.length })}</h4>
               <div className="pattern-chips">
                 {failedPatterns.map((p, i) => (
                   <code key={i} className="pattern-chip">{p}</code>
@@ -692,7 +698,7 @@ function JobCard({ job, onRefresh }) {
           {status === 'failed' && network === 'viettel' && (
             <div style={{ fontSize: 11, color: 'var(--muted)', background: 'var(--surface-2)',
                           border: '1px solid var(--border)', borderRadius: 4, padding: '8px 10px' }}>
-              <strong style={{ color: 'var(--text)' }}>🔍 Debug info</strong>
+              <strong style={{ color: 'var(--text)' }}>🔍 {t('crawler.jobs.debugInfo')}</strong>
               <div style={{ marginTop: 4, fontFamily: 'var(--mono)', lineHeight: 1.8 }}>
                 <div>proxy_session_id: <code>{metaObj.proxy_session_id || '—'}</code></div>
                 <div>x_csrf_token: <code>{metaObj.x_csrf_token ? `${metaObj.x_csrf_token.slice(0, 16)}…` : '—'}</code></div>
@@ -711,6 +717,7 @@ function JobCard({ job, onRefresh }) {
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function Jobs() {
+  const { t } = useTranslation()
   const [network, setNetwork]   = useState('viettel')
   const [pattern, setPattern]   = useState('0?????????')
   const [csrfToken, setCsrf]    = useState('')
@@ -816,7 +823,7 @@ export default function Jobs() {
       } else if (data.type === 'done') {
         applySessionResult(data.result)
         setCacheRemaining(data.result.fetched_at ? 3600 : 0)
-        setAutoSteps(prev => [...prev, { kind: 'done', msg: '✅ Session sẵn sàng!' }])
+        setAutoSteps(prev => [...prev, { kind: 'done', msg: t('crawler.jobs.auto.ready') }])
         setAutoStatus('ok')
         source.close()
         // refresh remaining from server
@@ -829,7 +836,7 @@ export default function Jobs() {
     }
 
     source.onerror = () => {
-      setAutoSteps(prev => [...prev, { kind: 'error', msg: '❌ Mất kết nối với server' }])
+      setAutoSteps(prev => [...prev, { kind: 'error', msg: t('crawler.jobs.auto.lostConn') }])
       setAutoStatus('error')
       source.close()
     }
@@ -860,7 +867,7 @@ export default function Jobs() {
       await refresh()
     } catch (err) {
       console.error('[CREATE JOB failed]', err)
-      setError(err.message || 'Lỗi không xác định')
+      setError(err.message || t('crawler.common.unknownErr'))
     } finally { setBusy(false) }
   }
 
@@ -871,37 +878,37 @@ export default function Jobs() {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <h1 className="page-title" style={{ marginBottom: 0 }}>Jobs</h1>
-        <span className="badge badge-green">{running} running</span>
-        <span className="badge badge-yellow">{paused} paused</span>
-        <span className="badge badge-blue">{complete} done</span>
+        <h1 className="page-title" style={{ marginBottom: 0 }}>{t('crawler.jobs.title')}</h1>
+        <span className="badge badge-green">{t('crawler.jobs.running', { count: running })}</span>
+        <span className="badge badge-yellow">{t('crawler.jobs.paused', { count: paused })}</span>
+        <span className="badge badge-blue">{t('crawler.jobs.done', { count: complete })}</span>
       </div>
 
       {/* Proxy warning — hidden when user explicitly opted into no-proxy mode */}
       {!hasProxy && !((network === 'viettel' || network === 'vietnamobile') && noProxy) && (
         <div className="alert alert-warning">
-          ⚠ Chưa cấu hình proxy — crawler sẽ không chạy được.{' '}
-          <Link to={`${CRAWLER_BASE}/settings`} style={{ color: 'inherit', fontWeight: 600 }}>Vào Settings để cấu hình.</Link>{' '}
-          Hoặc tick <strong>"Không dùng proxy"</strong> trong form Viettel / Vietnamobile bên dưới.
+          ⚠ {t('crawler.jobs.proxyWarn')}{' '}
+          <Link to={`${CRAWLER_BASE}/settings`} style={{ color: 'inherit', fontWeight: 600 }}>{t('crawler.jobs.proxyWarnLink')}</Link>{' '}
+          {t('crawler.jobs.proxyWarnOr')}
         </div>
       )}
 
       {/* Create form — admin only */}
       {!hasToken ? (
         <div className="card create-card">
-          <div className="card-title">➕ Tạo Job mới</div>
+          <div className="card-title">➕ {t('crawler.jobs.create')}</div>
           <p className="muted" style={{ fontSize: 13 }}>
-            🔒 Bạn đang ở chế độ chỉ xem. Nhập <strong>admin token</strong> ở trang{' '}
-            <Link to={`${CRAWLER_BASE}/settings`} style={{ color: 'var(--accent)', fontWeight: 600 }}>Settings</Link>{' '}
-            để tạo và điều khiển job.
+            🔒 {t('crawler.jobs.viewOnly')}{' '}
+            <Link to={`${CRAWLER_BASE}/settings`} style={{ color: 'var(--accent)', fontWeight: 600 }}>{t('crawler.jobs.settingsLink')}</Link>{' '}
+            {t('crawler.jobs.viewOnlyTail')}
           </p>
         </div>
       ) : (
       <div className="card create-card">
-        <div className="card-title">➕ Tạo Job mới</div>
+        <div className="card-title">➕ {t('crawler.jobs.create')}</div>
         {error && (
           <div className="alert alert-error" style={{ marginBottom: 10 }}>
-            <strong>Lỗi:</strong> {error}
+            <strong>{t('crawler.jobs.error')}:</strong> {error}
           </div>
         )}
         <form onSubmit={create}>
@@ -927,19 +934,19 @@ export default function Jobs() {
                   defaultValue=""
                   onChange={e => e.target.value && setPattern(e.target.value)}
                 >
-                  <option value="">Gợi ý…</option>
+                  <option value="">{t('crawler.jobs.presetsHint')}</option>
                   {PATTERN_PRESETS.map(p => (
-                    <option key={p.value} value={p.value}>{p.label} — {p.value}</option>
+                    <option key={p.value} value={p.value}>{t(p.labelKey)} — {p.value}</option>
                   ))}
                 </select>
                 <select
                   className="form-select"
                   value={isdnType}
                   onChange={e => setIsdnType(Number(e.target.value))}
-                  title="Loại SIM Viettel"
+                  title="Viettel SIM type"
                 >
-                  <option value={2}>📱 Trả trước</option>
-                  <option value={22}>💼 Trả sau</option>
+                  <option value={2}>📱 {t('crawler.jobs.prepaid')}</option>
+                  <option value={22}>💼 {t('crawler.jobs.postpaid')}</option>
                 </select>
               </>
             )}
@@ -957,15 +964,15 @@ export default function Jobs() {
               }}>
                 <input type="checkbox" checked={noProxy}
                   onChange={e => setNoProxy(e.target.checked)} />
-                <span style={{ fontWeight: 600 }}>🏠 Không dùng proxy</span>
+                <span style={{ fontWeight: 600 }}>🏠 {t('crawler.jobs.noProxy')}</span>
                 <span style={{ color: 'var(--muted)', fontSize: 11 }}>
-                  — gọi trực tiếp từ IP máy. {noProxy && 'Cảnh báo: dễ bị rate limit / chặn IP.'}
+                  {t('crawler.jobs.noProxyDesc')} {noProxy && t('crawler.jobs.noProxyWarn')}
                 </span>
               </label>
 
               {/* Mode tabs */}
               <div className="input-mode-tabs">
-                {[['auto', '🤖 Tự động'], ['fields', 'Từng field'], ['cookie', 'Paste Cookie'], ['curl', 'Paste cURL']].map(([m, label]) => (
+                {[['auto', `🤖 ${t('crawler.jobs.mode.auto')}`], ['fields', t('crawler.jobs.mode.fields')], ['cookie', t('crawler.jobs.mode.cookie')], ['curl', t('crawler.jobs.mode.curl')]].map(([m, label]) => (
                   <button key={m} type="button"
                     className={`mode-tab${inputMode === m ? ' active' : ''}`}
                     onClick={() => setInputMode(m)}>
@@ -982,17 +989,17 @@ export default function Jobs() {
                     <div style={{ flexShrink: 0, minWidth: 220 }}>
                       <p className="muted" style={{ marginBottom: 10, fontSize: 12 }}>
                         {noProxy
-                          ? 'Tự động mở browser headless trực tiếp từ IP máy (không proxy). Session được cache 1 giờ.'
-                          : 'Tự động mở browser headless qua proxy. Session được cache 1 giờ — không cần lấy lại mỗi lần.'}
+                          ? t('crawler.jobs.auto.descNoProxy')
+                          : t('crawler.jobs.auto.descProxy')}
                       </p>
 
                       <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 8, flexWrap: 'wrap' }}>
                         <button type="button" className="btn btn-primary"
                           disabled={autoStatus === 'loading' || (!hasProxy && !noProxy)}
                           onClick={() => fetchAutoSession(false)}>
-                          {autoStatus === 'loading' ? '⏳ Đang lấy…'
-                            : autoStatus === 'ok'    ? '📦 Dùng lại session'
-                            :                         '🤖 Lấy session tự động'}
+                          {autoStatus === 'loading' ? `⏳ ${t('crawler.jobs.auto.loading')}`
+                            : autoStatus === 'ok'    ? `📦 ${t('crawler.jobs.auto.reuse')}`
+                            :                          `🤖 ${t('crawler.jobs.auto.fetch')}`}
                         </button>
 
                         {autoStatus === 'ok' && (
@@ -1000,7 +1007,7 @@ export default function Jobs() {
                             style={{ fontSize: 11, padding: '3px 8px' }}
                             disabled={autoStatus === 'loading' || (!hasProxy && !noProxy)}
                             onClick={() => fetchAutoSession(true)}>
-                            🔄 Làm mới
+                            🔄 {t('crawler.jobs.auto.refresh')}
                           </button>
                         )}
                       </div>
@@ -1009,7 +1016,7 @@ export default function Jobs() {
                         <div style={{ fontSize: 11, color: 'var(--green)', lineHeight: 1.8 }}>
                           {cacheRemaining > 0 && (
                             <div style={{ color: 'var(--muted)', marginBottom: 3 }}>
-                              ⏱ Còn hạn: <strong>{Math.floor(cacheRemaining / 60)}m {cacheRemaining % 60}s</strong>
+                              ⏱ {t('crawler.jobs.auto.remaining')}: <strong>{Math.floor(cacheRemaining / 60)}m {cacheRemaining % 60}s</strong>
                             </div>
                           )}
                           ✓ csrf: <code>{csrfToken.slice(0, 12)}…</code><br />
@@ -1029,7 +1036,7 @@ export default function Jobs() {
                         padding: '8px 10px',
                       }}>
                         <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--muted)', marginBottom: 5 }}>
-                          📡 Tiến trình backend
+                          📡 {t('crawler.jobs.auto.progress')}
                         </div>
                         <div
                           ref={autoStepsRef}
@@ -1124,7 +1131,7 @@ export default function Jobs() {
               {/* Paste cURL mode */}
               {inputMode === 'curl' && (
                 <div>
-                  <label className="field-label">Paste lệnh cURL (copy từ DevTools → Network → Copy as cURL)</label>
+                  <label className="field-label">{t('crawler.jobs.curl.label')}</label>
                   <textarea className="form-input"
                     placeholder={'curl "https://vietteltelecom.vn/api/get/sim" \\\n  -H "x-csrf-token: ..." \\\n  -b "D1N=...; laravel_session=..."'}
                     onChange={e => {
@@ -1147,7 +1154,7 @@ export default function Jobs() {
 
           {network === 'vnpt' && (
             <span className="muted" style={{ fontSize: 12 }}>
-              VNPT tự crawl toàn bộ prefix 082, 085, 088, 091, 094
+              {t('crawler.jobs.vnpt.note')}
             </span>
           )}
 
@@ -1163,15 +1170,15 @@ export default function Jobs() {
               }}>
                 <input type="checkbox" checked={noProxy}
                   onChange={e => setNoProxy(e.target.checked)} />
-                <span style={{ fontWeight: 600 }}>🏠 Không dùng proxy</span>
+                <span style={{ fontWeight: 600 }}>🏠 {t('crawler.jobs.noProxy')}</span>
                 <span style={{ color: 'var(--muted)', fontSize: 11 }}>
-                  — gọi trực tiếp từ IP máy. {noProxy && 'Cảnh báo: dễ bị rate limit / chặn IP.'}
+                  {t('crawler.jobs.noProxyDesc')} {noProxy && t('crawler.jobs.noProxyWarn')}
                 </span>
               </label>
 
               {/* Token input */}
               <div className="cookie-box">
-                <div className="cookie-box-label">Vietnamobile token (URL ?token=...)</div>
+                <div className="cookie-box-label">{t('crawler.jobs.vnm.tokenLabel')}</div>
                 <input
                   className="form-input"
                   value={vnmToken}
@@ -1180,19 +1187,18 @@ export default function Jobs() {
                   style={{ width: '100%', fontFamily: 'var(--mono)', fontSize: 11 }}
                 />
                 <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>
-                  Mở <code>shop.vietnamobile.com.vn</code> → DevTools → Network → tìm request{' '}
-                  <code>index.php?controller=contact&token=...</code> → copy giá trị token.
+                  {t('crawler.jobs.vnm.tokenHint')}
                 </div>
               </div>
 
               <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>
-                Crawler tự seed 10 prefix (0-9). Threshold = 10 — pattern nào trả ≥10 số sẽ tự chia nhỏ tiếp.
+                {t('crawler.jobs.vnm.seedNote')}
               </div>
             </div>
           )}
 
           <div className="form-row" style={{ marginBottom: 10, alignItems: 'center', gap: 8 }}>
-            <label className="field-label" style={{ margin: 0 }}>Threads:</label>
+            <label className="field-label" style={{ margin: 0 }}>{t('crawler.jobs.threads')}</label>
             <input
               type="number" min={1} max={50}
               className="form-input"
@@ -1209,7 +1215,7 @@ export default function Jobs() {
               || (network === 'viettel' && (!csrfToken.trim() || !d1n.trim() || !laravelSession.trim()))
               || (network === 'vietnamobile' && !vnmToken.trim())
             }>
-            {busy ? 'Đang tạo…' : '🚀 Start Job'}
+            {busy ? t('crawler.jobs.starting') : `🚀 ${t('crawler.jobs.start')}`}
           </button>
         </form>
       </div>
@@ -1221,7 +1227,7 @@ export default function Jobs() {
       {/* Job list */}
       <div className="job-list">
         {jobs.length === 0 ? (
-          <p className="muted">Chưa có job nào. Tạo job mới ở trên.</p>
+          <p className="muted">{t('crawler.jobs.empty')}</p>
         ) : (
           jobs.map(job => <JobCard key={job.id} job={job} onRefresh={refresh} />)
         )}

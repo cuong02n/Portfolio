@@ -103,8 +103,9 @@ Chi tiết hơn xem thư mục [`docs/`](./docs/).
   `/projects/*` nên iframe không lồng lại portfolio); summary ẩn mặc định trong
   dropdown; (2) **toàn bộ danh mục** — lọc theo `KIND` + lưới `ProjectCard`.
 - **Trang Stack (`/stack`)** render `SKILL_GROUPS` với chú giải 3 mức
-  (`core` / `working` / `familiar`) và bộ lọc theo nhóm. Nhóm `devops` có
-  `featured: true` → chiếm 2 cột trên màn rộng.
+  (`core` / `working` / `familiar`) và bộ lọc theo nhóm; 10 nhóm xếp lưới 2 cột
+  đều nhau. (Cơ chế `featured: true` cho một nhóm chiếm 2 cột vẫn được hỗ trợ,
+  hiện không nhóm nào bật.)
   - **Không thêm công nghệ chưa từng dùng thật.** Trường `note` phải nêu được
     service / pipeline / môi trường cụ thể đứng sau nó.
 - **Thông tin cá nhân** gom trong `src/data/profile.js` (+ bản sao trong khối

@@ -1,3 +1,4 @@
+import i18n from '../../Assets/lang/i18n'
 import { getAdminToken } from '../../shared/adminToken'
 
 // Absolute backend base URLs from env (set on Vercel / .env).
@@ -19,8 +20,8 @@ const json = async (res) => {
       const body = await res.json()
       if (body.detail) detail = `${res.status}: ${body.detail}`
     } catch {}
-    if (res.status === 401) detail = 'Admin token sai hoặc thiếu (401)'
-    if (res.status === 503) detail = 'Server chưa cấu hình admin token (503)'
+    if (res.status === 401) detail = i18n.t('crawler.api.err401')
+    if (res.status === 503) detail = i18n.t('crawler.api.err503')
     console.error('[API error]', res.url, detail)
     throw new Error(detail)
   }

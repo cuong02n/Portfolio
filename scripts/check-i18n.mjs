@@ -9,15 +9,18 @@ import path from "node:path";
 const NS = [
   "home", "about", "stack", "proj", "demo", "exp", "cert", "edu", "nav",
   "hero", "footer", "resume", "projects", "links", "common", "profile",
-  "stats", "typed", "contact",
+  "stats", "typed", "contact", "crawler",
 ];
 
+// The phone-crawler feature module now draws its strings from the shared table
+// too (crawler.* keys), so it must be scanned. Other self-contained modules keep
+// their own strings and contribute no NS-prefixed references.
 const files = [];
 (function walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) {
-      if (e.name !== "features") walk(p);
+      walk(p);
     } else if (/\.jsx?$/.test(e.name)) {
       files.push(p);
     }

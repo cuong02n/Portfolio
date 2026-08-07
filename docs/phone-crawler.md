@@ -24,11 +24,27 @@ features/phone-crawler/
   hooks/useWs.js        # WebSocket; url = import.meta.env.VITE_CRAWLER_WS
   crawler.css           # toàn bộ style scope dưới .crawler-scope
   pages/
-    Dashboard.jsx       # stats + live number feed (đọc từ WsContext)
+    Dashboard.jsx       # stats + live number feed (đọc từ WsContext); nếu chưa
+                        #   connect + chưa có dữ liệu → EmptyState (offline/connecting)
     Jobs.jsx            # tạo/điều khiển job, live log, auto-session (SSE) — phần lớn cần token
     Explorer.jsx        # duyệt CSV, áp filter preset, download (public)
     Settings.jsx        # nhập admin token + cấu hình proxy (proxy config cần token)
 ```
+
+## Ngôn ngữ (i18n) & trạng thái offline
+
+- **Toàn bộ chuỗi hiển thị của module đi qua i18n** như phần còn lại của site:
+  key nằm trong khối `crawler.*` ở `src/Assets/lang/i18n.js` (đủ cả `en` + `vi`),
+  component dùng `t('crawler.…')`. Không hardcode tiếng Việt/Anh trong JSX.
+  - **Ngoại lệ có chủ đích**: tên preset số đẹp (vd "Tứ quý", "Sảnh…") trong
+    `Explorer` giữ nguyên tiếng Việt vì đó là **key hợp đồng với backend** (label
+    chính là giá trị POST tới `/data/preview`) — dịch sẽ làm vỡ filter.
+- **Trạng thái offline/empty có thiết kế** (`EmptyState` trong `Dashboard.jsx`):
+  khi WS chưa `connected` và chưa có dữ liệu, Dashboard **không** hiện stats = 0 +
+  feed rỗng (trông như hỏng) mà render một card kính, glow aurora, badge
+  **"DEMO · OFFLINE"**, giải thích trung thực rằng backend (FastAPI + PostgreSQL)
+  deploy riêng, không có trong bản demo công khai. Biến thể `connecting` hiện
+  spinner. **Không bịa số liệu.** Khi `connected`, đường dữ liệu thật chạy như cũ.
 
 ## Biến môi trường
 
