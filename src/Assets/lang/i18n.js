@@ -32,7 +32,16 @@ const en = {
   'hero.cta.projects': 'See my work',
   'hero.cta.resume': 'Download CV',
   'hero.cta.contact': 'Get in touch',
-  'hero.terminal.caption': 'A quick summary, in the format I read best.',
+  'hero.snapshot.caption': 'The short version — the full story is in the CV.',
+
+  'snapshot.title': 'At a glance',
+  'snapshot.role': 'Current role',
+  'snapshot.location': 'Location',
+  'snapshot.education': 'Education',
+  'snapshot.certs': 'Certifications',
+  'snapshot.languages': 'Languages',
+  'snapshot.languages.value': 'Vietnamese (native) · English (technical reading & writing)',
+  'snapshot.stack': 'Core technologies',
 
   'typed.backend': 'Backend engineer',
   'typed.microservices': 'Microservices & distributed systems',
@@ -56,7 +65,7 @@ const en = {
 
   'home.featured.eyebrow': 'Selected work',
   'home.featured.title': 'Things I have shipped',
-  'home.featured.desc': 'Two of these run live inside this site — open them and click around.',
+  'home.featured.desc': 'Both of these open something you can click through right here in the site.',
   'home.featured.cta': 'All projects',
 
   'home.stack.eyebrow': 'Stack',
@@ -434,7 +443,16 @@ const vi = {
   'hero.cta.projects': 'Xem dự án',
   'hero.cta.resume': 'Tải CV',
   'hero.cta.contact': 'Liên hệ',
-  'hero.terminal.caption': 'Tóm tắt nhanh, theo định dạng mình đọc quen nhất.',
+  'hero.snapshot.caption': 'Bản rút gọn — chi tiết đầy đủ nằm trong CV.',
+
+  'snapshot.title': 'Hồ sơ nhanh',
+  'snapshot.role': 'Vị trí hiện tại',
+  'snapshot.location': 'Địa điểm',
+  'snapshot.education': 'Học vấn',
+  'snapshot.certs': 'Chứng chỉ',
+  'snapshot.languages': 'Ngôn ngữ',
+  'snapshot.languages.value': 'Tiếng Việt (bản ngữ) · Tiếng Anh (đọc/viết tài liệu kỹ thuật)',
+  'snapshot.stack': 'Công nghệ chính',
 
   'typed.backend': 'Kỹ sư backend',
   'typed.microservices': 'Microservices & hệ phân tán',
@@ -458,7 +476,7 @@ const vi = {
 
   'home.featured.eyebrow': 'Dự án tiêu biểu',
   'home.featured.title': 'Những thứ mình đã làm ra',
-  'home.featured.desc': 'Hai trong số này chạy thật ngay trong trang web — mở lên và bấm thử.',
+  'home.featured.desc': 'Cả hai đều mở ra thứ bạn bấm thử được ngay trong trang web này.',
   'home.featured.cta': 'Tất cả dự án',
 
   'home.stack.eyebrow': 'Công nghệ',

@@ -9,7 +9,7 @@ import path from "node:path";
 const NS = [
   "home", "about", "stack", "proj", "demo", "exp", "cert", "edu", "nav",
   "hero", "footer", "resume", "projects", "links", "common", "profile",
-  "stats", "typed", "contact", "crawler",
+  "stats", "typed", "contact", "crawler", "snapshot",
 ];
 
 // The phone-crawler feature module now draws its strings from the shared table
@@ -52,6 +52,9 @@ for (const f of files) {
 for (const c of ["c1", "c2", "c3"]) {
   used.add(`home.what.${c}.title`);
   used.add(`home.what.${c}.desc`);
+}
+for (const row of ["role", "location", "education", "certs", "languages"]) {
+  used.add(`snapshot.${row}`);
 }
 for (const lvl of ["core", "working", "familiar"]) {
   used.add(`stack.level.${lvl}`);

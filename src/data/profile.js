@@ -40,6 +40,30 @@ export const STATS = [
   { value: '3.65', labelKey: 'stats.gpa' },
 ]
 
+// The card beside the hero intro — a CV-style summary written for a human
+// reader (recruiters first), which is why it lists role, place, degree and
+// certificates rather than a shell transcript. `value` renders verbatim
+// (proper nouns); `valueKey` / label come from i18n. `meta` is the smaller
+// second line under a value.
+export const SNAPSHOT = [
+  { id: 'role',      valueKey: 'profile.role',    meta: 'Nexusti JSC · 07/2025 →' },
+  { id: 'location',  valueKey: 'profile.location' },
+  {
+    id: 'education',
+    valueKey: 'edu.hust.degree',
+    meta: 'Hanoi University of Science and Technology · 2020 — 2024',
+  },
+  { id: 'certs',     value: 'Oracle Certified Associate — Java SE 8', meta: 'TOEIC 700' },
+  { id: 'languages', valueKey: 'snapshot.languages.value' },
+]
+
+// The five technologies a recruiter matches against a job description. The
+// longer strip on the landing page is CORE_STACK in src/data/skills.js; the
+// full breakdown lives on /stack.
+export const SNAPSHOT_STACK = [
+  'Java 21', 'Spring Boot 3', 'PostgreSQL', 'Apache Kafka', 'Kubernetes',
+]
+
 // The roles typed out under the hero heading.
 export const TYPED_ROLE_KEYS = [
   'typed.backend',

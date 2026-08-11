@@ -18,6 +18,8 @@ component. Muốn cập nhật portfolio thì sửa ở đây — hầu như kh�
 |--------|----------|
 | `PROFILE` | Tên, email, SĐT, domain, handle GitHub / Codeforces / Stack Overflow, các URL |
 | `STATS` | 4 con số trên hero (`value` hiển thị nguyên văn, `labelKey` là chú thích dịch) |
+| `SNAPSHOT` | 5 dòng của thẻ "Hồ sơ nhanh" cạnh hero — vị trí, địa điểm, học vấn, chứng chỉ, ngôn ngữ. Mỗi dòng có `id` (→ nhãn `snapshot.<id>`), `value` (nguyên văn) **hoặc** `valueKey`, và `meta` tuỳ chọn (dòng phụ nhỏ hơn) |
+| `SNAPSHOT_STACK` | 5 công nghệ hiển thị dạng tag dưới thẻ hồ sơ (bản dài hơn là `CORE_STACK` ở `skills.js`) |
 | `TYPED_ROLE_KEYS` | Danh sách key cho hiệu ứng gõ chữ ở hero |
 
 CV **không** nằm trong `PROFILE` — component import trực tiếp

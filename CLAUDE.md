@@ -111,7 +111,7 @@ Chi tiết hơn xem thư mục [`docs/`](./docs/).
 - **Thông tin cá nhân** gom trong `src/data/profile.js` (+ bản sao trong khối
   JSON-LD của `index.html` — sửa thì sửa cả hai). Xem
   [`docs/personal-data.md`](./docs/personal-data.md).
-- **Bảo mật/riêng tư**: thẻ terminal ở hero (`components/Home/Terminal.jsx`) và
+- **Bảo mật/riêng tư**: thẻ hồ sơ ở hero (`components/Home/Snapshot.jsx`) và
   mọi nội dung liên quan tới công việc phải **giữ ở mức chung chung** — không
   hostname, IP, tên service nội bộ nhạy cảm, và tuyệt đối không credential.
 - **Assets** ở `src/Assets/`. Resume là file PDF tĩnh

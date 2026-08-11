@@ -54,12 +54,17 @@ Ghép các section: `Hero` → "What I do" (3 thẻ năng lực) → dự án ti
 
 ### `Hero` — `Hero.jsx`
 Hai cột. Trái: badge trạng thái, lời chào, tên (gradient), `Type`, đoạn giới
-thiệu, 3 nút CTA, lưới 4 số liệu từ `STATS`. Phải: `Terminal` + chú thích.
+thiệu, 3 nút CTA, lưới 4 số liệu từ `STATS`. Phải: `Snapshot` + chú thích.
 
-### `Terminal` — `Terminal.jsx`
-Thẻ terminal tĩnh tóm tắt stack dưới dạng `whoami` / `cat stack.json` /
-`kubectl get deploy | wc -l`. **Cố ý chung chung** — không hostname, IP hay bất
-kỳ thông tin nào thuộc về công ty.
+### `Snapshot` — `Snapshot.jsx`
+Thẻ "Hồ sơ nhanh" cạnh hero: `<dl>` gồm 5 dòng nhãn–giá trị từ `SNAPSHOT`
+(vị trí, địa điểm, học vấn, chứng chỉ, ngôn ngữ) + dải tag `SNAPSHOT_STACK`.
+Viết cho **người đọc phi kỹ thuật (HR/recruiter) quét nhanh** — thay cho thẻ
+terminal ASCII trước đây, nên là nội dung thật (không `aria-hidden`), không dùng
+font mono cho phần chữ. **Cố ý chung chung** — không hostname, IP hay bất kỳ
+thông tin nào thuộc về công ty.
+Nhãn dòng lấy theo quy ước `snapshot.<id>`, ghép bằng template literal → mọi `id`
+mới phải thêm vào danh sách thủ công trong `scripts/check-i18n.mjs`.
 
 ### `Type` — `Type.jsx`
 Hiệu ứng gõ chữ (`typewriter-effect`) chạy qua `TYPED_ROLE_KEYS`. Widget được

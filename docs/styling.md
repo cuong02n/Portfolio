@@ -78,7 +78,7 @@ và tránh viết token `collapse` trần trong source.
 
 Nạp trong `src/index.jsx`, self-host (không gọi CDN Google Fonts):
 - **Inter** (300–800) — toàn bộ UI.
-- **Space Mono** (400, 700) — eyebrow, tag, thẻ terminal, nhãn mono.
+- **Space Mono** (400, 700) — eyebrow, tag, badge, nhãn mono.
 
 > Đã bỏ: `@import` Raleway từ Google Fonts trong `index.css` (request chặn
 > render), `@fontsource/pixelify-sans` (không dùng), `@radix-ui/themes/styles.css`

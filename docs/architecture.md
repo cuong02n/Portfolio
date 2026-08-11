@@ -102,7 +102,7 @@ src/
 ├── components/              # PORTFOLIO (xem components.md)
 │   ├── Layout/  Navbar.jsx  Footer.jsx
 │   ├── ui/      SectionHead.jsx  Fallback.jsx
-│   ├── Home/    Home.jsx  Hero.jsx  Terminal.jsx  Type.jsx  Arcade.jsx
+│   ├── Home/    Home.jsx  Hero.jsx  Snapshot.jsx  Type.jsx  Arcade.jsx
 │   ├── About/   About.jsx  Timeline.jsx  Credentials.jsx  Contact.jsx
 │   │            Github.jsx  CodeforcesRatingChart.jsx  RatingColor.js
 │   ├── Stack/   Stack.jsx

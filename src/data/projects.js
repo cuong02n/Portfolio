@@ -80,7 +80,8 @@ export const PROJECTS = [
     id: 'system-flow',
     icon: FaDiagramProject,
     kind: 'live',
-    featured: true,
+    // Not `featured`: the landing page keeps only backend work up front. The
+    // board still shows in the /project catalogue and as a live demo tab.
     period: '2025',
     titleKey: 'proj.flow.title',
     descKey: 'proj.flow.desc',

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FiArrowRight, FiDownload, FiMail } from "react-icons/fi";
 import Type from "./Type";
-import Terminal from "./Terminal";
+import Snapshot from "./Snapshot";
 import { PROFILE, STATS } from "../../data/profile";
 import resumePdf from "../../Assets/Resume_CuongNguyenManh.pdf";
 
@@ -52,8 +52,8 @@ function Hero() {
       </div>
 
       <div>
-        <Terminal />
-        <p className="pf-hero-caption">{t("hero.terminal.caption")}</p>
+        <Snapshot />
+        <p className="pf-hero-caption">{t("hero.snapshot.caption")}</p>
       </div>
     </section>
   );

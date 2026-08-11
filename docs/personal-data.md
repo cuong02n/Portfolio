@@ -18,6 +18,7 @@ component). Muốn đổi thông tin thì sửa đúng một chỗ.
 | Domain / site | `cuong02.com`, `https://portfolio.cuong02.com` | `src/data/profile.js` → `PROFILE.domain` / `site` |
 | Số liệu hero (3+, 1M+, 13, 3.65) | — | `src/data/profile.js` → `STATS` |
 | Dòng chữ gõ ở hero | — | `src/data/profile.js` → `TYPED_ROLE_KEYS` + i18n `typed.*` |
+| Thẻ hồ sơ nhanh ở hero (công ty hiện tại, trường, chứng chỉ, ngôn ngữ) | Nexusti JSC · HUST · OCA / TOEIC | `src/data/profile.js` → `SNAPSHOT`, `SNAPSHOT_STACK` + i18n `snapshot.*` |
 | Lịch sử công việc | 4 mục | `src/data/experience.js` → `EXPERIENCE` + i18n `exp.*` |
 | Học vấn | HUST 2020–2024 | `src/data/experience.js` → `EDUCATION` + i18n `edu.*` |
 | Chứng chỉ | OCA 1Z0-808, Codeforces, TOEIC | `src/data/experience.js` → `CERTIFICATIONS` + i18n `cert.*` |
