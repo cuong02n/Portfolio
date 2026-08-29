@@ -54,7 +54,7 @@ automatic runtime); file `.js` chỉ chứa JS thuần (data, api builders, i18n
   `/` (Home), `/about`, `/stack`, `/project` (Projects), `/resume`, và các feature
   module `/projects/phone-crawler/*`, `/projects/system-flow/*`. Route không khớp
   redirect `/`. **Navbar + Footer bị ẩn** trên route demo (`/projects/*`).
-  Preloader 0.9s.
+  Preloader 0.2s.
 - **Code-splitting**: chỉ `Home` nằm trong entry chunk; About / Stack / Projects /
   Resume / hai feature module / `CodeforcesRatingChart` đều `React.lazy` trong
   `<Suspense>` (fallback `components/ui/Fallback.jsx`).
@@ -94,6 +94,7 @@ Chi tiết hơn xem thư mục [`docs/`](./docs/).
   `--pf-accent` / `--pf-accent-2` / `--pf-grad`, không hardcode mã màu mới.
   Section mới → `<section className="pf-container pf-section">` + `SectionHead`.
   Tailwind **chỉ còn dùng trong `CodeforcesRatingChart.jsx`**.
+  ⚠️ `typewriter-effect` đã bị gỡ; hero hiển thị role tĩnh thay vì chữ chạy.
 - **⚠️ Bẫy Tailwind `.collapse`**: Tailwind quét `src/**/*.{js,jsx,...}` nên chỉ
   cần chữ `collapse` đứng riêng trong code (kể cả comment) là nó sinh utility
   `.collapse { visibility: collapse }`. Đã chặn bằng `blocklist: ["collapse"]`

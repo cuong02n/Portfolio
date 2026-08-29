@@ -38,7 +38,7 @@ component). Muốn đổi thông tin thì sửa đúng một chỗ.
 
 | Project | Loại | Link |
 |---------|------|------|
-| NEXUSTI DCMS — collection platform | `work` | demo nội bộ (system-flow) |
+| NEXUSTI DCMS — collection platform | `work` | (private) |
 | Phone number crawler | `live` | `/projects/phone-crawler` |
 | System Flow board | `live` | `/projects/system-flow` + GitHub |
 | Streaming Excel export library | `work` | (private) |

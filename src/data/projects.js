@@ -27,28 +27,12 @@ export const KIND = {
 // demo chrome. System-flow demos pre-select a board with ?company=<id>.
 export const LIVE_DEMOS = [
   {
-    key: 'nexus',
-    labelKey: 'demo.nexus.label',
-    subKey: 'demo.nexus.sub',
-    bodyKey: 'demo.nexus.body',
-    src: '/projects/system-flow/board?company=nexus-ti',
-    tags: ['Microservices', 'Kafka', 'Keycloak', 'Kubernetes'],
-  },
-  {
     key: 'crawler',
     labelKey: 'demo.crawler.label',
     subKey: 'demo.crawler.sub',
     bodyKey: 'demo.crawler.body',
     src: '/projects/phone-crawler',
     tags: ['FastAPI', 'PostgreSQL', 'WebSocket', 'Kubernetes'],
-  },
-  {
-    key: 'sample',
-    labelKey: 'demo.sample.label',
-    subKey: 'demo.sample.sub',
-    bodyKey: 'demo.sample.body',
-    src: '/projects/system-flow/board?company=company-a',
-    tags: ['React Flow', 'System design', 'localStorage'],
   },
 ]
 
@@ -63,7 +47,7 @@ export const PROJECTS = [
     titleKey: 'proj.dcms.title',
     descKey: 'proj.dcms.desc',
     tags: ['Java 21', 'Spring Boot', 'PostgreSQL', 'Kafka', 'Keycloak', 'Kubernetes', 'Terraform'],
-    links: [{ labelKey: 'links.demo', href: '/projects/system-flow/board?company=nexus-ti', internal: true }],
+    links: [],
   },
   {
     id: 'phone-crawler',

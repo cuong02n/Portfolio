@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FiArrowRight, FiDownload, FiMail } from "react-icons/fi";
-import Type from "./Type";
 import Snapshot from "./Snapshot";
 import { PROFILE, STATS } from "../../data/profile";
 import resumePdf from "../../Assets/Resume_CuongNguyenManh.pdf";
@@ -14,18 +13,16 @@ function Hero() {
     <section className="pf-container pf-hero">
       <div>
         <p className="pf-hero-status">
-          <span className="pf-dot pf-dot--pulse" />
+          <span className="pf-dot" />
           {t("hero.status")}
         </p>
 
         <p className="pf-hero-greet">{t("hero.greeting")}</p>
         <h1 className="pf-h1 pf-hero-name">
-          <span className="pf-gradient-text">{t("profile.name")}</span>
+          {t("profile.name")}
         </h1>
 
-        <div className="pf-hero-typed">
-          <Type />
-        </div>
+        <p className="pf-hero-role">{t("hero.role")}</p>
 
         <p className="pf-lead pf-hero-intro">{t("hero.intro")}</p>
 

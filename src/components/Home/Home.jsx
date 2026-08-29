@@ -1,21 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FiArrowRight, FiArrowUpRight, FiMail } from "react-icons/fi";
-import { FaServer, FaDatabase, FaGears } from "react-icons/fa6";
+import { FiArrowRight, FiMail } from "react-icons/fi";
 import Hero from "./Hero";
-import Arcade from "./Arcade";
 import SectionHead from "../ui/SectionHead";
-import ProjectCard from "../Projects/ProjectCard";
-import { FEATURED_PROJECTS } from "../../data/projects";
 import { CORE_STACK } from "../../data/skills";
 import { PROFILE } from "../../data/profile";
-
-const CAPABILITIES = [
-  { id: "c1", Icon: FaServer },
-  { id: "c2", Icon: FaDatabase },
-  { id: "c3", Icon: FaGears },
-];
 
 function Home() {
   const { t } = useTranslation();
@@ -23,46 +13,6 @@ function Home() {
   return (
     <>
       <Hero />
-
-      {/* What I do ------------------------------------------------------ */}
-      <section className="pf-container pf-section">
-        <SectionHead
-          eyebrow={t("home.what.eyebrow")}
-          title={t("home.what.title")}
-        />
-        <div className="pf-grid-3">
-          {CAPABILITIES.map(({ id, Icon }) => (
-            <article className="pf-card pf-card--hover" key={id}>
-              <span className="pf-card-icon">
-                <Icon />
-              </span>
-              <h3 className="pf-h3">{t(`home.what.${id}.title`)}</h3>
-              <p className="pf-muted" style={{ margin: "8px 0 0", fontSize: "0.92rem" }}>
-                {t(`home.what.${id}.desc`)}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Selected work -------------------------------------------------- */}
-      <section className="pf-container pf-section">
-        <SectionHead
-          eyebrow={t("home.featured.eyebrow")}
-          title={t("home.featured.title")}
-          lead={t("home.featured.desc")}
-          action={
-            <Link to="/project" className="pf-link-arrow">
-              {t("home.featured.cta")} <FiArrowUpRight size={15} />
-            </Link>
-          }
-        />
-        <div className="pf-projects">
-          {FEATURED_PROJECTS.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
-      </section>
 
       {/* Core stack ----------------------------------------------------- */}
       <section className="pf-container pf-section">
@@ -106,10 +56,9 @@ function Home() {
           </div>
         </div>
       </section>
-
-      <Arcade />
     </>
   );
 }
 
 export default Home;
+

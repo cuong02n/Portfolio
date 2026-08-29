@@ -7,6 +7,7 @@ import Timeline from "./Timeline";
 import Credentials from "./Credentials";
 import Contact from "./Contact";
 import Github from "./Github";
+import Arcade from "../Home/Arcade";
 import avatar from "../../Assets/avatar.webp";
 import resumePdf from "../../Assets/Resume_CuongNguyenManh.pdf";
 import { PROFILE } from "../../data/profile";
@@ -90,6 +91,9 @@ function About() {
           </Suspense>
         </div>
       </section>
+
+      {/* Algorithms arcade — context: competitive programming above ----- */}
+      <Arcade />
 
       <section className="pf-container pf-section pf-section--tight">
         <Contact />

@@ -19,7 +19,7 @@ CSS/SVG) ở route gốc, và **editor** (bảng vẽ) ở route con `/board`.
   - `/projects/system-flow` → **editor** (board) — mở thẳng sơ đồ
   - `/projects/system-flow/board` → **editor** (`FlowEditor`, bọc `ReactFlowProvider`)
   - path lạ → redirect về route gốc.
-  - **`?company=<id>`** (vd `board?company=nexus-ti`) chọn sẵn công ty khi mở —
+  - **`?company=<id>`** (vd `board?company=company-a`) chọn sẵn công ty khi mở —
     trang Projects dùng để nhúng đúng 1 sơ đồ vào từng tab.
 - **Thư mục**: `src/features/system-flow/`
 - **Thư viện**: [React Flow](https://reactflow.dev) (`@xyflow/react` v12) — render
@@ -47,8 +47,8 @@ features/system-flow/
   nodes/NodeDetailPopup.jsx# popup chi tiết node, hiện ở vị trí con trỏ khi click
   lib/palette.js           # NODE_KINDS, PALETTE, EDGE_KINDS, EDGE_ORDER (data thuần, no JSX)
   lib/storage.js           # load/save/reset + export/import JSON 1 công ty
-  data/seed.js             # SCHEMA_VERSION + SEED_COMPANIES (3 sơ đồ mẫu, có description/tags)
-                           #   NexusTI (DCMS/Lending, ~31 node, tab mặc định) + Company A + Company B
+  data/seed.js             # SCHEMA_VERSION + SEED_COMPANIES (2 sơ đồ mẫu, có description/tags)
+                           #   Company A + Company B
 ```
 
 ## Mô hình dữ liệu (JSON-serialisable)
@@ -65,11 +65,7 @@ edge    = { id, source, target, label?, data:{ kind } }
   registry, cicd, vcs, observability) → chọn icon (lucide) + màu accent.
 - **`description` + `tags`** (tuỳ chọn) là dữ liệu "chi tiết" hiển thị trong popup
   khi click node; sửa được ở inspector. Thêm 2 trường này nên đã **bump
-  `SCHEMA_VERSION`** (state version cũ sẽ tự fallback về seed). Hiện ở `4`
-  (v2 thêm description/tags; v3 thay sơ đồ NexusTI bằng kiến trúc DCMS/Lending thật;
-  v4 bỏ node Kafka, vẽ event Kafka thành edge nét đứt thẳng giữa các service;
-  v5 thêm kind `mobile` + app field cho nhân viên thu hồi nợ hiện trường;
-  v6 thêm cụm Platform/DevOps: Git, CI/CD, Nexus Repository, Prometheus+Grafana, Alerting).
+  `SCHEMA_VERSION`** (state version cũ sẽ tự fallback về seed). Hiện ở `7`.
 - **`edge.data.kind`** ∈ `palette.EDGE_KINDS` (api, grpc, kafka, jdbc, redis,
   oauth) → chọn màu + nhãn + kiểu line. `style:'async'` (kafka) → line nét đứt +
   animation; `style:'sync'` → line liền. Edge được "decorate" lúc render
@@ -116,10 +112,9 @@ edge    = { id, source, target, label?, data:{ kind } }
 
 - `src/config/projects.js`: thêm entry slug `system-flow` (không có `apiBase`/
   `wsBase` vì không backend).
-- `src/data/projects.js`: hai chỗ — entry `system-flow` trong `PROJECTS` (thẻ ở
-  lưới dự án) và hai tab trong `LIVE_DEMOS` (`nexus` → `…/board?company=nexus-ti`,
-  `sample` → `…/board?company=company-a`) để trang Projects nhúng qua `<iframe>`.
-- i18n: key `proj.flow.*` và `demo.nexus.*` / `demo.sample.*` ở **cả** object `en`
+- `src/data/projects.js`: entry `system-flow` trong `PROJECTS` (thẻ ở
+  lưới dự án dẫn sang `/projects/system-flow`).
+- i18n: key `proj.flow.*` ở **cả** object `en`
   và `vi` của `src/Assets/lang/i18n.js`. Lưu ý: UI **bên trong** module (editor)
   hardcode tiếng Anh — bám theo style sẵn có của `FlowEditor`, không qua i18n;
   i18n chỉ dùng cho phần portfolio bọc ngoài.

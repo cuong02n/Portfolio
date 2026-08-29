@@ -52,7 +52,6 @@ function Resume() {
         as="h1"
         eyebrow={t("resume.eyebrow")}
         title={t("resume.title")}
-        lead={t("resume.desc")}
         action={download}
       />
 

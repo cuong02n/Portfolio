@@ -64,10 +64,4 @@ export const SNAPSHOT_STACK = [
   'Java 21', 'Spring Boot 3', 'PostgreSQL', 'Apache Kafka', 'Kubernetes',
 ]
 
-// The roles typed out under the hero heading.
-export const TYPED_ROLE_KEYS = [
-  'typed.backend',
-  'typed.microservices',
-  'typed.devops',
-  'typed.architect',
-]
+

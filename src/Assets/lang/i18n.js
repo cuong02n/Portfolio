@@ -27,7 +27,8 @@ const en = {
 
   /* ── Landing hero ─────────────────────────────────────────────────────── */
   'hero.greeting': "Hi, I'm",
-  'hero.intro': 'I design, build and run distributed backend systems. Right now that means a multi-tenant fintech collection platform — a dozen Spring Boot services on Kubernetes serving more than a million customers — from the domain model down to the pipeline that deploys it.',
+  'hero.role': 'Backend Engineer · Distributed Systems · Java / Spring Boot / Kubernetes',
+  'hero.intro': 'I build and run a multi-tenant fintech platform — thirteen Spring Boot services on Kubernetes, serving a million-plus customers. I own everything from domain modelling to the CI/CD pipeline.',
   'hero.status': 'Currently at Nexusti JSC',
   'hero.cta.projects': 'See my work',
   'hero.cta.resume': 'Download CV',
@@ -43,10 +44,6 @@ const en = {
   'snapshot.languages.value': 'Vietnamese (native) · English (technical reading & writing)',
   'snapshot.stack': 'Core technologies',
 
-  'typed.backend': 'Backend engineer',
-  'typed.microservices': 'Microservices & distributed systems',
-  'typed.devops': 'DevOps & delivery pipelines',
-  'typed.architect': 'On the way to solution architect',
 
   'stats.years': 'Years building backends',
   'stats.customers': 'End customers served',
@@ -54,19 +51,7 @@ const en = {
   'stats.gpa': 'GPA — top 3% at HUST',
 
   /* ── Landing sections ─────────────────────────────────────────────────── */
-  'home.what.eyebrow': 'What I do',
-  'home.what.title': 'Three things I get paid for',
-  'home.what.c1.title': 'Backend & APIs',
-  'home.what.c1.desc': 'Domain modelling, transactional correctness and REST contracts that survive their second consumer. Java 21 and Spring Boot 3 over PostgreSQL.',
-  'home.what.c2.title': 'Data & integration',
-  'home.what.c2.desc': 'Kafka event flows, ETL ingest, telephony and messaging providers behind one interface, and exports measured in millions of rows.',
-  'home.what.c3.title': 'DevOps & delivery',
-  'home.what.c3.desc': 'Container images, GitLab pipelines, Helm releases on Kubernetes, and Terraform that provisions an entire tenant from nothing.',
 
-  'home.featured.eyebrow': 'Selected work',
-  'home.featured.title': 'Things I have shipped',
-  'home.featured.desc': 'Both of these open something you can click through right here in the site.',
-  'home.featured.cta': 'All projects',
 
   'home.stack.eyebrow': 'Stack',
   'home.stack.title': 'What I reach for',
@@ -74,11 +59,11 @@ const en = {
   'home.stack.cta': 'Full stack breakdown',
 
   'home.contact.title': "Let's talk",
-  'home.contact.desc': 'Questions about my work, or something you want built? My inbox is open.',
+  'home.contact.desc': 'Questions about the work, or a role to discuss? Let\'s talk.',
   'home.contact.cta': 'Email me',
 
-  'home.arcade.title': 'Algorithms, playing themselves',
-  'home.arcade.desc': 'Snake solved with breadth-first search and a flood-fill survival fallback; Tetris driven by a weighted board heuristic. Both written from scratch on a canvas — no library, no input, they just play.',
+  'home.arcade.title': 'Algorithms, visualised',
+  'home.arcade.desc': 'BFS pathfinding with flood-fill fallback (Snake) and exhaustive rotation × column search with a weighted board heuristic (Tetris). Both run on a raw canvas — no game library.',
   'home.arcade.show': 'Watch them run',
   'home.arcade.hide': 'Hide',
 
@@ -86,7 +71,7 @@ const en = {
   'about.eyebrow': 'About',
   'about.title': 'Who I am',
   'about.p1': 'I am a backend engineer with three years of experience on enterprise systems — authentication, third-party integrations, performance work, and platforms that serve millions of end customers.',
-  'about.p2': 'I studied Computer Science at Hanoi University of Science and Technology and graduated in the top 3% of my cohort. Years of competitive programming taught me to think about complexity before a profiler has to tell me.',
+  'about.p2': 'I studied Computer Science at Hanoi University of Science and Technology and graduated in the top 3% of my cohort. Years of competitive programming built the instinct to reason about complexity before reaching for a profiler.',
   'about.p3': 'Today I work on a multi-tenant debt-collection platform for banks and lenders: I own the notification domain, build across the collection and reporting services, and keep the pipelines that deploy them green.',
 
   'about.experience.eyebrow': 'Career',
@@ -184,16 +169,9 @@ const en = {
   'projects.kind.work': 'Professional',
   'projects.kind.infra': 'Infrastructure',
 
-  'demo.nexus.label': 'NEXUSTI platform map',
-  'demo.nexus.sub': 'The collection platform I work on, drawn as an editable architecture board.',
-  'demo.nexus.body': 'An interactive board for the system architectures I work on — microservices over REST, asynchronous Kafka events, Keycloak identity, PostgreSQL and Redis. Drag components out of the palette, wire them together, rename them and retype the connections.<br/><br/><b>Everything is editable in your browser. Changes are saved locally and can be reset to the samples at any time; boards export and import as JSON.</b>',
   'demo.crawler.label': 'Phone number crawler',
   'demo.crawler.sub': 'Distributed crawler with a live dashboard over FastAPI and PostgreSQL.',
   'demo.crawler.body': 'A multi-threaded crawler that collects and filters premium phone numbers, built on a database-backed BFS queue. Handles session renewal, cookie refresh, proxy rotation, rate limiting and anti-bot challenges automatically. FastAPI and PostgreSQL behind it, deployed on Kubernetes; this React dashboard streams progress over WebSocket.<br/><br/><b>Anyone can watch it run. Controlling jobs requires an admin token.</b>',
-  'demo.sample.label': 'Sample architecture',
-  'demo.sample.sub': 'An e-commerce microservice topology you can drag, rewire and edit live.',
-  'demo.sample.body': 'The same board, seeded with a sample e-commerce microservice architecture instead of a real one — a sandbox for trying the editor out.<br/><br/><b>Drag, connect, rename and retype anything; reset to the seed whenever you like.</b>',
-
   'proj.dcms.title': 'NEXUSTI DCMS — collection platform',
   'proj.dcms.desc': 'A multi-tenant debt-collection and CRM platform for banks and lenders: thirteen independently deployed services covering debt allocation, an omni-channel call centre, workflow automation, reporting and identity. Each tenant gets its own namespace, identity realm and database set, provisioned end to end with Terraform and Helm.',
   'proj.crawler.title': 'Phone number crawler',
@@ -225,7 +203,6 @@ const en = {
   /* ── Résumé ───────────────────────────────────────────────────────────── */
   'resume.eyebrow': 'Résumé',
   'resume.title': 'Curriculum vitae',
-  'resume.desc': 'One page, kept current. Download it, or read the same story with more detail on the about page.',
   'resume.download': 'Download PDF',
   'resume.noInline': "Your browser does not display PDFs inline. Grab the one-page CV instead — it is the same document.",
 
@@ -237,7 +214,7 @@ const en = {
   'contact.stackoverflow': 'Stack Overflow',
   'contact.codeforces': 'Codeforces',
 
-  'footer.tagline': 'Backend engineer in Hanoi, building systems that stay up.',
+  'footer.tagline': 'Backend engineer in Hanoi.',
   'footer.nav': 'Pages',
   'footer.connect': 'Elsewhere',
   'footer.built': 'Built with React and Vite. Source on GitHub.',
@@ -438,7 +415,8 @@ const vi = {
 
   /* ── Landing hero ─────────────────────────────────────────────────────── */
   'hero.greeting': 'Xin chào, mình là',
-  'hero.intro': 'Mình thiết kế, xây dựng và vận hành các hệ thống backend phân tán. Hiện tại là một nền tảng thu hồi nợ fintech đa tenant — hơn mười service Spring Boot chạy trên Kubernetes, phục vụ hơn một triệu khách hàng — từ mô hình nghiệp vụ cho tới pipeline triển khai.',
+  'hero.role': 'Backend Engineer · Hệ phân tán · Java / Spring Boot / Kubernetes',
+  'hero.intro': 'Mình xây và vận hành nền tảng fintech đa tenant — mười ba service Spring Boot trên Kubernetes, phục vụ hơn một triệu khách hàng. Mình phụ trách từ mô hình nghiệp vụ tới pipeline CI/CD.',
   'hero.status': 'Đang làm tại Nexusti JSC',
   'hero.cta.projects': 'Xem dự án',
   'hero.cta.resume': 'Tải CV',
@@ -454,10 +432,6 @@ const vi = {
   'snapshot.languages.value': 'Tiếng Việt (bản ngữ) · Tiếng Anh (đọc/viết tài liệu kỹ thuật)',
   'snapshot.stack': 'Công nghệ chính',
 
-  'typed.backend': 'Kỹ sư backend',
-  'typed.microservices': 'Microservices & hệ phân tán',
-  'typed.devops': 'DevOps & pipeline triển khai',
-  'typed.architect': 'Trên đường thành kiến trúc sư giải pháp',
 
   'stats.years': 'Năm làm backend',
   'stats.customers': 'Khách hàng cuối phục vụ',
@@ -465,19 +439,7 @@ const vi = {
   'stats.gpa': 'GPA — top 3% tại HUST',
 
   /* ── Landing sections ─────────────────────────────────────────────────── */
-  'home.what.eyebrow': 'Mình làm gì',
-  'home.what.title': 'Ba mảng mình làm chính',
-  'home.what.c1.title': 'Backend & API',
-  'home.what.c1.desc': 'Mô hình nghiệp vụ, tính đúng đắn của giao dịch, và những REST contract vẫn dùng tốt khi có consumer thứ hai. Java 21 và Spring Boot 3 trên PostgreSQL.',
-  'home.what.c2.title': 'Dữ liệu & tích hợp',
-  'home.what.c2.desc': 'Luồng sự kiện Kafka, ETL nạp dữ liệu, gom nhiều nhà cung cấp tổng đài và tin nhắn về một interface, và export dữ liệu tính bằng triệu dòng.',
-  'home.what.c3.title': 'DevOps & triển khai',
-  'home.what.c3.desc': 'Đóng image, pipeline GitLab, release Helm trên Kubernetes, và Terraform dựng trọn một tenant từ con số không.',
 
-  'home.featured.eyebrow': 'Dự án tiêu biểu',
-  'home.featured.title': 'Những thứ mình đã làm ra',
-  'home.featured.desc': 'Cả hai đều mở ra thứ bạn bấm thử được ngay trong trang web này.',
-  'home.featured.cta': 'Tất cả dự án',
 
   'home.stack.eyebrow': 'Công nghệ',
   'home.stack.title': 'Những thứ mình hay dùng',
@@ -485,11 +447,11 @@ const vi = {
   'home.stack.cta': 'Xem toàn bộ stack',
 
   'home.contact.title': 'Cùng trao đổi nhé',
-  'home.contact.desc': 'Có câu hỏi về công việc của mình, hay có thứ gì cần xây? Hòm thư của mình luôn mở.',
+  'home.contact.desc': 'Câu hỏi về công việc, hoặc một vị trí muốn trao đổi? Mình sẵn sàng.',
   'home.contact.cta': 'Gửi email',
 
-  'home.arcade.title': 'Thuật toán tự chơi lấy',
-  'home.arcade.desc': 'Snake giải bằng tìm kiếm theo chiều rộng cùng phương án dự phòng loang vùng để sống sót; Tetris chạy bằng hàm đánh giá bàn cờ có trọng số. Cả hai viết tay từ đầu trên canvas — không thư viện, không cần điều khiển, chúng tự chơi.',
+  'home.arcade.title': 'Thuật toán, minh hoạ trực quan',
+  'home.arcade.desc': 'Tìm đường BFS kèm dự phòng loang vùng (Snake) và tìm kiếm vét cạn xoay × cột với hàm đánh giá bàn cờ có trọng số (Tetris). Cả hai chạy trên canvas thuần — không thư viện game.',
   'home.arcade.show': 'Xem chúng chạy',
   'home.arcade.hide': 'Ẩn đi',
 
@@ -497,7 +459,7 @@ const vi = {
   'about.eyebrow': 'Giới thiệu',
   'about.title': 'Mình là ai',
   'about.p1': 'Mình là kỹ sư backend với ba năm kinh nghiệm làm hệ thống doanh nghiệp — xác thực, tích hợp bên thứ ba, tối ưu hiệu năng, và các nền tảng phục vụ hàng triệu khách hàng cuối.',
-  'about.p2': 'Mình học Khoa học Máy tính tại Đại học Bách khoa Hà Nội và tốt nghiệp trong top 3% khóa. Nhiều năm lập trình thi đấu dạy mình nghĩ về độ phức tạp trước khi profiler kịp lên tiếng.',
+  'about.p2': 'Mình học Khoa học Máy tính tại Đại học Bách khoa Hà Nội và tốt nghiệp trong top 3% khoá. Nhiều năm lập trình thi đấu tạo phản xạ suy luận về độ phức tạp trước khi cần tới profiler.',
   'about.p3': 'Hiện mình làm một nền tảng thu hồi nợ đa tenant cho ngân hàng và tổ chức cho vay: phụ trách trọn mảng thông báo, phát triển xuyên các service thu hồi nợ và báo cáo, đồng thời giữ cho pipeline triển khai luôn xanh.',
 
   'about.experience.eyebrow': 'Sự nghiệp',
@@ -595,16 +557,9 @@ const vi = {
   'projects.kind.work': 'Dự án công ty',
   'projects.kind.infra': 'Hạ tầng',
 
-  'demo.nexus.label': 'Sơ đồ nền tảng NEXUSTI',
-  'demo.nexus.sub': 'Nền tảng thu hồi nợ mình đang làm, vẽ thành bảng kiến trúc chỉnh sửa được.',
-  'demo.nexus.body': 'Bảng vẽ tương tác cho các kiến trúc hệ thống mình đang làm — microservice giao tiếp qua REST, sự kiện bất đồng bộ qua Kafka, định danh bằng Keycloak, PostgreSQL và Redis. Kéo component từ palette, nối dây, đổi tên và đổi loại kết nối.<br/><br/><b>Chỉnh sửa hoàn toàn ngay trên trình duyệt. Thay đổi lưu cục bộ và có thể reset về mẫu bất cứ lúc nào; sơ đồ xuất/nhập được dưới dạng JSON.</b>',
   'demo.crawler.label': 'Crawler số điện thoại',
   'demo.crawler.sub': 'Crawler phân tán với dashboard thời gian thực trên FastAPI và PostgreSQL.',
   'demo.crawler.body': 'Crawler đa luồng thu thập và lọc số điện thoại đẹp, xây trên hàng đợi BFS lưu trong cơ sở dữ liệu. Tự động làm mới session, refresh cookie, xoay proxy, xử lý rate limit và các thử thách chống bot. Phía sau là FastAPI và PostgreSQL, triển khai trên Kubernetes; dashboard React này nhận tiến trình qua WebSocket.<br/><br/><b>Ai cũng xem chạy được. Muốn điều khiển job thì cần admin token.</b>',
-  'demo.sample.label': 'Kiến trúc mẫu',
-  'demo.sample.sub': 'Sơ đồ microservice thương mại điện tử để bạn kéo thả, nối lại và sửa trực tiếp.',
-  'demo.sample.body': 'Vẫn là bảng vẽ đó, nhưng nạp sẵn kiến trúc microservice thương mại điện tử mẫu thay cho hệ thống thật — một sân chơi để thử trình chỉnh sửa.<br/><br/><b>Kéo, nối, đổi tên và đổi loại tùy ý; reset về mẫu bất cứ lúc nào.</b>',
-
   'proj.dcms.title': 'NEXUSTI DCMS — nền tảng thu hồi nợ',
   'proj.dcms.desc': 'Nền tảng thu hồi nợ và CRM đa tenant cho ngân hàng và tổ chức cho vay: mười ba service triển khai độc lập, bao trùm phân bổ nợ, tổng đài đa kênh, tự động hóa quy trình, báo cáo và định danh. Mỗi tenant có namespace, realm định danh và bộ cơ sở dữ liệu riêng, dựng trọn gói bằng Terraform và Helm.',
   'proj.crawler.title': 'Crawler số điện thoại',
@@ -636,7 +591,6 @@ const vi = {
   /* ── Résumé ───────────────────────────────────────────────────────────── */
   'resume.eyebrow': 'Hồ sơ',
   'resume.title': 'Sơ yếu lý lịch',
-  'resume.desc': 'Một trang, luôn được cập nhật. Tải về, hoặc đọc bản chi tiết hơn ở trang giới thiệu.',
   'resume.download': 'Tải PDF',
   'resume.noInline': 'Trình duyệt của bạn không hiển thị PDF trực tiếp. Tải bản CV một trang về nhé — vẫn là cùng một tài liệu.',
 
@@ -648,7 +602,7 @@ const vi = {
   'contact.stackoverflow': 'Stack Overflow',
   'contact.codeforces': 'Codeforces',
 
-  'footer.tagline': 'Kỹ sư backend ở Hà Nội, xây những hệ thống chạy bền.',
+  'footer.tagline': 'Kỹ sư backend ở Hà Nội.',
   'footer.nav': 'Trang',
   'footer.connect': 'Nơi khác',
   'footer.built': 'Xây bằng React và Vite. Mã nguồn trên GitHub.',

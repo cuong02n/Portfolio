@@ -9,7 +9,7 @@ import path from "node:path";
 const NS = [
   "home", "about", "stack", "proj", "demo", "exp", "cert", "edu", "nav",
   "hero", "footer", "resume", "projects", "links", "common", "profile",
-  "stats", "typed", "contact", "crawler", "snapshot",
+  "stats", "contact", "crawler", "snapshot",
 ];
 
 // The phone-crawler feature module now draws its strings from the shared table
@@ -48,11 +48,7 @@ for (const f of files) {
   for (const m of code.matchAll(KEY_RE)) used.add(m[1]);
 }
 
-// Keys assembled from template literals at render time, which no regex sees.
-for (const c of ["c1", "c2", "c3"]) {
-  used.add(`home.what.${c}.title`);
-  used.add(`home.what.${c}.desc`);
-}
+
 for (const row of ["role", "location", "education", "certs", "languages"]) {
   used.add(`snapshot.${row}`);
 }
