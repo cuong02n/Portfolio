@@ -69,19 +69,12 @@ function Resume() {
           <span className="pf-card-icon">
             <FiFileText />
           </span>
-          <p className="pf-muted" style={{ margin: "0 0 18px", maxWidth: "42ch" }}>
-            {t("resume.noInline")}
-          </p>
+
           {download}
         </div>
       )}
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 22 }}>
-        {download}
-        <Link to="/about" className="pf-btn">
-          {t("nav.about")} <FiArrowRight size={16} />
-        </Link>
-      </div>
+
     </section>
   );
 }

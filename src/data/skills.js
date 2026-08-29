@@ -19,7 +19,7 @@
 
 import {
   SiOpenjdk, SiSpringboot, SiPostgresql, SiApachekafka, SiKubernetes,
-  SiKeycloak, SiCamunda, SiReact, SiApachemaven,
+  SiKeycloak, SiReact, SiApachemaven,
 } from 'react-icons/si'
 import { FaDiagramProject } from 'react-icons/fa6'
 
@@ -44,7 +44,7 @@ export const SKILL_GROUPS = [
     blurbKey: 'stack.backend.blurb',
     items: [
       { name: 'Spring Boot', note: '2.x → 3.3, on an in-house nexus-boot base', level: 'core' },
-      { name: 'Spring Data JPA', note: 'Hibernate, projections, native tuning', level: 'core' },
+
       { name: 'REST APIs', note: 'versioned contracts, OpenAPI', level: 'core' },
     ],
   },
@@ -80,16 +80,7 @@ export const SKILL_GROUPS = [
       { name: 'Notification fan-out', note: 'owned the SMS / Zalo / email / push module', level: 'core' },
     ],
   },
-  {
-    id: 'workflow',
-    icon: SiCamunda,
-    titleKey: 'stack.workflow.title',
-    blurbKey: 'stack.workflow.blurb',
-    items: [
-      { name: 'Camunda BPM', note: '7.20 — process engine, migrated off Activiti 5', level: 'working' },
-      { name: 'BPMN 2.0', note: 'collection strategy orchestration', level: 'working' },
-    ],
-  },
+
   {
     id: 'security',
     icon: SiKeycloak,
@@ -110,7 +101,7 @@ export const SKILL_GROUPS = [
       { name: 'GitLab CI/CD', note: 'build → image → deploy, branch-mapped environments', level: 'core' },
       { name: 'Docker', note: 'slim JRE runtime images, tuned G1GC flags', level: 'core' },
       { name: 'Kubernetes', note: 'deployments, rollouts, secrets, ingress, HPA', level: 'working' },
-      { name: 'Terraform', note: 'keycloak · postgresql · kubernetes · helm providers', level: 'working' },
+
       { name: 'Linux', note: 'daily driver; systemd, networking, troubleshooting', level: 'core' },
     ],
   },
@@ -121,19 +112,6 @@ export const SKILL_GROUPS = [
     blurbKey: 'stack.frontend.blurb',
     items: [
       { name: 'React', note: '18 — hooks, this portfolio and its demo modules', level: 'working' },
-      { name: 'Redux + Redux-Saga', note: 'collection CRM state layer', level: 'working' },
-      { name: 'Vite', note: 'build tooling and dev server', level: 'working' },
-    ],
-  },
-  {
-    id: 'tooling',
-    icon: SiApachemaven,
-    titleKey: 'stack.tooling.title',
-    blurbKey: 'stack.tooling.blurb',
-    items: [
-      { name: 'Maven', note: 'multi-module reactors, private repo, build profiles', level: 'core' },
-      { name: 'Git / GitLab', note: 'trunk-ish flow, MR review, protected branches', level: 'core' },
-      { name: 'Postman', note: 'API collections shared across the team', level: 'working' },
     ],
   },
 ]
@@ -142,5 +120,5 @@ export const SKILL_GROUPS = [
 // after ten seconds.
 export const CORE_STACK = [
   'Java 21', 'Spring Boot 3', 'PostgreSQL', 'Kafka', 'Redis', 'Keycloak',
-  'Docker', 'Kubernetes', 'Terraform', 'GitLab CI/CD', 'Camunda', 'React',
+  'Docker', 'Kubernetes', 'GitLab CI/CD', 'React',
 ]

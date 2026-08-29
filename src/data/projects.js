@@ -46,7 +46,7 @@ export const PROJECTS = [
     ongoing: true,
     titleKey: 'proj.dcms.title',
     descKey: 'proj.dcms.desc',
-    tags: ['Java 21', 'Spring Boot', 'PostgreSQL', 'Kafka', 'Keycloak', 'Kubernetes', 'Terraform'],
+    tags: ['Java 21', 'Spring Boot', 'PostgreSQL', 'Kafka', 'Keycloak', 'Kubernetes'],
     links: [],
   },
   {

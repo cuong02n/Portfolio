@@ -154,7 +154,6 @@ button { font: inherit; color: inherit; }
 .pf-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   margin: 0 0 14px;
   font-family: var(--pf-mono);
   font-size: 0.74rem;
@@ -162,13 +161,6 @@ button { font: inherit; color: inherit; }
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--pf-accent);
-}
-.pf-eyebrow::before {
-  content: "";
-  width: 26px;
-  height: 1px;
-  background: var(--pf-accent);
-  opacity: 0.7;
 }
 
 .pf-h1 {

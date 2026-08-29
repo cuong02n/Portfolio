@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import SectionHead from "../ui/SectionHead";
 import { SKILL_GROUPS, LEVELS } from "../../data/skills";
@@ -22,16 +22,6 @@ function LevelDots({ level }) {
 
 function Stack() {
   const { t } = useTranslation();
-  const [active, setActive] = useState("all");
-
-  const groups = useMemo(
-    () =>
-      active === "all"
-        ? SKILL_GROUPS
-        : SKILL_GROUPS.filter((group) => group.id === active),
-    [active]
-  );
-
   const total = useMemo(
     () => SKILL_GROUPS.reduce((sum, group) => sum + group.items.length, 0),
     []
@@ -59,32 +49,8 @@ function Stack() {
         </span>
       </div>
 
-      <div className="pf-filters" role="tablist">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={active === "all"}
-          className={`pf-filter${active === "all" ? " is-active" : ""}`}
-          onClick={() => setActive("all")}
-        >
-          {t("stack.filter.all")}
-        </button>
-        {SKILL_GROUPS.map((group) => (
-          <button
-            key={group.id}
-            type="button"
-            role="tab"
-            aria-selected={active === group.id}
-            className={`pf-filter${active === group.id ? " is-active" : ""}`}
-            onClick={() => setActive(group.id)}
-          >
-            {t(group.titleKey)}
-          </button>
-        ))}
-      </div>
-
       <div className="pf-stack-groups">
-        {groups.map((group) => {
+        {SKILL_GROUPS.map((group) => {
           const Icon = group.icon;
           return (
             <section
@@ -97,7 +63,6 @@ function Stack() {
                 </span>
                 <div>
                   <h2 className="pf-h3">{t(group.titleKey)}</h2>
-                  <p className="pf-stack-blurb">{t(group.blurbKey)}</p>
                 </div>
               </header>
 
@@ -106,7 +71,6 @@ function Stack() {
                   <li className="pf-skill" key={item.name}>
                     <LevelDots level={item.level} />
                     <span className="pf-skill-name">{item.name}</span>
-                    <span className="pf-skill-note">{item.note}</span>
                   </li>
                 ))}
               </ul>

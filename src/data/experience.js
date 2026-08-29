@@ -23,7 +23,7 @@ export const EXPERIENCE = [
     ],
     stack: [
       'Java 21', 'Spring Boot 3', 'PostgreSQL', 'Kafka', 'Redis',
-      'Keycloak', 'Camunda BPMN', 'Kubernetes', 'GitLab CI/CD', 'Terraform',
+      'Keycloak', 'Kubernetes', 'GitLab CI/CD',
     ],
   },
   {

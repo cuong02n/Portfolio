@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FaGithub, FaStackOverflow, FaEnvelope } from "react-icons/fa6";
+import { FaGithub, FaStackOverflow, FaEnvelope, FaLinkedin, FaPhone } from "react-icons/fa6";
 import { SiCodeforces } from "react-icons/si";
 import { PROFILE } from "../../data/profile";
 
 const PAGES = [
   { to: "/about", labelKey: "nav.about" },
   { to: "/stack", labelKey: "nav.stack" },
-  { to: "/project", labelKey: "nav.projects" },
+  // { to: "/project", labelKey: "nav.projects" },
   { to: "/resume", labelKey: "nav.resume" },
 ];
 
@@ -18,13 +18,14 @@ function Footer() {
 
   const socials = [
     { href: PROFILE.githubUrl, label: "GitHub", Icon: FaGithub },
+    { href: PROFILE.linkedinUrl, label: "LinkedIn", Icon: FaLinkedin },
     { href: PROFILE.stackoverflowUrl, label: "Stack Overflow", Icon: FaStackOverflow },
     { href: PROFILE.codeforcesUrl, label: "Codeforces", Icon: SiCodeforces },
     { href: `mailto:${PROFILE.email}`, label: "Email", Icon: FaEnvelope },
   ];
 
   return (
-    <footer className="pf-footer">
+    <footer id="footer" className="pf-footer">
       <div className="pf-container">
         <div className="pf-footer-grid">
           <div className="pf-footer-brand">
@@ -65,6 +66,14 @@ function Footer() {
                 <a href={`mailto:${PROFILE.email}`}>{PROFILE.email}</a>
               </li>
               <li>
+                <a href={`tel:${PROFILE.phoneHref}`}>{PROFILE.phone}</a>
+              </li>
+              <li>
+                <a href={PROFILE.linkedinUrl} target="_blank" rel="noopener noreferrer">
+                  linkedin.com/in/{PROFILE.linkedin}
+                </a>
+              </li>
+              <li>
                 <a href={PROFILE.githubUrl} target="_blank" rel="noopener noreferrer">
                   github.com/{PROFILE.github}
                 </a>
@@ -83,18 +92,6 @@ function Footer() {
           </div>
         </div>
 
-        <div className="pf-footer-bar">
-          <span>
-            © {year} {t("profile.name")}. {t("footer.rights")}
-          </span>
-          <a
-            href="https://github.com/cuong02n/Portfolio"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t("footer.built")}
-          </a>
-        </div>
       </div>
     </footer>
   );

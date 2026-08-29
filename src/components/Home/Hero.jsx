@@ -27,13 +27,11 @@ function Hero() {
         <p className="pf-lead pf-hero-intro">{t("hero.intro")}</p>
 
         <div className="pf-hero-actions">
-          <Link to="/project" className="pf-btn pf-btn--primary">
-            {t("hero.cta.projects")} <FiArrowRight size={16} />
-          </Link>
-          <a className="pf-btn" href={resumePdf} target="_blank" rel="noopener noreferrer">
+
+          <a className="pf-btn pf-btn--primary" href={resumePdf} target="_blank" rel="noopener noreferrer">
             <FiDownload size={16} /> {t("hero.cta.resume")}
           </a>
-          <a className="pf-btn" href={`mailto:${PROFILE.email}`}>
+          <a className="pf-btn" href="#footer">
             <FiMail size={16} /> {t("hero.cta.contact")}
           </a>
         </div>
@@ -50,7 +48,6 @@ function Hero() {
 
       <div>
         <Snapshot />
-        <p className="pf-hero-caption">{t("hero.snapshot.caption")}</p>
       </div>
     </section>
   );

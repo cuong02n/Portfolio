@@ -45,7 +45,7 @@ const used = new Set();
 for (const f of files) {
   if (f.endsWith(path.join("lang", "i18n.js"))) continue;
   const code = fs.readFileSync(f, "utf8");
-  for (const m of code.matchAll(KEY_RE)) used.add(m[1]);
+  for (const m of code.matchAll(KEY_RE)) { used.add(m[1]); if (m[1].includes("workflow")) console.log("FOUND", f, m[1]); }
 }
 
 
@@ -57,7 +57,7 @@ for (const lvl of ["core", "working", "familiar"]) {
   used.add(`stack.level.${lvl}.hint`);
 }
 for (const g of ["languages", "backend", "architecture", "data", "messaging",
-                 "workflow", "security", "devops", "frontend", "tooling"]) {
+                 "security", "devops", "frontend"]) {
   used.add(`stack.${g}.title`);
   used.add(`stack.${g}.blurb`);
 }

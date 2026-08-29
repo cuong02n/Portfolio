@@ -11,7 +11,7 @@ const LINKS = [
   { to: "/", labelKey: "nav.home", end: true },
   { to: "/about", labelKey: "nav.about" },
   { to: "/stack", labelKey: "nav.stack" },
-  { to: "/project", labelKey: "nav.projects" },
+  // { to: "/project", labelKey: "nav.projects" },
   { to: "/resume", labelKey: "nav.resume" },
 ];
 

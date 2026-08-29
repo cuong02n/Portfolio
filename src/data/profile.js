@@ -26,6 +26,8 @@ export const PROFILE = {
 
   github: 'cuong02n',
   githubUrl: 'https://github.com/cuong02n',
+  linkedin: 'cuong02n',
+  linkedinUrl: 'https://www.linkedin.com/in/cuong02n/',
   codeforces: 'cuong2905say',
   codeforcesUrl: 'https://codeforces.com/profile/cuong2905say',
   stackoverflowUrl: 'https://stackoverflow.com/users/23725389/nguyen-manh-cuong',
@@ -36,7 +38,6 @@ export const PROFILE = {
 export const STATS = [
   { value: '3+',   labelKey: 'stats.years' },
   { value: '1M+',  labelKey: 'stats.customers' },
-  { value: '13',   labelKey: 'stats.services' },
   { value: '3.65', labelKey: 'stats.gpa' },
 ]
 

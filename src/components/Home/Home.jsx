@@ -19,7 +19,6 @@ function Home() {
         <SectionHead
           eyebrow={t("home.stack.eyebrow")}
           title={t("home.stack.title")}
-          lead={t("home.stack.desc")}
         />
         <ul className="pf-strip">
           {CORE_STACK.map((tech) => (
@@ -35,27 +34,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Contact -------------------------------------------------------- */}
-      <section className="pf-container pf-section pf-section--tight">
-        <div className="pf-cta">
-          <div className="pf-cta-text">
-            <h2 className="pf-h2" style={{ marginBottom: 8 }}>
-              {t("home.contact.title")}
-            </h2>
-            <p className="pf-muted" style={{ margin: 0 }}>
-              {t("home.contact.desc")}
-            </p>
-          </div>
-          <div className="pf-cta-actions">
-            <a className="pf-btn pf-btn--primary" href={`mailto:${PROFILE.email}`}>
-              <FiMail size={16} /> {t("home.contact.cta")}
-            </a>
-            <Link to="/about" className="pf-btn">
-              {t("nav.about")} <FiArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
