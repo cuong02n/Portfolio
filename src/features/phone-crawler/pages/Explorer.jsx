@@ -70,6 +70,36 @@ function resolvePresets(active, paramInputs) {
   })
 }
 
+// ── Component Helpers ──────────────────────────────────────────────────────────
+
+const formatPhone = (num) => {
+  if (!num) return '';
+  if (num.length === 10) return `${num.slice(0, 3)} ${num.slice(3, 6)} ${num.slice(6)}`;
+  return num;
+}
+
+const getFileInfo = (f) => {
+  const isViettel = f.name.toLowerCase().includes('viettel');
+  const isVnpt = f.name.toLowerCase().includes('vnpt');
+  const sizeStr = f.size > 1024 * 1024 
+    ? (f.size / (1024 * 1024)).toFixed(2) + ' MB'
+    : (f.size / 1024).toFixed(1) + ' KB';
+  
+  const dateObj = new Date(f.updated_at);
+  const dateStr = !isNaN(dateObj) ? dateObj.toLocaleString('vi-VN', { 
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  }) : '';
+
+  return { 
+    name: f.name, 
+    sizeStr, 
+    dateStr,
+    network: isViettel ? 'Viettel' : (isVnpt ? 'VNPT' : 'Unknown'),
+    color: isViettel ? '#ef4444' : (isVnpt ? '#3b82f6' : 'var(--muted)')
+  };
+}
+
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export default function Explorer() {
@@ -84,6 +114,7 @@ export default function Explorer() {
   const [refreshing, setRefreshing] = useState(false)
   const [error, setError]         = useState('')
   const [fetchAll, setFetchAll]   = useState(false)
+  const [expandedNumbers, setExpandedNumbers] = useState({}) // track clicked numbers
 
   // Cancel in-flight request when a new one starts; ignore stale responses.
   const abortRef  = useRef(null)
@@ -196,171 +227,197 @@ export default function Explorer() {
   const totalActive = activePresets.length
 
   return (
-    <div>
+    <div className="explorer-container">
       <h1 className="page-title">{t('crawler.explorer.title')}</h1>
 
-      <div className="card">
-        {/* File selector + download + refresh */}
-        <div className="explorer-row">
-          <select
-            className="form-select"
-            style={{ flex: 1, maxWidth: 420 }}
-            value={selected}
-            onChange={e => handleFileChange(e.target.value)}
-          >
-            {files.length === 0 && <option>{t('crawler.explorer.noFilesOption')}</option>}
-            {files.map(f => (
-              <option key={f.path} value={f.path}>
-                {f.name}  ({(f.size / 1024).toFixed(1)} KB)
-              </option>
-            ))}
-          </select>
-
-          <button className="btn btn-ghost" onClick={handleRefresh} disabled={refreshing}
-            title={t('crawler.explorer.refreshTitle')}>
-            <RefreshCw size={13} style={refreshing ? { animation: 'spin 0.8s linear infinite' } : undefined} />
-            {refreshing ? t('crawler.explorer.refreshing') : t('crawler.common.refresh')}
-          </button>
-
-          {selected && (
-            <a className="btn btn-ghost" href={api.downloadUrl(selected)} download>
-              <Download size={13} /> {t('crawler.common.download')}
-            </a>
-          )}
-        </div>
-
-        {/* Filter presets */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-          <div className="card-title" style={{ marginBottom: 0 }}>🎯 {t('crawler.explorer.filters')}</div>
-          {totalActive > 0 && (
-            <>
-              <span className="muted" style={{ fontSize: 11 }}>
-                {totalActive > 1
-                  ? t('crawler.explorer.activeAnd', { count: totalActive })
-                  : t('crawler.explorer.active', { count: totalActive })}
-              </span>
-              <button className="btn btn-ghost" style={{ padding: '1px 8px', fontSize: 11 }}
-                onClick={clearAll}>
-                {t('crawler.explorer.clearAll')}
+      <div className="explorer-layout">
+        {/* Left column: Filters */}
+        <div className="explorer-sidebar card">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 15 }}>
+            <div className="card-title" style={{ marginBottom: 0 }}>🎯 {t('crawler.explorer.filters')}</div>
+            {totalActive > 0 && (
+              <button className="btn btn-ghost clear-btn" onClick={clearAll}>
+                {t('crawler.explorer.clearAll')} ({totalActive})
               </button>
-            </>
-          )}
-        </div>
-
-        {STATIC_PRESETS.map(({ group, items }) => (
-          <div key={group} style={{ marginBottom: 10 }}>
-            <div style={{ fontSize: 10, color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.05em',
-                          textTransform: 'uppercase', marginBottom: 5 }}>
-              {group}
-            </div>
-            <div className="preset-grid" style={{ marginBottom: 0 }}>
-              {items.map(name => (
-                <label key={name}
-                  className={`preset-chip${isStaticActive(name) ? ' on' : ''}`}
-                  onClick={() => toggleStatic(name)}>
-                  {name}
-                </label>
-              ))}
-            </div>
+            )}
           </div>
-        ))}
 
-        {/* Parametric presets */}
-        {PARAM_PRESETS.length > 0 && (
-          <div style={{ marginBottom: 10 }}>
-            <div style={{ fontSize: 10, color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.05em',
-                          textTransform: 'uppercase', marginBottom: 5 }}>
-              {t('crawler.explorer.custom')}
-            </div>
-            <div className="preset-grid" style={{ marginBottom: 0 }}>
-              {PARAM_PRESETS.map(({ key, label, placeholder, maxLength, isValid }) => {
-                const active = isParamActive(key)
-                const val    = paramInputs[key] || ''
-                const valid  = !active || isValid(val)
-                return (
-                  <label key={key}
-                    className={`preset-chip param-chip${active ? ' on' : ''}${active && !valid ? ' invalid' : ''}`}
-                    onClick={() => toggleParam(key)}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                    {label}
-                    {active && (
-                      <>
-                        {' = '}
-                        <input
-                          type="text"
-                          value={val}
-                          maxLength={maxLength}
-                          placeholder={placeholder}
-                          onClick={e => e.stopPropagation()}
-                          onChange={e => updateParamInput(key, e.target.value)}
-                          style={{
-                            width: 28, padding: '0 3px', textAlign: 'center',
-                            background: 'transparent',
-                            border: `1px solid ${valid ? 'currentColor' : 'var(--red)'}`,
-                            borderRadius: 3, color: valid ? 'inherit' : 'var(--red)',
-                            fontSize: 11, fontFamily: 'var(--mono)',
-                            outline: 'none',
-                          }}
-                        />
-                      </>
-                    )}
-                  </label>
-                )
-              })}
-            </div>
-          </div>
-        )}
+          <div className="filters-scroll">
+            {STATIC_PRESETS.map(({ group, items }) => (
+              <div key={group} className="filter-group">
+                <div className="filter-group-title">{group}</div>
+                <div className="preset-grid">
+                  {items.map(name => (
+                    <label key={name}
+                      className={`preset-chip premium-chip ${isStaticActive(name) ? 'on' : ''}`}
+                      onClick={() => toggleStatic(name)}>
+                      {name}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
 
-        {/* Fetch all toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, marginTop: 4 }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12 }}>
-            <input type="checkbox" checked={fetchAll} onChange={e => setFetchAll(e.target.checked)} />
-            {t('crawler.explorer.fetchAll')}
-          </label>
-        </div>
-
-        {/* Results */}
-        {loading && <p className="muted" style={{ marginTop: 12 }}>{t('crawler.explorer.filtering')}</p>}
-
-        {error && !loading && (
-          <div className="alert alert-error" style={{ marginTop: 12, fontSize: 12 }}>
-            ❌ {t('crawler.explorer.error')}: {error}
-            <button className="btn btn-ghost" style={{ marginLeft: 10, padding: '2px 8px', fontSize: 11 }}
-              onClick={() => preview(selected, resolvePresets(activePresets, paramInputs))}>
-              {t('crawler.common.retry')}
-            </button>
-          </div>
-        )}
-
-        {!loading && !error && result && (
-          <>
-            <div className="result-bar">
-              <strong>{result.filtered_count.toLocaleString()}</strong>
-              <span className="muted">{t('crawler.explorer.results')}</span>
-              <span className="muted">/</span>
-              <span className="muted">{result.total_count.toLocaleString()} {t('crawler.explorer.total')}</span>
-              {!fetchAll && totalActive > 0 && result.numbers.length < result.filtered_count && (
-                <span className="muted" style={{ fontSize: 12 }}>{t('crawler.explorer.first200')}</span>
-              )}
-            </div>
-
-            {result.numbers.length === 0 ? (
-              <p className="muted">{t('crawler.explorer.noMatch')}</p>
-            ) : (
-              <div className="number-grid">
-                {result.numbers.map((n, i) => (
-                  <code key={i} className="number-chip">{n}</code>
-                ))}
+            {PARAM_PRESETS.length > 0 && (
+              <div className="filter-group">
+                <div className="filter-group-title">{t('crawler.explorer.custom')}</div>
+                <div className="preset-grid">
+                  {PARAM_PRESETS.map(({ key, label, placeholder, maxLength, isValid }) => {
+                    const active = isParamActive(key)
+                    const val    = paramInputs[key] || ''
+                    const valid  = !active || isValid(val)
+                    return (
+                      <label key={key}
+                        className={`preset-chip premium-chip param-chip ${active ? 'on' : ''} ${active && !valid ? 'invalid' : ''}`}
+                        onClick={() => toggleParam(key)}>
+                        {label}
+                        {active && (
+                          <>
+                            <span className="param-eq">=</span>
+                            <input
+                              type="text"
+                              className="param-input"
+                              value={val}
+                              maxLength={maxLength}
+                              placeholder={placeholder}
+                              onClick={e => e.stopPropagation()}
+                              onChange={e => updateParamInput(key, e.target.value)}
+                            />
+                          </>
+                        )}
+                      </label>
+                    )
+                  })}
+                </div>
               </div>
             )}
-          </>
-        )}
+          </div>
+        </div>
 
-        {files.length === 0 && (
-          <p className="muted" style={{ marginTop: 8 }}>
-            {t('crawler.explorer.noData')}
-          </p>
-        )}
+        {/* Right column: Results */}
+        <div className="explorer-main card">
+          {/* Top bar: file selector */}
+          <div className="explorer-header">
+            <div className="file-selector-wrapper">
+              <select
+                className="form-select premium-select"
+                value={selected}
+                onChange={e => handleFileChange(e.target.value)}
+              >
+                {files.length === 0 && <option>{t('crawler.explorer.noFilesOption')}</option>}
+                {files.map(f => {
+                  const info = getFileInfo(f);
+                  return (
+                    <option key={f.path} value={f.path}>
+                      {info.network !== 'Unknown' ? `[${info.network}] ` : ''}{info.name} ({info.sizeStr}){info.dateStr ? ` - ${info.dateStr}` : ''}
+                    </option>
+                  );
+                })}
+              </select>
+              {selected && (() => {
+                const f = files.find(x => x.path === selected);
+                if (f) {
+                  const info = getFileInfo(f);
+                  return (
+                    <div className="file-badge" style={{ borderColor: info.color, color: info.color }}>
+                      {info.network}
+                    </div>
+                  );
+                }
+                return null;
+              })()}
+            </div>
+
+            <div className="header-actions">
+              <label className="fetch-all-toggle">
+                <input type="checkbox" checked={fetchAll} onChange={e => setFetchAll(e.target.checked)} />
+                <span>{t('crawler.explorer.fetchAll')}</span>
+              </label>
+              <button className="btn btn-ghost icon-btn" onClick={handleRefresh} disabled={refreshing} title={t('crawler.explorer.refreshTitle')}>
+                <RefreshCw size={15} className={refreshing ? 'spin' : ''} />
+              </button>
+              {selected && (
+                <a className="btn btn-primary download-btn" href={api.downloadUrl(selected)} download>
+                  <Download size={14} /> {t('crawler.common.download')}
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Results display */}
+          <div className="explorer-content">
+            {loading && (
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <p>{t('crawler.explorer.filtering')}</p>
+              </div>
+            )}
+
+            {error && !loading && (
+              <div className="alert alert-error">
+                <span>❌ {t('crawler.explorer.error')}: {error}</span>
+                <button className="btn btn-ghost btn-sm" onClick={() => preview(selected, resolvePresets(activePresets, paramInputs))}>
+                  {t('crawler.common.retry')}
+                </button>
+              </div>
+            )}
+
+            {!loading && !error && result && (
+              <>
+                {/* Stats Bar */}
+                <div className="stats-dashboard">
+                  <div className="stat-card highlight">
+                    <div className="stat-value">{result.filtered_count.toLocaleString()}</div>
+                    <div className="stat-label">Số Khớp</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="stat-value">{result.total_count.toLocaleString()}</div>
+                    <div className="stat-label">Tổng File</div>
+                  </div>
+                  {result.total_count > 0 && (
+                    <div className="stat-progress">
+                      <div className="progress-bar" style={{ width: `${Math.min(100, (result.filtered_count / result.total_count) * 100)}%` }}></div>
+                    </div>
+                  )}
+                  {!fetchAll && totalActive > 0 && result.numbers.length < result.filtered_count && (
+                    <div className="stat-note">{t('crawler.explorer.first200')}</div>
+                  )}
+                </div>
+
+                {result.numbers.length === 0 ? (
+                  <div className="empty-state">
+                    <p className="muted">{t('crawler.explorer.noMatch')}</p>
+                  </div>
+                ) : (
+                  <div className="number-grid premium-grid">
+                    {result.numbers.map((item, i) => {
+                      const numStr = item.phone || item;
+                      const timeStr = item.time;
+                      const isExpanded = expandedNumbers[i];
+                      return (
+                        <div 
+                          key={i} 
+                          className={`number-chip premium-number ${isExpanded ? 'expanded' : ''}`}
+                          onClick={() => setExpandedNumbers(prev => ({ ...prev, [i]: !prev[i] }))}
+                          style={{ cursor: timeStr ? 'pointer' : 'default' }}
+                        >
+                          <div className="number-val">{formatPhone(numStr)}</div>
+                          {isExpanded && timeStr && <div className="time-badge">{timeStr}</div>}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </>
+            )}
+
+            {files.length === 0 && !loading && (
+              <div className="empty-state">
+                <p className="muted">{t('crawler.explorer.noData')}</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
